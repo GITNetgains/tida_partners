@@ -26,6 +26,7 @@ class HomeScreenController extends GetxController {
   late RxList<String> sportsListInString;
   late Rx<SportsResponse> sportsResponse;
 
+
   @override
   void onInit() {
     imageList.clear();
@@ -33,14 +34,19 @@ class HomeScreenController extends GetxController {
     super.onInit();
   }
 
+
+
   Future<void> fetch() async {
     loading(true);
+    venueList.clear();
     VenueList? vlist = await ApiProvider().fetchVenues();
-    if (vlist!.status!) {
-      if (vlist.data != null) {
-        venueList.assignAll(vlist.data!);
-      }
-    }
+   if (vlist!=null) {
+     if (vlist!.status!) {
+       if (vlist.data != null) {
+         venueList.assignAll(vlist.data!);
+       }
+     }
+   }
     loading(false);
   }
 

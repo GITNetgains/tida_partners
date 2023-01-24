@@ -18,6 +18,7 @@ class AddVenue extends StatelessWidget {
   final _controller = Get.put(VenueDetailsController());
   final _controllerHome = Get.put(HomeScreenController());
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +28,7 @@ class AddVenue extends StatelessWidget {
         title:Obx(() =>  setHeadlineMedium(!_controllerHome.isEdit.value?"Add Venue":"Edit Venue")),
       ),
       body:Obx(() =>  _controller.loading.value?showLoader():Container(
-        padding: EdgeInsets.only(top: 8, bottom: 8),
+        padding: const EdgeInsets.only(top: 8, bottom: 8),
         child: ListView(
           children: [
             Padding(
@@ -41,7 +42,7 @@ class AddVenue extends StatelessWidget {
                     _controller.selectImage();
                   },
                   child: Obx(() => (_controller.filePath.value.isNotEmpty)
-                      ? (_controller.filePath.startsWith("https"))
+                      ? (_controller.filePath.startsWith("http"))
                       ? ClipRRect(
                       borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(5),
@@ -135,45 +136,9 @@ class AddVenue extends StatelessWidget {
                     ),
                   ),
                   getVerticalSpace(),
-                  TextField(
-                    onChanged: (_) {
-                      _controller.vLocation(_);
-                    },
-                    controller: _controller.addressCtrl,
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      label: setMediumLabel(
-                        "Address",
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: PRIMARY_COLOR),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderSide:
-                        BorderSide(width: 3, color: Colors.greenAccent),
-                      ),
-                    ),
-                  ),
-                  getVerticalSpace(),
-                  TextField(
-                    onChanged: (_) {
-                      _controller.mapLink(_);
-                    },
-                    controller: _controller.mapCtrl,
-                    cursorColor: Colors.black,
-                    decoration: InputDecoration(
-                      label: setMediumLabel(
-                        "Map Link",
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: PRIMARY_COLOR),
-                      ),
-                      border: const OutlineInputBorder(
-                        borderSide:
-                        BorderSide(width: 3, color: Colors.greenAccent),
-                      ),
-                    ),
-                  ),
+
+                  _controller.selectLocation(),
+
                   getVerticalSpace(),
                   TextField(
                     onChanged: (_) {

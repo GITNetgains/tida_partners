@@ -1,11 +1,11 @@
-class AcademyResponse {
+class TournamentListResponse {
   bool? status;
   String? message;
   List<Data>? data;
 
-  AcademyResponse({this.status, this.message, this.data});
+  TournamentListResponse({this.status, this.message, this.data});
 
-  AcademyResponse.fromJson(Map<String, dynamic> json) {
+  TournamentListResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
@@ -28,6 +28,103 @@ class AcademyResponse {
 }
 
 class Data {
+  String? id;
+  String? userId;
+  String? academyId;
+  String? title;
+  String? noOfTickets;
+  String? ticketsLeft;
+  String? price;
+  String? startDate;
+  String? endDate;
+  String? description;
+  String? type;
+  String? image;
+  String? url;
+  String? approved;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  bool? rating;
+  List<AcademyDetails>? academyDetails;
+
+  Data(
+      {this.id,
+        this.userId,
+        this.academyId,
+        this.title,
+        this.noOfTickets,
+        this.ticketsLeft,
+        this.price,
+        this.startDate,
+        this.endDate,
+        this.description,
+        this.type,
+        this.image,
+        this.url,
+        this.approved,
+        this.status,
+        this.createdAt,
+        this.updatedAt,
+        this.rating,
+        this.academyDetails});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    academyId = json['academy_id'];
+    title = json['title'];
+    noOfTickets = json['no_of_tickets'];
+    ticketsLeft = json['tickets_left'];
+    price = json['price'];
+    startDate = json['start_date'];
+    endDate = json['end_date'];
+    description = json['description'];
+    type = json['type'];
+    image = json['image'];
+    url = json['url']??"";
+    approved = json['approved'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    rating = json['rating'];
+    if (json['academy_details'] != null) {
+      academyDetails = <AcademyDetails>[];
+      json['academy_details'].forEach((v) {
+        academyDetails!.add(new AcademyDetails.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['academy_id'] = this.academyId;
+    data['title'] = this.title;
+    data['no_of_tickets'] = this.noOfTickets;
+    data['tickets_left'] = this.ticketsLeft;
+    data['price'] = this.price;
+    data['start_date'] = this.startDate;
+    data['end_date'] = this.endDate;
+    data['description'] = this.description;
+    data['type'] = this.type;
+    data['image'] = this.image;
+    data['url'] = this.url;
+    data['approved'] = this.approved;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['rating'] = this.rating;
+    if (this.academyDetails != null) {
+      data['academy_details'] =
+          this.academyDetails!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class AcademyDetails {
   String? id;
   String? userId;
   String? venueId;
@@ -64,10 +161,8 @@ class Data {
   String? status;
   String? createdAt;
   String? updatedAt;
-  List<AmenitiesDetails>? amenitiesDetails;
-  List<VenueDetails>? venueDetails;
 
-  Data(
+  AcademyDetails(
       {this.id,
         this.userId,
         this.venueId,
@@ -103,11 +198,9 @@ class Data {
         this.amenitiesId,
         this.status,
         this.createdAt,
-        this.updatedAt,
-        this.amenitiesDetails,
-        this.venueDetails});
+        this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  AcademyDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     venueId = json['venue_id'];
@@ -144,24 +237,6 @@ class Data {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    if (json['amenities_details'] != null) {
-      amenitiesDetails = <AmenitiesDetails>[];
-      json['amenities_details'].forEach((v) {
-        amenitiesDetails!.add(new AmenitiesDetails.fromJson(v));
-      });
-    }
-    if (json['venue_details'] != null) {
-      venueDetails = <VenueDetails>[];
-      try{
-
-        json['venue_details'].forEach((v) {
-          venueDetails!.add(new VenueDetails.fromJson(v));
-
-        });
-
-      }catch(e){}
-
-    }
   }
 
   Map<String, dynamic> toJson() {
@@ -199,112 +274,6 @@ class Data {
     data['assistent_coach_name'] = this.assistentCoachName;
     data['feedbacks'] = this.feedbacks;
     data['amenities_id'] = this.amenitiesId;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.amenitiesDetails != null) {
-      data['amenities_details'] =
-          this.amenitiesDetails!.map((v) => v.toJson()).toList();
-    }
-    if (this.venueDetails != null) {
-      data['venue_details'] =
-          this.venueDetails!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class AmenitiesDetails {
-  String? id;
-  String? name;
-  String? icon;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-
-  AmenitiesDetails(
-      {this.id,
-        this.name,
-        this.icon,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
-
-  AmenitiesDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    icon = json['icon'];
-    status = json['status'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['icon'] = this.icon;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    return data;
-  }
-}
-
-class VenueDetails {
-  String? id;
-  String? userId;
-  String? image;
-  String? title;
-  String? sports;
-  String? amenities;
-  String? description;
-  String? address;
-  String? addressMap;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-
-  VenueDetails(
-      {this.id,
-        this.userId,
-        this.image,
-        this.title,
-        this.sports,
-        this.amenities,
-        this.description,
-        this.address,
-        this.addressMap,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
-
-  VenueDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    image = json['image'];
-    title = json['title'];
-    sports = json['sports'];
-    amenities = json['amenities'];
-    description = json['description'];
-    address = json['address'];
-    addressMap = json['address_map'];
-    status = json['status'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['image'] = this.image;
-    data['title'] = this.title;
-    data['sports'] = this.sports;
-    data['amenities'] = this.amenities;
-    data['description'] = this.description;
-    data['address'] = this.address;
-    data['address_map'] = this.addressMap;
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;

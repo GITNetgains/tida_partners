@@ -45,7 +45,8 @@ dependencies:
   http: ^0.13.5
   shared_preferences: ^2.0.15
   image_picker: ^0.8.6
-
+  flutter_google_places_hoc081098: ^1.1.0
+  google_places_flutter: ^2.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

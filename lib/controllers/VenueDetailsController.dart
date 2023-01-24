@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/responses/amenities_res.dart'
     as AmenitiesResponseObj;
 import 'package:tida_partners/network/responses/sports_res.dart';
 
+import '../AppColors.dart';
 import '../AppUtils.dart';
 import '../network/ApiProvider.dart';
 import '../network/responses/SingleVenueDetails.dart' as sVenue;
+import '../utilss/theme.dart';
 import 'HomeScreenController.dart';
 
 class VenueDetailsController extends GetxController {
@@ -18,7 +23,7 @@ class VenueDetailsController extends GetxController {
   late RxList<String> sportsListInString;
   late RxList<String> tags;
   late RxList<String> selectedSport;
-  late Rx<SportsResponse> sportsResponse;
+    Rx<SportsResponse> sportsResponse = SportsResponse().obs;
   RxList paymentOptions = [].obs;
   RxString venueName = "".obs;
   RxString vDescription = "".obs;
@@ -36,6 +41,9 @@ class VenueDetailsController extends GetxController {
   var mapCtrl = TextEditingController();
   var availabilityCtrl = TextEditingController();
   var taxCtrl = TextEditingController();
+  var kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
+  RxString lat = "".obs;
+  RxString lng = "".obs;
 
   @override
   void onInit() {
@@ -46,6 +54,44 @@ class VenueDetailsController extends GetxController {
     fetch();
     super.onInit();
   }
+
+  Widget selectLocation()  {
+    return GooglePlaceAutoCompleteTextField(
+        textEditingController: mapCtrl,
+
+        googleAPIKey: kGoogleApiKey,
+        inputDecoration: InputDecoration(
+          label: setMediumLabel(
+            "",
+          ),
+          focusedBorder:   OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: PRIMARY_COLOR),
+          ),
+          border: const OutlineInputBorder(
+            borderSide:
+            BorderSide(width: 3, color: Colors.greenAccent),
+          ),
+        ),
+        debounceTime: 800,
+        isLatLngRequired:true,// if you required coordinates from place detail
+        getPlaceDetailWithLatLng: (Prediction prediction) {
+          // this method will return latlng with place detail
+          print("placeDetails>>> " + prediction.lng.toString());
+          print("placeDetails>> " + prediction.lat.toString());
+          mapCtrl.text=prediction.description??"";
+          addressCtrl.text=prediction.description??"";
+          lat(prediction.lat.toString());
+          lng(prediction.lng.toString());
+
+        }, // this callback is called when isLatLngRequired is true
+        itmClick: (Prediction prediction) {
+          mapCtrl.text =prediction.description??"";
+        }
+    );
+
+  }
+
+
 
   Future<void> saveVenue() async {
     if (filePath.value.isEmpty) {
@@ -76,10 +122,12 @@ class VenueDetailsController extends GetxController {
         "title": venueName.value,
         "amenities": getAmenitiesId().join(","),
         "description": vDescription.value,
-        "address": vLocation.value,
+        "address": addressCtrl.text,
+        "address_map": addressCtrl.text,
         "status": "1",
+        "latitude":lat.value ,
+        "longitude":lng.value ,
         "sports": getSelectedSport().join(","),
-        "address_map": mapLink.value,
       };
       bool saved = false;
       if (_homeController.isEdit.value) {
@@ -108,7 +156,8 @@ class VenueDetailsController extends GetxController {
     loading(true);
     AmenitiesResponseObj.AmenitiesListRes? vlist =
         await ApiProvider().fetchAmenities();
-    if (vlist!.status!) {
+    if(vlist!=null){
+    if (vlist.status!) {
       if (vlist.data != null) {
         amenetiesList.assignAll(vlist.data!);
         amenetiesListInString.clear();
@@ -116,6 +165,7 @@ class VenueDetailsController extends GetxController {
           amenetiesListInString.value.add(element.name);
         });
       }
+    }
 
       SportsResponse? sportsList = await ApiProvider().fetchSports();
       if (sportsList != null) {
@@ -132,6 +182,7 @@ class VenueDetailsController extends GetxController {
     if (_homeController.isEdit.value) {
       fetchVenue();
     }
+    loading(false);
   }
 
   selectAmenities(String last) {
@@ -194,9 +245,12 @@ class VenueDetailsController extends GetxController {
   List<String> getSelectedSportName(List<String> list) {
     List<String> name = [];
     list.forEach((element) {
-      for (Data value in sportsResponse.value.data!) {
-        if (value.id == element) {
-          name.add(value.sportName!);
+      if (sportsResponse.value.data!=null) {
+
+        for (Data value in sportsResponse.value.data!) {
+          if (value.id == element) {
+            name.add(value.sportName!);
+          }
         }
       }
     });
@@ -205,20 +259,46 @@ class VenueDetailsController extends GetxController {
 
   Future<void> fetchVenue() async {
     loading(true);
+    filePath(_homeController.getSelectedVenue().image);
+
     sVenue.SingleVenueDetails? d = await ApiProvider()
         .fetchSingleVenue(_homeController.getSelectedVenue().id!);
     titleController.text = d!.data!.first.title ?? "N/A";
     desController.text = d.data!.first.description ?? "N/A";
     addressCtrl.text = d.data!.first.address ?? "N/A";
     mapCtrl.text = d.data!.first.addressMap ?? "N/A";
-    availabilityCtrl.text = d.data!.first.addressMap ?? "N/A";
+    availabilityCtrl.text = d.data!.first.address ?? "N/A";
     taxCtrl.text = d.data!.first.id ?? "N/A";
     tags(getAmenitiesNames(d.data!.first.amenities!.split(",")));
     print(d.data!.first.sports);
+    lat(d.data!.first.latitude);
+    lng(d.data!.first.longitude);
     selectedSport(getSelectedSportName(d.data!.first.sports!.split(",")));
-    filePath('https://tidasports.com/secure/uploads/tbl_venue/${d.data!.first.image}');
-    print(d.data?.first.image);
+
+
     update();
     loading(false);
+  }
+
+  Future<Null> selectOpeningTime(BuildContext context) async {
+    var _timePicked =
+    await showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+    if (_timePicked != null) {
+      final localizations = MaterialLocalizations.of(context);
+      final formattedTimeOfDay = localizations.formatTimeOfDay(_timePicked,alwaysUse24HourFormat: true);
+
+    }
+  }
+
+  Future<Null> selectClosingTime(BuildContext context) async {
+    var _timePicked =
+    await showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+    if (_timePicked != null) {
+      final localizations = MaterialLocalizations.of(context);
+      final formattedTimeOfDay = localizations.formatTimeOfDay(_timePicked,alwaysUse24HourFormat: true);
+
+    }
   }
 }

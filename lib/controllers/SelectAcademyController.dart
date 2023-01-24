@@ -2,15 +2,15 @@
 
 import 'package:get/get.dart';
 import 'package:tida_partners/controllers/AcademyController.dart';
+import 'package:tida_partners/network/responses/academy_res.dart';
 
 import '../network/ApiProvider.dart';
 import '../network/responses/VenueListResponse.dart';
 
-class SelectVenueController extends GetxController{
+class SelectAcademyController extends GetxController{
   RxBool loading = false.obs;
   RxInt index = 0.obs;
-  RxList venueList = [].obs;
-  final _controller = Get.put(AcademyController());
+  RxList academyList = [].obs;
 
   @override
   void onInit() {
@@ -21,10 +21,10 @@ class SelectVenueController extends GetxController{
 
   Future<void> fetch() async {
     loading(true);
-    VenueList? vlist = await ApiProvider().fetchVenues();
+    AcademyResponse? vlist = await ApiProvider().fetchAllAcademies();
     if (vlist!.status!) {
       if (vlist.data != null) {
-        venueList.assignAll(vlist.data!);
+        academyList.assignAll(vlist.data!);
       }
       update();
       loading(false);
@@ -34,7 +34,7 @@ class SelectVenueController extends GetxController{
 
   selectVenue(int i) {
 
-    Get.back(result:venueList[i]);
+    Get.back(result:academyList[i]);
   }
 
 

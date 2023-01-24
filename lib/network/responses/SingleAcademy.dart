@@ -1,11 +1,11 @@
-class AcademyResponse {
+class SingleAcademy {
   bool? status;
   String? message;
   List<Data>? data;
 
-  AcademyResponse({this.status, this.message, this.data});
+  SingleAcademy({this.status, this.message, this.data});
 
-  AcademyResponse.fromJson(Map<String, dynamic> json) {
+  SingleAcademy.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
@@ -29,7 +29,7 @@ class AcademyResponse {
 
 class Data {
   String? id;
-  String? userId;
+  Null? userId;
   String? venueId;
   String? name;
   String? address;
@@ -60,11 +60,11 @@ class Data {
   String? noOfAssistentCoach;
   String? assistentCoachName;
   String? feedbacks;
-  String? amenitiesId;
+  Null? amenitiesId;
   String? status;
   String? createdAt;
   String? updatedAt;
-  List<AmenitiesDetails>? amenitiesDetails;
+  Null? amenitiesDetails;
   List<VenueDetails>? venueDetails;
 
   Data(
@@ -144,23 +144,12 @@ class Data {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    if (json['amenities_details'] != null) {
-      amenitiesDetails = <AmenitiesDetails>[];
-      json['amenities_details'].forEach((v) {
-        amenitiesDetails!.add(new AmenitiesDetails.fromJson(v));
-      });
-    }
+    amenitiesDetails = json['amenities_details'];
     if (json['venue_details'] != null) {
       venueDetails = <VenueDetails>[];
-      try{
-
-        json['venue_details'].forEach((v) {
-          venueDetails!.add(new VenueDetails.fromJson(v));
-
-        });
-
-      }catch(e){}
-
+      json['venue_details'].forEach((v) {
+        venueDetails!.add(new VenueDetails.fromJson(v));
+      });
     }
   }
 
@@ -202,51 +191,11 @@ class Data {
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    if (this.amenitiesDetails != null) {
-      data['amenities_details'] =
-          this.amenitiesDetails!.map((v) => v.toJson()).toList();
-    }
+    data['amenities_details'] = this.amenitiesDetails;
     if (this.venueDetails != null) {
       data['venue_details'] =
           this.venueDetails!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class AmenitiesDetails {
-  String? id;
-  String? name;
-  String? icon;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-
-  AmenitiesDetails(
-      {this.id,
-        this.name,
-        this.icon,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
-
-  AmenitiesDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    icon = json['icon'];
-    status = json['status'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['icon'] = this.icon;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

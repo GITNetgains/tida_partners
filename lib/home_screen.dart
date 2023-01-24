@@ -7,6 +7,7 @@ import 'package:tida_partners/nab_bar.dart';
 import 'package:tida_partners/network/responses/VenueListResponse.dart';
 import 'package:tida_partners/utilss/size_config.dart';
 import 'package:tida_partners/utilss/theme.dart';
+import 'package:tida_partners/venue/facilities_list.dart';
 
 import 'AppColors.dart';
 import 'controllers/HomeScreenController.dart';
@@ -49,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                         itemCount: _controller.venueList.length,
                         itemBuilder: (context, index) {
                           Data item = _controller.venueList[index];
-
+                          print('${item.image}');
                           return Card(
                             elevation: 5,
                             child: Column(
@@ -67,8 +68,7 @@ class HomeScreen extends StatelessWidget {
                                       child: Container(
                                         width: double.infinity,
                                         child: FadeInImage(
-                                          image: NetworkImage(
-                                              'https://tidasports.com/secure/uploads/tbl_venue/${item.image}'),
+                                          image: NetworkImage('${item.image}'),
                                           height: 130,
                                           fit: BoxFit.cover,
                                           placeholderFit: BoxFit.fitWidth,
@@ -126,9 +126,9 @@ class HomeScreen extends StatelessWidget {
                                             Container(
                                               child: OutlinedButton(
                                                 onPressed: () {
-                                                  Get.to(() =>
+                                                  /*      Get.to(() =>
                                                       BookingCalendarDemoApp(
-                                                          title: "Bookings"));
+                                                          title: "Bookings"));*/
                                                 },
                                                 style: ButtonStyle(
                                                   side: MaterialStateProperty
@@ -155,10 +155,8 @@ class HomeScreen extends StatelessWidget {
                                                   SizeConfig.screenWidth / 2.5,
                                               child: OutlinedButton(
                                                 onPressed: () {
-                                                  Get.to(() =>
-                                                      BookingCalendarDemoApp(
-                                                        title: "Manage Slots",
-                                                      ));
+                                                  Get.to(
+                                                      () => FacilitiesList());
                                                 },
                                                 style: ButtonStyle(
                                                   side: MaterialStateProperty
@@ -175,8 +173,8 @@ class HomeScreen extends StatelessWidget {
                                                                   .circular(
                                                                       30.0))),
                                                 ),
-                                                child:
-                                                    const Text("Manage Slots"),
+                                                child: const Text(
+                                                    "Manage Facilities"),
                                               ),
                                             )
                                           ],

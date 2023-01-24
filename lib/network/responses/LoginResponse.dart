@@ -29,7 +29,7 @@ class Data {
   String? password;
   String? phone;
   String? type;
-  Null? image;
+  String? image;
   String? status;
   String? encryptPassword;
   String? createdAt;
@@ -57,7 +57,7 @@ class Data {
     password = json['password'];
     phone = json['phone'];
     type = json['type'];
-    image = json['image'];
+    image = json['image']??"";
     status = json['status'];
     encryptPassword = json['encrypt_password'];
     createdAt = json['created_at'];

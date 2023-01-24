@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tida_partners/AppColors.dart';
 import 'package:tida_partners/utilss/theme.dart';
 
+import 'login_screen.dart';
+import 'utilss/SharedPref.dart';
+
 class MyProfile extends StatelessWidget {
-  const MyProfile({Key? key}) : super(key: key);
+  MyProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,10 +15,12 @@ class MyProfile extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("My Profile"),
-        actions: [Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(Icons.edit, color: Colors.white),
-        )],
+     /*   actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.edit, color: Colors.white),
+          )
+        ],*/
       ),
       body: ListView(
         children: <Widget>[
@@ -35,39 +41,31 @@ class MyProfile extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-
                     CircleAvatar(
                       backgroundColor: Colors.white70,
-                      minRadius: 60.0,
+                      minRadius: 80.0,
                       child: CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage:
-                        NetworkImage('https://oflutter.com/wp-content/uploads/2021/02/girl-profile.png'),
+                        radius: 70.0,
+                        backgroundColor: Colors.white,
+                        backgroundImage: NetworkImage(
+                            'https://tidasports.com/wp-content/uploads/2022/11/Tida-Logo-1.png'),
                       ),
                     ),
-
                   ],
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Text(
-                  'Tida Sports',
-                  style: TextStyle(
-                    fontSize: 24  ,
-                    color: Colors.white
-                  ),
+                  Preferences.getName(),
+                  style: TextStyle(fontSize: 24, color: Colors.white),
                 )
-
               ],
             ),
           ),
-
           Container(
             child: Column(
-              children:  const  <Widget>[
-
-
+              children: <Widget>[
                 ListTile(
                   title: Text(
                     'Email',
@@ -78,7 +76,7 @@ class MyProfile extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    'example@tidasport.com',
+                    Preferences.getEmail(),
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -95,7 +93,7 @@ class MyProfile extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    '+91987654321',
+                    Preferences.getPhone(),
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -112,13 +110,13 @@ class MyProfile extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    'Active ',
+                    Preferences.getStatus() == "1" ? "Active" : "Inactive",
                     style: TextStyle(
                       fontSize: 18,
                     ),
                   ),
                 ),
-                Divider(),
+                /*   Divider(),
                 ListTile(
                   title: Text(
                     'Linked Bank Account',
@@ -138,8 +136,7 @@ class MyProfile extends StatelessWidget {
                       backgroundColor: PRIMARY_COLOR,
                       child: Icon(Icons.add,color: Colors.white)),
                 ),
-                Divider(),
-
+                Divider(),*/
               ],
             ),
           ),
@@ -148,14 +145,16 @@ class MyProfile extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  width:double.infinity,
-                  child: getSecondaryButton("Logout", (){}
-
-
-                  ),
+                  width: double.infinity,
+                  child: getSecondaryButton("Logout", () {
+                    Preferences.clearAll();
+                    Get.offAll(() => LoginScreen());
+                  }),
                 ),
-                SizedBox(height: 20,),
-                setTextButton("Delete Account",)
+                SizedBox(
+                  height: 20,
+                ),
+                //   setTextButton("Delete Account",)
               ],
             ),
           )
@@ -164,4 +163,3 @@ class MyProfile extends StatelessWidget {
     );
   }
 }
-
