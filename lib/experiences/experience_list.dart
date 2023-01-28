@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 
 import '../AppColors.dart';
 import '../controllers/ExperienceController.dart';
-import '../controllers/tournament_controller.dart';
-import '../network/responses/TournamentListResponse.dart';
-import '../tournaments/add_tournament.dart';
 import '../utilss/size_config.dart';
 import '../utilss/theme.dart';
 import 'add_experiences.dart';
@@ -36,59 +33,62 @@ class ExperienceList extends StatelessWidget {
                   itemCount: _controller.data.length,
                   itemBuilder: (context, index) {
                     var item = _controller.data[index];
-                    return Card(
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: SizeConfig.screenWidth / 3,
-                            child: ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(5),
-                                    topLeft: Radius.circular(5)),
-                                child: Container(
-                                  child: FadeInImage(
-                                    image: NetworkImage('${item}'),
-                                    height: 130,
-                                    fit: BoxFit.cover,
-                                    placeholderFit: BoxFit.fitWidth,
-                                    placeholder: const AssetImage(
-                                      "assets/no_image.png",
-                                    ),
-                                    imageErrorBuilder:
-                                        (context, error, stackTrace) {
-                                      return Image.asset('assets/no_image.png',
-                                          fit: BoxFit.fitWidth);
-                                    },
-                                  ),
-                                )),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              width: SizeConfig.screenWidth / 1.9,
-                              child: SizedBox(
-                                child: Flexible(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            setHeadlineLarge("Experience Name name name"),
-                                            setSmallLabel("text")
-                                          ],
-                                        ),
+                    return InkWell(
+                      onTap: () {
+                        _controller.isEdit(true);
+                        _controller.selectedIndex(index);
+                        _controller.preFillData();
+                        Get.to(() => AddExperiences());
+                      },
+                      child: Card(
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: SizeConfig.screenWidth / 3,
+                              child: ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(5),
+                                      topLeft: Radius.circular(5)),
+                                  child: Container(
+                                    child: FadeInImage(
+                                      image: NetworkImage(
+                                        item.image ?? "",
                                       ),
-                                    ],
-                                  ),
+                                      height: 130,
+                                      fit: BoxFit.cover,
+                                      placeholderFit: BoxFit.fitWidth,
+                                      placeholder: const AssetImage(
+                                        "assets/no_image.png",
+                                      ),
+                                      imageErrorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                            'assets/no_image.png',
+                                            fit: BoxFit.fitWidth);
+                                      },
+                                    ),
+                                  )),
+                            ),
+                            Flexible(
+                              child: Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: setHeadlineLarge((item.title ?? "").capitalizeFirst!),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: setSmallLabel((item.description ?? "").capitalizeFirst!),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                          )
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },

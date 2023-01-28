@@ -20,7 +20,7 @@ class HomeScreenController extends GetxController {
   RxBool isEdit = false.obs;
   RxString imagePath = "".obs;
   final ImagePicker _picker = ImagePicker();
-  RxList<MediaData.Data?> imageList = [MediaData.Data()].obs;
+  RxList<MediaData.Data?> imageList = <MediaData.Data>[].obs;
   RxList amenetiesList = [].obs;
   RxList<String> amenetiesListInString = [""].obs;
   late RxList<String> sportsListInString;
@@ -115,6 +115,10 @@ class HomeScreenController extends GetxController {
     if (datares?.status == true) {
       imageList(datares!.data!);
       update();
+    }
+    if(imageList.isEmpty){
+      imageList.add(MediaData.Data(image: getSelectedVenue().image));
+
     }
     loading(false);
   }

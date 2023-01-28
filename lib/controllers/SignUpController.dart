@@ -32,9 +32,11 @@ class SignUpController extends GetxController {
     } else {
       loading(true);
       Map<String, String> data = {
+        "name": userName.value,
         "email": userEmail.value,
         "password": userPassword.value,
         "device_type": Platform.operatingSystem,
+        "type": "2",
         "device_token": "TO-BE-IMPLEMENTED",
       };
       bool loggedIn = await ApiProvider().signUp(data);

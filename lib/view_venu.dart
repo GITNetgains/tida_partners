@@ -31,7 +31,7 @@ class ViewVenu extends StatelessWidget {
         onPressed: () {
           Get.to(() => AddVenue());
         },
-        child: Icon(
+        child: const Icon(
           Icons.edit,
           color: Colors.white,
         ),
@@ -43,61 +43,66 @@ class ViewVenu extends StatelessWidget {
       ),
       body: Container(
         color: Colors.white,
-        child:Obx(() => _controller.loading.value?showLoader(): ListView(
-          children: [
-            Obx(() => _controller.imageList.isEmpty?Container():ImageSlideshow(
-              /// Width of the [ImageSlideshow].
-              width: double.infinity,
+        child: Obx(() => _controller.loading.value
+            ? showLoader()
+            : ListView(
+                children: [
+                  Obx(() => _controller.imageList.isEmpty
+                      ? Container()
+                      : ImageSlideshow(
+                          /// Width of the [ImageSlideshow].
+                          width: double.infinity,
 
-              /// Height of the [ImageSlideshow].
-              height: 200,
+                          /// Height of the [ImageSlideshow].
+                          height: 200,
 
-              /// The page to show when first creating the [ImageSlideshow].
-              initialPage: 0,
+                          /// The page to show when first creating the [ImageSlideshow].
+                          initialPage: 0,
 
-              /// The color to paint the indicator.
-              indicatorColor: PRIMARY_COLOR,
+                          /// The color to paint the indicator.
+                          indicatorColor: PRIMARY_COLOR,
 
-              /// The color to paint behind th indicator.
-              indicatorBackgroundColor: Colors.grey,
+                          /// The color to paint behind th indicator.
+                          indicatorBackgroundColor: Colors.grey,
 
-              /// Called whenever the page in the center of the viewport changes.
-              onPageChanged: (value) {
-                // print('Page changed: $value');
-              },
+                          /// Called whenever the page in the center of the viewport changes.
+                          onPageChanged: (value) {
+                            // print('Page changed: $value');
+                          },
 
-              /// Auto scroll interval.
-              /// Do not auto scroll with null or 0.
-              autoPlayInterval: 4000,
+                          /// Auto scroll interval.
+                          /// Do not auto scroll with null or 0.
+                          autoPlayInterval: 4000,
 
-              /// Loops back to first slide.
-              isLoop: true,
-              /// The widgets to display in the [ImageSlideshow].
-              /// Add the sample image file into the images folder
-              children: getList(),
-            )),
-            getVerticalSpace(),
-            ListTile(
-              title: setHeadlineMedium(
-                'Description',
-                color: Colors.deepOrange,
-                fontSize: 20,
-              ),
-              subtitle: setSmallLabel(
-                selectedVenue.description ?? "N/A",
-              ),
-            ),
-            Divider(),
-            ListTile(
-              title: setHeadlineMedium(
-                'Location',
-                color: Colors.deepOrange,
-                fontSize: 20,
-              ),
-              subtitle: setSmallLabel(
-                selectedVenue.address ?? "N/A",
-              ),
-              /* trailing: InkWell(
+                          /// Loops back to first slide.
+                          isLoop: _controller.imageList.isEmpty,
+
+                          /// The widgets to display in the [ImageSlideshow].
+                          /// Add the sample image file into the images folder
+                          children: getList(),
+                        )),
+                  getVerticalSpace(),
+                  ListTile(
+                    title: setHeadlineMedium(
+                      'Description',
+                      color: Colors.deepOrange,
+                      fontSize: 20,
+                    ),
+                    subtitle: setSmallLabel(
+                      selectedVenue.description ?? "N/A",
+                    ),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: setHeadlineMedium(
+                      'Location',
+                      color: Colors.deepOrange,
+                      fontSize: 20,
+                    ),
+                    subtitle: setSmallLabel(
+                      selectedVenue.address ?? "N/A",
+                    ),
+                    /* trailing: InkWell(
                 onTap: () {
                   _launchUrl();
                 },
@@ -109,62 +114,66 @@ class ViewVenu extends StatelessWidget {
                   ),
                 ),
               ),*/
-            ),
-            Divider(),
-            ListTile(
-              title: setHeadlineMedium(
-                'Availability',
-                color: Colors.deepOrange,
-                fontSize: 20,
-              ),
-              subtitle: setSmallLabel(
-                selectedVenue.address ?? "N/A",
-              ),
-            ),
-            Divider(),
-            (selectedVenue.amenities != null)
-                ? ListTile(
-                title: setHeadlineMedium(
-                  'Amenities',
-                  color: Colors.deepOrange,
-                  fontSize: 20,
-                ),
-                subtitle: Container(
-                  child: ChipsChoice<String>.multiple(
-                    wrapped: true,
-                    value: _controller.getAmenitiesNames(selectedVenue.amenities!.split(",")),
-                    onChanged: (val) => print("vvv"),
-                    choiceItems: C2Choice.listFrom<String, String>(
-                      source:  _controller.getAmenitiesNames(selectedVenue.amenities!.split(",")),
-                      value: (i, v) => v,
-                      label: (i, v) => v,
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: setHeadlineMedium(
+                      'Availability',
+                      color: Colors.deepOrange,
+                      fontSize: 20,
+                    ),
+                    subtitle: setSmallLabel(
+                      selectedVenue.address ?? "N/A",
                     ),
                   ),
-                ))
-                : Container(),
-            (selectedVenue.sports != null) ? Divider() : Container(),
-            (selectedVenue.sports != null)
-                ? ListTile(
-                title: setHeadlineMedium(
-                  'Sports',
-                  color: Colors.deepOrange,
-                  fontSize: 20,
-                ),
-                subtitle: Container(
-                  child: ChipsChoice<String>.multiple(
-                    wrapped: true,
-                    value:  _controller.getSelectedSportName(selectedVenue.sports!.split(",")),
-                    onChanged: (val) => print("vvv"),
-                    choiceItems: C2Choice.listFrom<String, String>(
-                      source:  _controller.getSelectedSportName(selectedVenue.sports!.split(",")),
-                      value: (i, v) => v,
-                      label: (i, v) => v,
-                    ),
-                  ),
-                ))
-                : Container(),
-          ],
-        )),
+                  Divider(),
+                  (selectedVenue.amenities != null)
+                      ? ListTile(
+                          title: setHeadlineMedium(
+                            'Amenities',
+                            color: Colors.deepOrange,
+                            fontSize: 20,
+                          ),
+                          subtitle: Container(
+                            child: ChipsChoice<String>.multiple(
+                              wrapped: true,
+                              value: _controller.getAmenitiesNames(
+                                  selectedVenue.amenities!.split(",")),
+                              onChanged: (val) => print("vvv"),
+                              choiceItems: C2Choice.listFrom<String, String>(
+                                source: _controller.getAmenitiesNames(
+                                    selectedVenue.amenities!.split(",")),
+                                value: (i, v) => v,
+                                label: (i, v) => v,
+                              ),
+                            ),
+                          ))
+                      : Container(),
+                  (selectedVenue.sports != null) ? Divider() : Container(),
+                  (selectedVenue.sports != null)
+                      ? ListTile(
+                          title: setHeadlineMedium(
+                            'Sports',
+                            color: Colors.deepOrange,
+                            fontSize: 20,
+                          ),
+                          subtitle: Container(
+                            child: ChipsChoice<String>.multiple(
+                              wrapped: true,
+                              value: _controller.getSelectedSportName(
+                                  selectedVenue.sports!.split(",")),
+                              onChanged: (val) => print("vvv"),
+                              choiceItems: C2Choice.listFrom<String, String>(
+                                source: _controller.getSelectedSportName(
+                                    selectedVenue.sports!.split(",")),
+                                value: (i, v) => v,
+                                label: (i, v) => v,
+                              ),
+                            ),
+                          ))
+                      : Container(),
+                ],
+              )),
       ),
     );
   }
@@ -173,12 +182,30 @@ class ViewVenu extends StatelessWidget {
     List<Widget> items = [];
     if (_controller.imageList.isNotEmpty) {
       for (int i = 0; i < _controller.imageList.length; i++) {
-        items.add(
-          Image.network(
-            fit: BoxFit.fitWidth,
-              'https://tidasports.com/secure/uploads/tbl_upload/${_controller.imageList[i]?.image}'),
-        );
+        if (_controller.imageList[i]!.image!.split(".").length > 2) {
+          items.add(
+            Image.network(
+                fit: BoxFit.fitWidth, '${_controller.imageList[i]?.image}'),
+          );
+        }
       }
+    }
+    if (items.isEmpty) {
+      items.add(
+        Image.network(
+            _controller.getSelectedVenue().image??"",
+            fit: BoxFit.fitWidth, errorBuilder: (context, obj, e) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Image not available. Please edit venue and update featured image ",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }),
+      );
     }
     return items;
   }

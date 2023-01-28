@@ -12,6 +12,7 @@ class AcademyController extends GetxController {
   RxBool loading = false.obs;
   Rx<v.Data?> vData = null.obs;
   RxString selectedVenue = "".obs;
+  RxString selectedVenueId = "".obs;
   final academyCtrl = TextEditingController();
   final descriptionCtrl = TextEditingController();
   final locationCtrl = TextEditingController();
@@ -28,9 +29,16 @@ class AcademyController extends GetxController {
   final assistantCoachNameCtrl = TextEditingController();
   final capacityNameCtrl = TextEditingController();
   final equipmentCtrl = TextEditingController();
+
+
+
+  final packageTitleController = TextEditingController();
+  final priceController = TextEditingController();
+
   RxString filePath = "".obs;
   final ImagePicker _picker = ImagePicker();
   RxBool isEdit = false.obs;
+  RxBool isEditPackage = false.obs;
   RxString academyId = "".obs;
 
   RxInt selectedIndex = (-1).obs;
@@ -48,6 +56,7 @@ class AcademyController extends GetxController {
     if (response != null) {
       if (response.status == true) {
         dataList = response.data!.obs;
+        update();
       }
     }
     loading(false);
@@ -83,10 +92,10 @@ class AcademyController extends GetxController {
     } else if (contactCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid contact number",
           isError: true);
-    } else if (serviceCtrl.text.isEmpty) {
+    }/* else if (serviceCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
-    } else if (skillCtrl.text.isEmpty) {
+    } */else if (skillCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
     } else if (ageCtrl.text.isEmpty) {
@@ -137,11 +146,10 @@ class AcademyController extends GetxController {
         "equipment": equipmentCtrl.text,
         "no_of_assistent_coach": noOfAssistantCtrl.text,
         "coach_experience": coachExpCtrl.text,
-        "venue_id": vData.value?.id ?? "0",
-        "id": vData.value?.id ?? "0",
+        "venue_id": selectedVenueId.value?? "0",
+        "id": academyId.value,
       };
       bool saved = false;
-
       if (!isEdit.value) {
         saved = await ApiProvider().addAcademy(data, filePath.value);
       } else {
@@ -161,11 +169,17 @@ class AcademyController extends GetxController {
     XFile? f = await _picker.pickImage(source: ImageSource.gallery);
     if (f != null) {
       filePath(f.path);
-      print(f.path);
+
     }
   }
 
   void setAcademyData() {
+    if (isEditPackage.value) {
+
+
+
+      return;
+    }
     if (selectedIndex.value != -1) {
       Data d = dataList[selectedIndex.value];
       academyCtrl.text = d.name ?? "";
@@ -187,10 +201,12 @@ class AcademyController extends GetxController {
       academyId(d.id);
       if(d.venueDetails!=null){
       selectedVenue(d.venueDetails!.first.title??"N/A");
+      selectedVenueId(d.venueDetails!.first.id??"N/A");
       filePath(d.logo);
 
       }else{
         selectedVenue("");
+        selectedVenueId("");
 
       }
 

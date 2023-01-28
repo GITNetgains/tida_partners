@@ -208,7 +208,7 @@ class AddAcademy extends StatelessWidget {
                     ),
                   ),
                   getVerticalSpace(),
-                  TextField(
+                 /* TextField(
                     controller: _controller.serviceCtrl,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
@@ -224,7 +224,7 @@ class AddAcademy extends StatelessWidget {
                       ),
                     ),
                   ),
-                  getVerticalSpace(),
+                  getVerticalSpace(),*/
                   TextField(
                     controller: _controller.skillCtrl,
                     cursorColor: Colors.black,

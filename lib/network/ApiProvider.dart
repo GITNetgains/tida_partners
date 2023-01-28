@@ -11,6 +11,7 @@ import 'package:tida_partners/network/responses/media_response.dart';
 import 'package:tida_partners/utilss/SharedPref.dart';
 
 import 'api_constants.dart';
+import 'responses/ExperienceList.dart';
 import 'responses/SingleVenueDetails.dart';
 import 'responses/VenueListResponse.dart';
 import 'responses/academy_res.dart';
@@ -200,6 +201,63 @@ class ApiProvider {
     }
   }
 
+  Future<bool> addExperience(Map<String, String> data, String path) async {
+    String token = Preferences.getToken();
+    String user_id = Preferences.getUserId();
+    data['userid'] = user_id;
+    data['token'] = token;
+    var request = http.MultipartRequest('POST', Uri.parse(ADD_EXPERIENCE));
+    //for token
+    request.headers.addAll({
+      'Accept': 'application/json',
+    });
+
+    //for image and videos and files
+    request.fields.assignAll(data);
+
+    if (path.isNotEmpty) {
+      request.files.add(await http.MultipartFile.fromPath("image", path));
+    } else {
+      data['image'] = "null";
+    }
+    //for completeing the request
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> updateExperiences(Map<String, String> data, String path) async {
+    String token = Preferences.getToken();
+    String user_id = Preferences.getUserId();
+    data['userid'] = user_id;
+    data['token'] = token;
+    var request = http.MultipartRequest('POST', Uri.parse(UPDATE_EXPERIENCE));
+    //for token
+    request.headers.addAll({
+      'Accept': 'application/json',
+    });
+
+    //for image and videos and files
+    request.fields.assignAll(data);
+
+    if (path.isNotEmpty) {
+      request.files.add(await http.MultipartFile.fromPath("image", path));
+    } else {
+      data['image'] = "null";
+    }
+    //for completeing the request
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<bool> addAcademy(Map<String, String> data, String path) async {
     String token = Preferences.getToken();
     String user_id = Preferences.getUserId();
@@ -248,11 +306,18 @@ class ApiProvider {
     //for image and videos and files
     request.fields.assignAll(data);
 
-    if (path.isNotEmpty) {
-      request.files.add(await http.MultipartFile.fromPath("logo", path));
-    } else {
-      // data['logo'] = "null";
+    try{
+      if (path.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath("logo", path));
+      } else {
+        // data['logo'] = "null";
+      }
+
+    }catch(e){
+
+
     }
+
 
     //for completeing the request
     var response = await request.send();
@@ -407,6 +472,34 @@ class ApiProvider {
     if (res.statusCode == 200) {
       TournamentListResponse datares =
           TournamentListResponse.fromJson(jsonDecode(res.body));
+      if (datares.status == true) {
+        return datares;
+      } else {
+        AppUtills.showSnackBar("Error",
+            datares.message ?? "Something Went Wrong. Please try again.",
+            isError: true);
+      }
+    }
+    return null;
+  }
+
+  Future<ExperienceListResponse?> fetchExperiences() async {
+    String token = Preferences.getToken();
+    String user_id = Preferences.getUserId();
+    Map<String, String> data = {};
+    data['userid'] = user_id;
+    data['token'] = token;
+
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+    };
+
+    http.Response res = await http.post(Uri.parse(GET_EXPERIENCE),
+        headers: headers, body: data);
+    print(jsonEncode(res.body));
+    if (res.statusCode == 200) {
+      ExperienceListResponse datares =
+      ExperienceListResponse.fromJson(jsonDecode(res.body));
       if (datares.status == true) {
         return datares;
       } else {

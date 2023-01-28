@@ -10,6 +10,7 @@ import 'package:tida_partners/utilss/size_config.dart';
 import 'package:tida_partners/utilss/theme.dart';
 
 import '../AppColors.dart';
+import 'academy_package_list.dart';
 
 class AcademyList extends StatelessWidget {
   AcademyList({Key? key}) : super(key: key);
@@ -61,24 +62,7 @@ class AcademyList extends StatelessWidget {
                                   borderRadius: const BorderRadius.only(
                                       topRight: Radius.circular(5),
                                       topLeft: Radius.circular(5)),
-                                  child: Container(
-                                    width: double.infinity,
-                                    child: FadeInImage(
-                                      image: NetworkImage('${item.logo}'),
-                                      height: 130,
-                                      fit: BoxFit.cover,
-                                      placeholderFit: BoxFit.fitWidth,
-                                      placeholder: const AssetImage(
-                                        "assets/no_image.png",
-                                      ),
-                                      imageErrorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                            'assets/no_image.png',
-                                            fit: BoxFit.fitWidth);
-                                      },
-                                    ),
-                                  )),
+                                  child: getImageWidget(item.logo ?? "-")),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
@@ -101,19 +85,6 @@ class AcademyList extends StatelessWidget {
                                             ],
                                           ),
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            Get.to(() => AddAcademy());
-                                            _controller.isEdit(true);
-                                            _controller.selectedIndex(index);
-                                            _controller.setAcademyData();
-                                          },
-                                          child: const CircleAvatar(
-                                            child: Icon(Icons.edit),
-                                            foregroundColor: Colors.white,
-                                            backgroundColor: Colors.grey,
-                                          ),
-                                        )
                                       ],
                                     ),
                                     Row(
@@ -121,12 +92,16 @@ class AcademyList extends StatelessWidget {
                                           MainAxisAlignment.start,
                                       children: [
                                         Container(
-                                          width: SizeConfig.screenWidth / 2.5,
+                                          padding: EdgeInsets.all(8),
+                                          width: SizeConfig.screenWidth / 1.3,
                                           child: OutlinedButton(
-                                            onPressed: null,
+                                            onPressed: () {
+                                              _controller.isEditPackage(false);
+                                              Get.to(() =>   AcademyPackageList());
+                                            },
                                             style: ButtonStyle(
                                               side: MaterialStateProperty.all(
-                                                  BorderSide(
+                                                  const BorderSide(
                                                       color: PRIMARY_COLOR)),
                                               foregroundColor:
                                                   MaterialStateProperty.all(
@@ -139,6 +114,19 @@ class AcademyList extends StatelessWidget {
                                             ),
                                             child:
                                                 const Text("Manage Packages"),
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Get.to(() => AddAcademy());
+                                            _controller.isEdit(true);
+                                            _controller.selectedIndex(index);
+                                            _controller.setAcademyData();
+                                          },
+                                          child: const CircleAvatar(
+                                            child: Icon(Icons.edit),
+                                            foregroundColor: Colors.white,
+                                            backgroundColor: Colors.grey,
                                           ),
                                         )
                                       ],

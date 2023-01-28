@@ -22,7 +22,7 @@ class AddExperiences extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
-        title: setHeadlineMedium("Add Experiences"),
+        title: Obx(() => setHeadlineMedium("${_controller.isEdit.value?"Edit":"Add"} Experience")),
       ),
       body: Obx(() => _controller.isLoading.value
           ? showLoader()
@@ -146,63 +146,7 @@ class AddExperiences extends StatelessWidget {
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Obx(() => setMediumLabel(
-                                  "Tournament Type (${_controller.isOnline.value ? "Online" : "Offline"})")),
-                              Obx(() => Switch(
-                                  value: _controller.isOnline.value,
-                                  onChanged: _controller.setType))
-                            ],
-                          ),
-                        ),
-                      ),
-                      getVerticalSpace(),
-                      Obx(
-                        () => Visibility(
-                          visible: _controller.isOnline.value,
-                          child: TextField(
-                            controller: _controller.urlController,
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                              label: setMediumLabel(
-                                "URL",
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: PRIMARY_COLOR),
-                              ),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 3, color: Colors.greenAccent),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      getVerticalSpace(),
-                      TextField(
-                        controller: _controller.addressController,
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                          label: setMediumLabel(
-                            "Address",
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 1, color: PRIMARY_COLOR),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 3, color: Colors.greenAccent),
-                          ),
-                        ),
-                      ),
+
                       getVerticalSpace(),
                       TextField(
                         keyboardType: TextInputType.number,
@@ -223,74 +167,6 @@ class AddExperiences extends StatelessWidget {
                         ),
                       ),
                       getVerticalSpace(),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _controller.noOfTicketController,
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                          label: setMediumLabel(
-                            "Number of tickets",
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 1, color: PRIMARY_COLOR),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 3, color: Colors.greenAccent),
-                          ),
-                        ),
-                      ),
-                      getVerticalSpace(),
-                      InkWell(
-                        onTap: (){
-                          _controller.selectStartDate(context);
-
-                        },
-                        child: TextField(
-                          enabled: false,
-                          controller: _controller.startDateController,
-                          cursorColor: Colors.black,
-                          decoration: InputDecoration(
-                            label: setMediumLabel(
-                              "Start Date",
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: PRIMARY_COLOR),
-                            ),
-                            border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 3, color: Colors.greenAccent),
-                            ),
-                          ),
-                        ),
-                      ),
-                      getVerticalSpace(),
-                      InkWell(
-                        onTap: (){
-                          _controller.selectEndTime(context);
-
-                        },
-                        child: TextField(
-                          enabled: false,
-                          controller: _controller.endDateController,
-                          cursorColor: Colors.black,
-                          decoration: InputDecoration(
-                            label: setMediumLabel(
-                              "End Date",
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: PRIMARY_COLOR),
-                            ),
-                            border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 3, color: Colors.greenAccent),
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

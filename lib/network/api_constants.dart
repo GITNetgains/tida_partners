@@ -21,3 +21,6 @@ const ADD_FACILITY='${BASE_URL}/Facility_api/insertData';
 const UPDATE_FACILITY='${BASE_URL}/Facility_api/updateData';
 const FETCH_FACILITY='${BASE_URL}/Facility_api/getAllData';
 const GET_TOURNAMENT='${BASE_URL}/Tournament_api/getAllData';
+const ADD_EXPERIENCE='${BASE_URL}/Experience_api/insertData';
+const UPDATE_EXPERIENCE='${BASE_URL}/Experience_api/updateData';
+const GET_EXPERIENCE='${BASE_URL}/Experience_api/getAllData';

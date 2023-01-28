@@ -34,8 +34,8 @@ class Data {
   String? name;
   String? address;
   String? logo;
-  Null? latitude;
-  Null? longitude;
+  String? latitude;
+  String? longitude;
   String? description;
   String? contactNo;
   String? headCoach;

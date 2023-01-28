@@ -62,9 +62,9 @@ class VenueDetailsController extends GetxController {
         googleAPIKey: kGoogleApiKey,
         inputDecoration: InputDecoration(
           label: setMediumLabel(
-            "",
+            "Enter location",
           ),
-          focusedBorder:   OutlineInputBorder(
+          focusedBorder:   const OutlineInputBorder(
             borderSide: BorderSide(width: 1, color: PRIMARY_COLOR),
           ),
           border: const OutlineInputBorder(

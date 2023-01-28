@@ -42,7 +42,7 @@ class Data {
   String? status;
   String? createdAt;
   String? updatedAt;
-  bool? facilities;
+  List<dynamic>? facilities;
   List<Rating>? rating;
   bool? sportsDetails;
   bool? amenitiesDetails;
@@ -89,8 +89,16 @@ class Data {
         rating!.add(new Rating.fromJson(v));
       });
     }
-    sportsDetails = json['sports_details'];
-    amenitiesDetails = json['amenities_details'];
+    try{
+      sportsDetails = json['sports_details'];
+
+
+    }catch(e){}
+    try{
+
+      amenitiesDetails = json['amenities_details'];
+
+    }catch(e){}
   }
 
   Map<String, dynamic> toJson() {

@@ -50,7 +50,6 @@ class HomeScreen extends StatelessWidget {
                         itemCount: _controller.venueList.length,
                         itemBuilder: (context, index) {
                           Data item = _controller.venueList[index];
-                          print('${item.image}');
                           return Card(
                             elevation: 5,
                             child: Column(
@@ -65,24 +64,7 @@ class HomeScreen extends StatelessWidget {
                                       borderRadius: const BorderRadius.only(
                                           topRight: Radius.circular(5),
                                           topLeft: Radius.circular(5)),
-                                      child: Container(
-                                        width: double.infinity,
-                                        child: FadeInImage(
-                                          image: NetworkImage('${item.image}'),
-                                          height: 130,
-                                          fit: BoxFit.cover,
-                                          placeholderFit: BoxFit.fitWidth,
-                                          placeholder: const AssetImage(
-                                            "assets/no_image.png",
-                                          ),
-                                          imageErrorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Image.asset(
-                                                'assets/no_image.png',
-                                                fit: BoxFit.fitWidth);
-                                          },
-                                        ),
-                                      )),
+                                      child: getImageWidget(item.image??"-")),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),

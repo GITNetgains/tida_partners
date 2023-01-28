@@ -14,7 +14,7 @@ class AddFacility extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
-        title: setHeadlineMedium("Add Facility"),
+        title: Obx(() => setHeadlineMedium("${_controller.isEdit.value?"Edit":"Add"} Facility")),
       ),
       body: Obx(() => _controller.isLoading.value?showLoader(message: "Saving Facility..."):Padding(
         padding: const EdgeInsets.all(8.0),
@@ -240,7 +240,7 @@ class AddFacility extends StatelessWidget {
               ),
             ),
             getVerticalSpace(),
-            TextField(
+           /* TextField(
               controller: _controller.freqCtrl,
               onChanged: (_) {},
               textAlignVertical: TextAlignVertical.top,
@@ -258,7 +258,7 @@ class AddFacility extends StatelessWidget {
                 ),
               ),
             ),
-            getVerticalSpace(),
+            getVerticalSpace(),*/
             Obx(() => Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(

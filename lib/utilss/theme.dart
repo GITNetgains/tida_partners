@@ -362,3 +362,39 @@ void goToNext(BuildContext context, Widget screen, {bool isNavigator = false}) {
     Get.to(screen);
   }
 }
+
+Widget getImageWidget(String url) {
+  return SizedBox(
+    width: double.infinity,
+    child: Image.network(
+      url,
+      height: 130,
+      fit: BoxFit.cover,
+      key:ValueKey(url),
+      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return    Image.asset(
+          'assets/no_image.png',
+        );
+      },
+      loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                  loadingProgress.expectedTotalBytes!
+                  : null,
+            ),
+          ),
+        );
+
+      },
+    ),
+  );
+}
