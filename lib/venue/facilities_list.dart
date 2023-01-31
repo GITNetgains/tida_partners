@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tida_partners/controllers/FacilityController.dart';
 import 'package:tida_partners/slot_booking_screen.dart';
+import '../booking_slot/facilty_slots_view.dart';
 import '../network/responses/facilityListResponse.dart' as aa;
 
 import '../AppColors.dart';
@@ -45,8 +46,8 @@ class FacilitiesList extends StatelessWidget {
                         children: <Widget>[
                           InkWell(
                               onTap: () {
-                                _controller.selectedIndex(index);
-                                Get.to(() => SlotBookingScreen());
+                                //_controller.selectedIndex(index);
+                                Get.to(() => FacilitySlotsView());
 
                               },
                               child: Icon(Icons.edit_note)), // icon-1

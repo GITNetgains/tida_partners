@@ -1,10 +1,10 @@
 import 'package:booking_calendar/booking_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tida_partners/controllers/FacilitySlotsVM.dart';
 import 'package:tida_partners/utilss/theme.dart';
 
 import 'AppColors.dart';
+import 'booking_slot/facility_slots_vm.dart';
 
 class SlotBookingScreen extends StatelessWidget {
     SlotBookingScreen({Key? key}) : super(key: key);

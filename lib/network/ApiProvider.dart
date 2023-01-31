@@ -14,6 +14,7 @@ import 'package:tida_partners/network/responses/amenities_res.dart';
 import 'package:tida_partners/network/responses/media_response.dart';
 import 'package:tida_partners/utilss/SharedPref.dart';
 
+import '../booking_slot/fetch_facility_slots_model.dart';
 import 'api_constants.dart';
 import 'responses/ExperienceList.dart';
 import 'responses/SingleVenueDetails.dart';
@@ -775,7 +776,7 @@ class ApiProvider {
     return false;
   }
 
-  Future<FacilitySlotResponse?> fetchSlots(Map<String, String> data) async {
+  Future<FetchSlotsResponseModel?> fetchSlots(Map<String, String> data) async {
     String token = Preferences.getToken();
     String user_id = Preferences.getUserId();
     data['userid'] = user_id;
@@ -788,8 +789,8 @@ class ApiProvider {
     http.Response res = await http.post(Uri.parse(FETCH_VENU_SLOTS),
         headers: headers, body: data);
     if (res.statusCode == 200) {
-      FacilitySlotResponse datares =
-          FacilitySlotResponse.fromJson(jsonDecode(res.body));
+      FetchSlotsResponseModel datares =
+      FetchSlotsResponseModel.fromJson(jsonDecode(res.body));
       if (datares.status == true) {
         return datares;
       }
