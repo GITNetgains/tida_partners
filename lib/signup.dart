@@ -88,6 +88,35 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               getVerticalSpace(),
+             Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: NORMAL_PADDING),
+                    child: Icon(Icons.email_rounded, color: Colors.grey.withOpacity(0.4),size: 18),
+                  ),
+                  setMediumLabel("Phone"),
+                ],
+              ),
+              getVerticalSpace(),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    color: Colors.grey.withOpacity(0.2)),
+                child: TextField(
+                  onChanged: (_){
+                    _controller.userPhone(_);
+
+                  },
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: LARGE_PADDING),
+                      hintText: "9876 *** ****",
+                      hintStyle: TextStyle(color: Colors.grey)),
+                ),
+              ),
+              getVerticalSpace(),
               getVerticalSpace(),
               Row(
                 children: [

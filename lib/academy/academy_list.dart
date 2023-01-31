@@ -19,17 +19,14 @@ class AcademyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white.withOpacity(0.95),
-      drawer: NavBar(),
-      floatingActionButton: FloatingActionButton(
+      backgroundColor: Colors.white.withOpacity(0.95), floatingActionButton: FloatingActionButton(
         onPressed: () async {
           _controller.selectedVenue("");
           _controller.vData(null);
           _controller.resetData();
-          var data = await Get.to(() => AddAcademy());
-          if (data!!) {
-            _controller.getAllAcademies();
-          }
+          await Get.to(() => AddAcademy());
+          _controller.getAllAcademies();
+
         },
         backgroundColor: PRIMARY_COLOR,
         child: Icon(Icons.add),
@@ -54,6 +51,7 @@ class AcademyList extends StatelessWidget {
                       itemBuilder: (context, index) {
                         Data item = _controller.dataList[index];
                         return Card(
+                          elevation: 5,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,9 +93,11 @@ class AcademyList extends StatelessWidget {
                                           padding: EdgeInsets.all(8),
                                           width: SizeConfig.screenWidth / 1.3,
                                           child: OutlinedButton(
-                                            onPressed: () {
+                                            onPressed: () async {
                                               _controller.isEditPackage(false);
-                                              Get.to(() =>   AcademyPackageList());
+                                              _controller.fetchPackages();
+                                              await Get.to(() =>   AcademyPackageList());
+                                              _controller.getAllAcademies();
                                             },
                                             style: ButtonStyle(
                                               side: MaterialStateProperty.all(
@@ -121,6 +121,7 @@ class AcademyList extends StatelessWidget {
                                             Get.to(() => AddAcademy());
                                             _controller.isEdit(true);
                                             _controller.selectedIndex(index);
+                                            _controller.academyId(item.id);
                                             _controller.setAcademyData();
                                           },
                                           child: const CircleAvatar(

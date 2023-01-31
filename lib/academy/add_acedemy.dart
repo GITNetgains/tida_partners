@@ -20,6 +20,18 @@ class AddAcademy extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("Add Academy details"),
+        actions: [
+          Obx(() => _controller.isEdit.value
+              ? InkWell(
+              onTap: () {
+                showAlertDialog(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Icons.delete),
+              ))
+              : Container())
+        ],
       ),
       body: Obx(() => _controller.loading.value?showLoader():Container(
         padding: EdgeInsets.only(top: 8, bottom: 8),
@@ -393,4 +405,36 @@ class AddAcademy extends StatelessWidget {
       )),
     );
   }
+
+    showAlertDialog(BuildContext context) {
+      // Create button
+      Widget okButton = TextButton(
+        child: const Text(
+          "OK",
+          style: TextStyle(color: PRIMARY_COLOR),
+        ),
+        onPressed: () {
+          _controller.deletePackage(isAcademy: true);
+          Get.back();
+
+        },
+      );
+
+      // Create AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text("Delete"),
+        content: const Text("Do you want to delete this academy?"),
+        actions: [
+          okButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
 }

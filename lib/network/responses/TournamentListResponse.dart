@@ -10,9 +10,12 @@ class TournamentListResponse {
     message = json['message'];
     if (json['data'] != null) {
       data = <Data>[];
+    try{
+
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
+    }catch(e){}
     }
   }
 

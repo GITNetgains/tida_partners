@@ -14,6 +14,8 @@ class ExperienceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white.withOpacity(0.95),
+
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("Experiences"),
@@ -41,33 +43,12 @@ class ExperienceList extends StatelessWidget {
                         Get.to(() => AddExperiences());
                       },
                       child: Card(
+                        elevation: 5,
                         child: Row(
                           children: [
                             SizedBox(
                               width: SizeConfig.screenWidth / 3,
-                              child: ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(5),
-                                      topLeft: Radius.circular(5)),
-                                  child: Container(
-                                    child: FadeInImage(
-                                      image: NetworkImage(
-                                        item.image ?? "",
-                                      ),
-                                      height: 130,
-                                      fit: BoxFit.cover,
-                                      placeholderFit: BoxFit.fitWidth,
-                                      placeholder: const AssetImage(
-                                        "assets/no_image.png",
-                                      ),
-                                      imageErrorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                            'assets/no_image.png',
-                                            fit: BoxFit.fitWidth);
-                                      },
-                                    ),
-                                  )),
+                              child: getImageWidget(item.image ?? ""),
                             ),
                             Flexible(
                               child: Container(

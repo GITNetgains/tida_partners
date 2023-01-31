@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+import '../AppColors.dart';
 
 const double XSMALL_PADDING = 3;
 const double SMALL_PADDING = 5;
@@ -89,7 +92,14 @@ Widget setPrimaryTextMed(String text,
 }
 
 Widget setCardHeading(String text) {
-  return Text(text, maxLines: 2, style: getAppFontA(textStyle: const TextStyle(fontSize: LARGE_TITLE_FONT, overflow: TextOverflow.ellipsis, color: Colors.red, fontWeight: FontWeight.w500)));
+  return Text(text,
+      maxLines: 2,
+      style: getAppFontA(
+          textStyle: const TextStyle(
+              fontSize: LARGE_TITLE_FONT,
+              overflow: TextOverflow.ellipsis,
+              color: Colors.red,
+              fontWeight: FontWeight.w500)));
 }
 
 Widget setSmallLabel(String text,
@@ -123,16 +133,21 @@ Widget setMediumLabel(String text,
     {BuildContext? context,
     Color color = Colors.black,
     TextAlign align = TextAlign.start,
-    double fontSize = MEDIUM_FONT, TextDecoration decoration= TextDecoration.none}) {
+    double fontSize = MEDIUM_FONT,
+    TextDecoration decoration = TextDecoration.none}) {
   return Text(getTranslated(text, context: context),
       textAlign: align,
       style: getAppFontA(
           textStyle: TextStyle(
-            decoration: decoration,
-              fontSize: fontSize, color: color, fontWeight: FontWeight.w400, )));
+        decoration: decoration,
+        fontSize: fontSize,
+        color: color,
+        fontWeight: FontWeight.w400,
+      )));
 }
 
-Widget setTextButton(String text, {VoidCallback? callback, IconData? icon, Color color = Colors.black}) {
+Widget setTextButton(String text,
+    {VoidCallback? callback, IconData? icon, Color color = Colors.black}) {
   return GestureDetector(
       onTap: callback,
       child: Text.rich(
@@ -140,9 +155,7 @@ Widget setTextButton(String text, {VoidCallback? callback, IconData? icon, Color
             text: text,
             style: getAppFontA(
                 textStyle: TextStyle(
-                    fontSize: 16,
-                    color: color,
-                    fontWeight: FontWeight.w400)),
+                    fontSize: 16, color: color, fontWeight: FontWeight.w400)),
             children: [
               (icon == null)
                   ? const WidgetSpan(
@@ -276,7 +289,7 @@ Widget getSecondaryButton(String text, VoidCallback onClicked) {
                   side: const BorderSide(color: Colors.red)))),
       onPressed: onClicked,
       child: Text(
-        text ,
+        text,
         style: const TextStyle(
             fontSize: 14, color: Colors.white, fontWeight: FontWeight.w600),
       ));
@@ -287,8 +300,8 @@ Widget getVerticalSpace() {
   return const SizedBox(
     height: 10,
   );
-
 }
+
 Widget getHorizontalSpace() {
   return const SizedBox(
     width: 10,
@@ -363,38 +376,79 @@ void goToNext(BuildContext context, Widget screen, {bool isNavigator = false}) {
   }
 }
 
-Widget getImageWidget(String url) {
-  return SizedBox(
-    width: double.infinity,
-    child: Image.network(
-      url,
-      height: 130,
-      fit: BoxFit.cover,
-      key:ValueKey(url),
-      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return    Image.asset(
-          'assets/no_image.png',
-        );
-      },
-      loadingBuilder: (BuildContext context, Widget child,
-          ImageChunkEvent? loadingProgress) {
-        if (loadingProgress == null) {
-          return child;
-        }
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                  loadingProgress.expectedTotalBytes!
-                  : null,
+Widget getImageWidget(String url, {double height = 130}) {
+  return Container(
+    color: Colors.red.withOpacity(0.2),
+    child: SizedBox(
+      width: double.infinity,
+      height: height,
+      child: Image.network(
+        url,
+        height: height,
+        fit: BoxFit.cover,
+        key: ValueKey(url),
+        errorBuilder:
+            (BuildContext context, Object exception, StackTrace? stackTrace) {
+          return Image.asset(
+            'assets/no_image.png',
+          );
+        },
+        loadingBuilder: (BuildContext context, Widget child,
+            ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) {
+            return child;
+          }
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: PRIMARY_COLOR,
+                strokeWidth: 2,
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
             ),
-          ),
-        );
-
-      },
+          );
+        },
+      ),
     ),
   );
+}
+
+String getFormattedDateTime(String date) {
+  String dd = date;
+  try {
+    DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+
+    DateFormat dateFormat = DateFormat("EEE, dd MMM yyyy HH:mm a");
+    dd = dateFormat.format(tempDate).toString();
+  } catch (e) {}
+
+  return dd;
+}
+
+String getFormattedDate(String date) {
+  String dd = date;
+  try {
+    DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+
+    DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+    dd = dateFormat.format(tempDate).toString();
+  } catch (e) {}
+
+  return dd;
+}
+
+String getFormattedTime(String date) {
+  String dd = date;
+  try {
+    DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+
+    DateFormat dateFormat = DateFormat("HH:mm a");
+    dd = dateFormat.format(tempDate).toString();
+  } catch (e) {}
+
+  return dd;
 }

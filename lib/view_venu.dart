@@ -15,12 +15,6 @@ class ViewVenu extends StatelessWidget {
   ViewVenu({Key? key}) : super(key: key);
   final _controller = Get.put(HomeScreenController());
 
-  Future<void> _launchUrl() async {
-    if (!await launchUrl(Uri.parse(
-        "https://www.google.com/maps/place/Chandigarh+Golf+Club/@30.7378785,76.8090739,17z/data=!4m12!1m6!3m5!1s0x390fed30341f8073:0x321b25f6e448dc70!2sChandigarh+Golf+Club!8m2!3d30.7378785!4d76.8112626!3m4!1s0x390fed30341f8073:0x321b25f6e448dc70!8m2!3d30.7378785!4d76.8112626"))) {
-      throw 'Could not launch';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -25,10 +25,9 @@ class TournamentController extends GetxController {
   RxBool isOnline = false.obs;
   a.Data? aData;
   RxBool isLoading = false.obs;
-  RxBool isEdit =false.obs;
-  RxInt selectedIndex =(-1).obs;
-  RxString selectedId ="".obs;
-
+  RxBool isEdit = false.obs;
+  RxInt selectedIndex = (-1).obs;
+  RxString selectedId = "".obs;
 
   Future<void> selectImage() async {
     XFile? f = await _picker.pickImage(source: ImageSource.gallery);
@@ -46,7 +45,7 @@ class TournamentController extends GetxController {
 
   void saveData() async {
     Map<String, String> data = {
-      "academy":selectedAcademyID.value,
+      "academy": selectedAcademyID.value,
       "title": titleController.text,
       "no_of_tickets": noOfTicketController.text,
       "price": priceController.text,
@@ -67,27 +66,24 @@ class TournamentController extends GetxController {
     }
     isLoading(true);
     bool saved = false;
-    try {
-      if(!isEdit.value){
-        saved = await ApiProvider().addTournament(data, filePath.value);
 
+    if (!isEdit.value) {
+      saved = await ApiProvider().addTournament(data, filePath.value);
+    } else {
+      data["id"] = selectedId.value;
 
-      }else{
-        data["id"] = selectedId.value;
-        saved = await ApiProvider().updateTournament(data, filePath.value);
-
-
-      }
-    } catch (e) {
-      isLoading(false);
+      saved = await ApiProvider().updateTournament(data, filePath.value.startsWith("http")?"":filePath.value);
     }
+
+    print(saved);
     isLoading(false);
 
     if (saved) {
       AppUtills.showSnackBar("Success", "Tournament Saved");
-      Get.back();
+    Navigator.pop(Get.context!);
       fetchTournament();
     }
+
   }
 
   fetchTournament() async {
@@ -100,7 +96,6 @@ class TournamentController extends GetxController {
       }
     }
     isLoading(false);
-
   }
 
   void setType(bool value) {
@@ -122,8 +117,7 @@ class TournamentController extends GetxController {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null) {
-
-      startDateController.text = "${picked.day}-${picked.month}-${picked.year}";
+      startDateController.text = "${picked.year}-${picked.month}-${picked.day} 00:00:00";
     }
   }
 
@@ -135,28 +129,27 @@ class TournamentController extends GetxController {
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
     if (picked != null) {
-
-      endDateController.text = "${picked.day}-${picked.month}-${picked.year}";
+      endDateController.text = "${picked.year}-${picked.month}-${picked.day} 00:00:00";
     }
   }
 
-  void preFillData(){
+  void preFillData() {
     if (isEdit.value) {
       var item = data[selectedIndex.value];
-      titleController.text =item.title??"";
-      descController.text = item.description??"";
-      urlController.text = item.url??"";
+      titleController.text = item.title ?? "";
+      descController.text = item.description ?? "";
+      urlController.text = item.url ?? "";
       //addressController.text = item.noOfTickets??"";
-      priceController.text = item.price??"";
-      noOfTicketController.text = item.noOfTickets??"";
-      startDateController.text = item.startDate??"";
-      endDateController.text = item.endDate??"";
-      selectedAcademyID.value = item.academyId??"-";
-      selectedId.value = item.id??"";
-      selectedAcademy.value= item.academyDetails?.first.name??"";
+      priceController.text = item.price ?? "";
+      noOfTicketController.text = item.noOfTickets ?? "";
+      startDateController.text = item.startDate ?? "";
+      endDateController.text = item.endDate ?? "";
+      selectedAcademyID.value = item.academyId ?? "-";
+      selectedId.value = item.id ?? "";
+      selectedAcademy.value = item.academyDetails?.first.name ?? "";
       filePath(item.image);
       update();
+      print(selectedAcademyID.value);
     }
-
   }
 }

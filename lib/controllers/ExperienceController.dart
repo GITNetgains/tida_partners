@@ -40,6 +40,7 @@ class ExperienceController extends GetxController {
     print("called");
     Map<String, String> data = {
       "venue_id": selectedAcademyID.value,
+      "id": selectedAcademyID.value,
       "title": titleController.text,
       "price": priceController.text,
       "description": descController.text,
@@ -54,7 +55,7 @@ class ExperienceController extends GetxController {
       }
     }
     isLoading(true);
-    print("1111");
+
     bool saved = false;
     try {
       if (!isEdit.value) {
@@ -73,7 +74,7 @@ class ExperienceController extends GetxController {
     isLoading(false);
 
     if (saved) {
-      AppUtills.showSnackBar("Success", "Tournament Saved");
+      AppUtills.showSnackBar("Success", "Experience Saved");
       Navigator.pop(Get.context!);
       fetchTournament();
     }

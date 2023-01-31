@@ -16,7 +16,9 @@ class AcademyPackageList extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           _controller.isEditPackage(false);
-          Get.to(()=>  AddPackage());
+          _controller.setAcademyData(reset: true);
+
+          openAddPack();
 
         },
         backgroundColor: PRIMARY_COLOR,
@@ -26,8 +28,8 @@ class AcademyPackageList extends StatelessWidget {
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("Academy Packages"),
       ),
-      body: ListView.builder(
-        itemCount: 10,
+      body: Obx(() => _controller.loading.value?showLoader(): _controller.packageList.isNotEmpty?ListView.builder(
+        itemCount: _controller.packageList.length,
 
         itemBuilder: (context, index) {
           return  Padding(
@@ -37,35 +39,17 @@ class AcademyPackageList extends StatelessWidget {
                 InkWell(
                   onTap: (){
                     _controller.isEditPackage(true);
-                    Get.to(()=>  AddPackage());
+                    _controller.selectedPackage(index);
+                    _controller.setAcademyData(reset: false);
+
+                    openAddPack();
+
 
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children:   [
-                          CircleAvatar(
-                            backgroundColor: PRIMARY_COLOR,
-                            child: Icon(
-                                Icons.star, color: Colors.white,
-                            ),
-
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: setMediumLabel("text".capitalizeFirst!),
-                          )
-
-                        ],
-
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(Icons.edit),
-                      )
-
-                    ],
+                  child: ListTile(
+                    leading: CircleAvatar(child: Icon(Icons.star, color: Colors.white,), backgroundColor: PRIMARY_COLOR,),
+                    subtitle: setMediumLabel('₹${(_controller.packageList[index].price??"-").capitalizeFirst!}'),
+                    title: setMediumLabel((_controller.packageList[index].title??"-").capitalizeFirst!),
 
                   ),
                 ),
@@ -74,8 +58,16 @@ class AcademyPackageList extends StatelessWidget {
             ),
           );
         },
-      ),
+      ):Center(child: setMediumLabel("Click + icon to add new package"))),
 
     );
+  }
+
+  void openAddPack() async {
+
+
+    await Get.to(()=>  AddPackage());
+    _controller.fetchPackages();
+
   }
 }

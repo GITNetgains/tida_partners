@@ -40,6 +40,7 @@ class Data {
   String? latitude;
   String? longitude;
   String? status;
+  String? videoUrl;
   String? createdAt;
   String? updatedAt;
   List<dynamic>? facilities;
@@ -49,23 +50,24 @@ class Data {
 
   Data(
       {this.id,
-        this.userId,
-        this.image,
-        this.title,
-        this.sports,
-        this.amenities,
-        this.description,
-        this.address,
-        this.addressMap,
-        this.latitude,
-        this.longitude,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.facilities,
-        this.rating,
-        this.sportsDetails,
-        this.amenitiesDetails});
+      this.userId,
+      this.image,
+      this.title,
+      this.sports,
+      this.amenities,
+      this.description,
+      this.address,
+      this.addressMap,
+      this.latitude,
+      this.longitude,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.facilities,
+      this.rating,
+      this.videoUrl,
+      this.sportsDetails,
+      this.amenitiesDetails});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -83,22 +85,22 @@ class Data {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     facilities = json['facilities'];
+    videoUrl = json['video_url'];
+
     if (json['rating'] != null) {
       rating = <Rating>[];
-      json['rating'].forEach((v) {
-        rating!.add(new Rating.fromJson(v));
-      });
+      try {
+        json['rating'].forEach((v) {
+          rating!.add(new Rating.fromJson(v));
+        });
+      } catch (e) {}
     }
-    try{
+    try {
       sportsDetails = json['sports_details'];
-
-
-    }catch(e){}
-    try{
-
+    } catch (e) {}
+    try {
       amenitiesDetails = json['amenities_details'];
-
-    }catch(e){}
+    } catch (e) {}
   }
 
   Map<String, dynamic> toJson() {
@@ -118,6 +120,8 @@ class Data {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['facilities'] = this.facilities;
+    data['video_url'] = this.videoUrl;
+
     if (this.rating != null) {
       data['rating'] = this.rating!.map((v) => v.toJson()).toList();
     }
@@ -139,13 +143,13 @@ class Rating {
 
   Rating(
       {this.id,
-        this.userId,
-        this.review,
-        this.rating,
-        this.postType,
-        this.postId,
-        this.status,
-        this.createdAt});
+      this.userId,
+      this.review,
+      this.rating,
+      this.postType,
+      this.postId,
+      this.status,
+      this.createdAt});
 
   Rating.fromJson(Map<String, dynamic> json) {
     id = json['id'];

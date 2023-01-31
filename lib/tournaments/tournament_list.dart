@@ -14,6 +14,7 @@ class TournamentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white.withOpacity(0.95),
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("Tournaments"),
@@ -21,70 +22,73 @@ class TournamentList extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           _controller.isEdit(false);
-          Get.to(() => AddTournament());
+          await Get.to(() => AddTournament());
+          _controller.fetchTournament();
         },
         backgroundColor: PRIMARY_COLOR,
         child: Icon(Icons.add),
       ),
       body: Obx(() => _controller.isLoading.value
           ? showLoader()
-          : ListView.builder(
-              itemCount: _controller.data.length,
-              itemBuilder: (context, index) {
-                Data item = _controller.data[index];
-                return Card(
+          : _controller.data.isNotEmpty?ListView.builder(
+        itemCount: _controller.data.length,
+        itemBuilder: (context, index) {
+          Data item = _controller.data[index];
+          return Card(
+            elevation: 5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(5),
+                        topLeft: Radius.circular(5)),
+                    child: getImageWidget(item.image??"-")),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(5),
-                              topLeft: Radius.circular(5)),
-                          child: getImageWidget(item.image??"-")),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
                               children: [
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      setHeadlineMedium(item.title ?? "N/A",
-                                          color: Colors.black),
-                                      setMediumLabel('₹${item.price}' ?? "N/A",
-                                          color: Colors.grey),
-                                    ],
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () async {
-                                    _controller.isEdit(true);
-                                    _controller.selectedIndex(index);
-                                    _controller.preFillData();
-                                    await Get.to(() => AddTournament());
-                                    _controller.isEdit(false);
-                                  },
-                                  child: const CircleAvatar(
-                                    child: Icon(Icons.edit),
-                                    foregroundColor: Colors.white,
-                                    backgroundColor: Colors.grey,
-                                  ),
-                                )
+                                setHeadlineMedium(item.title ?? "N/A",
+                                    color: Colors.black),
+                                setMediumLabel('₹${item.price}' ?? "N/A",
+                                    color: Colors.grey),
                               ],
                             ),
-                          ],
-                        ),
-                      )
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              _controller.isEdit(true);
+                              _controller.selectedIndex(index);
+                              _controller.preFillData();
+                              await Get.to(() => AddTournament());
+                              _controller.isEdit(false);
+                              _controller.fetchTournament();
+                            },
+                            child: const CircleAvatar(
+                              child: Icon(Icons.edit),
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.grey,
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
-                );
-              },
-            )),
+                )
+              ],
+            ),
+          );
+        },
+      ):Center(child: setSmallLabel("Click on + icon to add Tournament. "),)),
     );
   }
 }

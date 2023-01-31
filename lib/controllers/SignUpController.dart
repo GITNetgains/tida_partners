@@ -9,6 +9,7 @@ import 'package:tida_partners/network/ApiProvider.dart';
 class SignUpController extends GetxController {
   RxString userName = "".obs;
   RxString userEmail = "".obs;
+  RxString userPhone = "".obs;
   RxString userPassword = "".obs;
   RxString userConfirmPass = "".obs;
   RxBool loading = false.obs;
@@ -19,6 +20,9 @@ class SignUpController extends GetxController {
           isError: true);
     } else if (userEmail.value.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid email",
+          isError: true);
+    }else if (userPhone.value.isEmpty) {
+      AppUtills.showSnackBar("Required", "Please enter a valid number",
           isError: true);
     }else if (userPassword.value.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid password",
@@ -35,6 +39,7 @@ class SignUpController extends GetxController {
         "name": userName.value,
         "email": userEmail.value,
         "password": userPassword.value,
+        "phone": userPhone.value,
         "device_type": Platform.operatingSystem,
         "type": "2",
         "device_token": "TO-BE-IMPLEMENTED",

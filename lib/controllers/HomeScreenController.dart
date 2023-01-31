@@ -22,8 +22,8 @@ class HomeScreenController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   RxList<MediaData.Data?> imageList = <MediaData.Data>[].obs;
   RxList amenetiesList = [].obs;
-  RxList<String> amenetiesListInString = [""].obs;
-  late RxList<String> sportsListInString;
+  RxList<String> amenetiesListInString =<String>[].obs;
+   RxList<String> sportsListInString = <String>[].obs;
   late Rx<SportsResponse> sportsResponse;
 
 
@@ -73,10 +73,10 @@ class HomeScreenController extends GetxController {
   void editVenue(int i) async {
     index(i);
     isEdit(true);
-    bool data = await Get.to(() => AddVenue());
-    if (data) {
+    await Get.to(() => AddVenue());
+    //if (data) {
       fetch();
-    }
+    //}
   }
 
   Future<void> uploadImage() async {
@@ -164,13 +164,19 @@ class HomeScreenController extends GetxController {
 
   List<String> getSelectedSportName(List<String> list) {
     List<String> name = [];
-    list.forEach((element) {
-      for (sd.Data value in sportsResponse.value.data!) {
-        if (value.id == element) {
-          name.add(value.sportName!);
+    try{
+      list.forEach((element) {
+        for (sd.Data value in sportsResponse.value.data!) {
+          if (value.id == element) {
+            name.add(value.sportName!);
+          }
         }
-      }
-    });
+      });
+    }catch(e){
+
+
+    }
+
     return name;
   }
 }

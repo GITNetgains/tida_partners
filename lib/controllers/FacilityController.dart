@@ -152,6 +152,7 @@ class FacilityController extends GetxController {
         update();
       }
     }
+    print(response?.data?.length);
     isLoading(false);
   }
 

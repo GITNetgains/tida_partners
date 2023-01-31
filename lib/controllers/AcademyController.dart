@@ -2,13 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/ApiProvider.dart';
+import 'package:tida_partners/network/api_constants.dart';
 import 'package:tida_partners/network/responses/VenueListResponse.dart' as v;
 import 'package:tida_partners/network/responses/academy_res.dart';
+import 'package:tida_partners/network/responses/PackageListResponse.dart'
+    as pac;
 
 import '../AppUtils.dart';
 
 class AcademyController extends GetxController {
-  late RxList<Data> dataList=[Data()].obs;
+  late RxList<Data> dataList = [Data()].obs;
+  late RxList<pac.Data> packageList = <pac.Data>[].obs;
   RxBool loading = false.obs;
   Rx<v.Data?> vData = null.obs;
   RxString selectedVenue = "".obs;
@@ -30,8 +34,6 @@ class AcademyController extends GetxController {
   final capacityNameCtrl = TextEditingController();
   final equipmentCtrl = TextEditingController();
 
-
-
   final packageTitleController = TextEditingController();
   final priceController = TextEditingController();
 
@@ -42,6 +44,7 @@ class AcademyController extends GetxController {
   RxString academyId = "".obs;
 
   RxInt selectedIndex = (-1).obs;
+  RxInt selectedPackage = (-1).obs;
 
   @override
   void onInit() {
@@ -52,6 +55,7 @@ class AcademyController extends GetxController {
 
   void getAllAcademies() async {
     loading(true);
+    dataList.clear();
     AcademyResponse? response = await ApiProvider().fetchAllAcademies();
     if (response != null) {
       if (response.status == true) {
@@ -60,18 +64,17 @@ class AcademyController extends GetxController {
       }
     }
     loading(false);
-
-
   }
 
   void setSelectedVenue(v.Data data) {
     vData = data.obs;
     selectedVenue(data.title);
+    selectedVenueId(data.id);
     refresh();
   }
 
   Future<void> saveAcademy() async {
-    if (selectedVenue.isEmpty) {
+    if ( selectedVenueId.value.isEmpty) {
       AppUtills.showSnackBar("Required", "Please select venue", isError: true);
     } else if (academyCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid academy name",
@@ -92,10 +95,12 @@ class AcademyController extends GetxController {
     } else if (contactCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid contact number",
           isError: true);
-    }/* else if (serviceCtrl.text.isEmpty) {
+    }
+    /* else if (serviceCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
-    } */else if (skillCtrl.text.isEmpty) {
+    } */
+    else if (skillCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
     } else if (ageCtrl.text.isEmpty) {
@@ -110,7 +115,8 @@ class AcademyController extends GetxController {
     } else if (floodLightCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid number",
           isError: true);
-    } /*else if (equipmentCtrl.text.isEmpty) {
+    }
+    /*else if (equipmentCtrl.text.isEmpty) {
       AppUtills.showSnackBar(
           "Required", "Please enter a valid value for equipment",
           isError: true);
@@ -120,7 +126,8 @@ class AcademyController extends GetxController {
     } else if (assistantCoachNameCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid name",
           isError: true);
-    }*/ else {
+    }*/
+    else {
       loading(true);
       Map<String, String> data = {
         "name": academyCtrl.text,
@@ -146,8 +153,9 @@ class AcademyController extends GetxController {
         "equipment": equipmentCtrl.text,
         "no_of_assistent_coach": noOfAssistantCtrl.text,
         "coach_experience": coachExpCtrl.text,
-        "venue_id": selectedVenueId.value?? "0",
-        "id": academyId.value,
+        "venue_id": selectedVenueId.value,
+        "id": selectedVenueId.value,
+        "assistent_coach_name": assistantCoachNameCtrl.text,
       };
       bool saved = false;
       if (!isEdit.value) {
@@ -160,27 +168,72 @@ class AcademyController extends GetxController {
       loading(false);
       if (saved) {
         Get.back(result: true);
-      //  Get.delete<AcademyController>();
+        //  Get.delete<AcademyController>();
       }
     }
+  }
+
+  Future<void>savePackage()async {
+    if (packageTitleController.text.isEmpty) {
+      AppUtills.showSnackBar("Required", "Please enter package name", isError: true);
+    } else if (descriptionCtrl.text.isEmpty) {
+      AppUtills.showSnackBar("Required", "Please enter a valid description",
+          isError: true);
+    } else if (priceController.text.isEmpty) {
+      AppUtills.showSnackBar("Required", "Please enter a valid price",
+          isError: true);
+    }else{
+      loading(true);
+      Map<String, String> data = {
+        "title": packageTitleController.text,
+        "description": descriptionCtrl.text,
+        "academy": academyId.value,
+        "price": priceController.text,
+
+      };
+      print(data);
+      bool saved = false;
+      if (!isEditPackage.value) {
+        saved = await ApiProvider().addAcademy(data, filePath.value, isPackage: true);
+      } else {
+        data["id"] = packageList[selectedPackage.value].id.toString();
+        saved = await ApiProvider().updateAcademy(data, filePath.value,isPackage: true);
+      }
+
+      loading(false);
+      if (saved) {
+        Get.back(result: true);
+        //  Get.delete<AcademyController>();
+      }
+
+    }
+
   }
 
   Future<void> selectImage() async {
     XFile? f = await _picker.pickImage(source: ImageSource.gallery);
     if (f != null) {
       filePath(f.path);
-
     }
   }
 
-  void setAcademyData() {
+  void setAcademyData({bool reset =false}) {
+    if (reset) {
+      packageTitleController.text ="";
+      descriptionCtrl.text ="";
+      priceController.text ="";
+      return;
+    }
     if (isEditPackage.value) {
 
-
-
+      packageTitleController.text = packageList[selectedPackage.value].title??"";
+      descriptionCtrl.text = packageList[selectedPackage.value].description??"";
+      priceController.text = packageList[selectedPackage.value].price??"";
+      print("sssssss");
       return;
     }
     if (selectedIndex.value != -1) {
+      filePath("");
       Data d = dataList[selectedIndex.value];
       academyCtrl.text = d.name ?? "";
       descriptionCtrl.text = d.description ?? "";
@@ -199,38 +252,63 @@ class AcademyController extends GetxController {
       capacityNameCtrl.text = d.capacity ?? "";
       equipmentCtrl.text = d.equipment ?? "";
       academyId(d.id);
-      if(d.venueDetails!=null){
-      selectedVenue(d.venueDetails!.first.title??"N/A");
-      selectedVenueId(d.venueDetails!.first.id??"N/A");
-      filePath(d.logo);
+      if (d.venueDetails != null) {
 
-      }else{
+        selectedVenue(d.venueDetails!.first.title ?? "N/A");
+        selectedVenueId(d.venueDetails!.first.id ?? "N/A");
+        filePath(d.logo);
+
+
+      } else {
         selectedVenue("");
         selectedVenueId("");
-
       }
-
     }
   }
 
-  void resetData(){
-    academyCtrl.text =  "";
-    descriptionCtrl.text =  "";
-    locationCtrl.text =  "";
-    headCoachCtrl.text =  "";
-    timeCtrl.text =  "";
+  void resetData() {
+    academyCtrl.text = "";
+    descriptionCtrl.text = "";
+    locationCtrl.text = "";
+    headCoachCtrl.text = "";
+    timeCtrl.text = "";
     contactCtrl.text = "";
     skillCtrl.text = "";
     coachExpCtrl.text = "";
-    ageCtrl.text =  "";
+    ageCtrl.text = "";
     groundSizeCtrl.text = "";
-    floodLightCtrl.text =  "";
-    noOfAssistantCtrl.text =  "";
-    assistantCoachNameCtrl.text =  "";
-    capacityNameCtrl.text =  "";
-    equipmentCtrl.text =  "";
+    floodLightCtrl.text = "";
+    noOfAssistantCtrl.text = "";
+    assistantCoachNameCtrl.text = "";
+    capacityNameCtrl.text = "";
+    equipmentCtrl.text = "";
     academyId("");
     filePath("");
+  }
 
+  void fetchPackages() async {
+    loading(true);
+    packageList.clear();
+    pac.PackageListRes? response =
+        await ApiProvider().fetchPackage(academyId.value);
+    if (response != null) {
+      if (response.status == true) {
+        packageList = response.data!.obs;
+        update();
+      }
+    }
+    loading(false);
+  }
+  void deletePackage({bool isAcademy= false}) async {
+    loading(true);
+    bool response = await ApiProvider().deletePackage(isAcademy?academyId.value:packageList[selectedPackage.value].id??"", isAcademy: isAcademy);
+    if (response) {
+      Get.back();
+    }
+
+    if (isAcademy) {
+      getAllAcademies();
+    }
+    loading(false);
   }
 }

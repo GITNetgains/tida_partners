@@ -2,9 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tida_partners/add_venue.dart';
-import 'package:tida_partners/booking_cal.dart';
+import 'package:tida_partners/controllers/FacilityController.dart';
 import 'package:tida_partners/nab_bar.dart';
 import 'package:tida_partners/network/responses/VenueListResponse.dart';
+import 'package:tida_partners/slot_booking_screen.dart';
 import 'package:tida_partners/utilss/size_config.dart';
 import 'package:tida_partners/utilss/theme.dart';
 import 'package:tida_partners/venue/facilities_list.dart';
@@ -22,9 +23,10 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white.withOpacity(0.95),
       drawer: NavBar(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           _controller.isEdit(false);
-          Get.to(() => AddVenue());
+          await Get.to(() => AddVenue());
+          _controller.fetch();
         },
         backgroundColor: PRIMARY_COLOR,
         child: Icon(Icons.add),
@@ -74,28 +76,20 @@ class HomeScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              setHeadlineMedium(
-                                                  item.title ?? "N/A",
-                                                  color: Colors.black),
-                                              setMediumLabel(
-                                                  item.address ?? "N/A",
-                                                  color: Colors.grey),
-                                            ],
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              _controller.editVenue(index);
-                                            },
-                                            child: const CircleAvatar(
-                                              foregroundColor: Colors.white,
-                                              backgroundColor: Colors.grey,
-                                              child: Icon(Icons.edit),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                setHeadlineMedium(
+                                                    item.title ?? "N/A",
+                                                    color: Colors.black),
+                                                setMediumLabel(
+                                                    item.address ?? "N/A",
+                                                    color: Colors.grey),
+                                              ],
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                       Padding(
@@ -103,62 +97,53 @@ class HomeScreen extends StatelessWidget {
                                             const EdgeInsets.only(top: 18.0),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
+                                              width:
+                                              SizeConfig.screenWidth / 1.3,
                                               child: OutlinedButton(
-                                                onPressed: () {
-                                                  /*      Get.to(() =>
-                                                      BookingCalendarDemoApp(
-                                                          title: "Bookings"));*/
+                                                onPressed: () async {
+                                                  bool test = Get.isRegistered<FacilityController>();
+                                                  if (test) {
+                                                    final _c = Get.put(FacilityController());
+                                                    _c.onInit();
+                                                  }
+                                                await   Get.to(() => FacilitiesList());
+                                                Get.delete<FacilityController>();
+
                                                 },
                                                 style: ButtonStyle(
                                                   side: MaterialStateProperty
-                                                      .all(BorderSide(
-                                                          color:
-                                                              PRIMARY_COLOR)),
+                                                      .all(const BorderSide(
+                                                      color:
+                                                      PRIMARY_COLOR)),
                                                   foregroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.red),
+                                                  MaterialStateProperty.all(
+                                                      Colors.red),
                                                   shape: MaterialStateProperty
                                                       .all(RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      30.0))),
-                                                ),
-                                                child: const Text("Bookings"),
-                                              ),
-                                              width:
-                                                  SizeConfig.screenWidth / 2.5,
-                                            ),
-                                            Container(
-                                              width:
-                                                  SizeConfig.screenWidth / 2.5,
-                                              child: OutlinedButton(
-                                                onPressed: () {
-                                                  Get.to(
-                                                      () => FacilitiesList());
-                                                },
-                                                style: ButtonStyle(
-                                                  side: MaterialStateProperty
-                                                      .all(BorderSide(
-                                                          color:
-                                                              PRIMARY_COLOR)),
-                                                  foregroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.red),
-                                                  shape: MaterialStateProperty
-                                                      .all(RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      30.0))),
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          30.0))),
                                                 ),
                                                 child: const Text(
                                                     "Manage Facilities"),
                                               ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                _controller.editVenue(index);
+                                              },
+                                              child: const CircleAvatar(
+                                                foregroundColor: Colors.white,
+                                                backgroundColor: Colors.grey,
+                                                child: Icon(Icons.edit),
+                                              ),
                                             )
+
+
                                           ],
                                         ),
                                       )

@@ -52,7 +52,7 @@ static Future<bool> setPhone(String email) async {
   static String getUserId() => _prefs.getString(USER_ID) ?? "";
   static String getName() => _prefs.getString(NAME) ?? "";
 
-  static String getEmail() => _prefs.getString(EMAIL) ?? "";
+  static String getEmail() => _prefs.getString(EMAIL) ?? "N/A";
   static String getPhone() => _prefs.getString(PHONE) ?? "N/A";
   static String getUserData() => _prefs.getString(USER_DATA) ?? "";
   static String getStatus() => _prefs.getString(STATUS) ?? "1";

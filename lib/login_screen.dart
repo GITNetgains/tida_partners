@@ -140,7 +140,12 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    "assets/facebook-app-symbol.png",
+                    "assets/apple.png",
+                    width: 24,
+                    height: 24,
+                  ),
+                  getHorizontalSpace(), Image.asset(
+                    "assets/google.png",
                     width: 24,
                     height: 24,
                   ),

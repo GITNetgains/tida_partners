@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tida_partners/controllers/SettingController.dart';
 import 'package:tida_partners/utilss/theme.dart';
+import 'package:tida_partners/web_content.dart';
 
 import 'AppColors.dart';
 
 class AppSetting extends StatelessWidget {
-  const AppSetting({Key? key}) : super(key: key);
+  AppSetting({Key? key}) : super(key: key);
+  final _controller = Get.put(SettingController());
 
   @override
   Widget build(BuildContext context) {
@@ -12,66 +16,40 @@ class AppSetting extends StatelessWidget {
       backgroundColor: Colors.white.withOpacity(0.95),
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
-        title: setHeadlineMedium("Settings"),
+        title: setHeadlineMedium("Help"),
       ),
-      body: Container(
-        padding: EdgeInsets.only(top: 8, bottom: 8),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView(
-            children: [
-               InkWell(
-                 onTap: (){},
-                 child: Padding(
-                   padding: const EdgeInsets.all(2.0),
-                   child: Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                     setMediumLabel("App Notifications"),
-                       Switch(value: false, onChanged: null )
+      body: Obx(() => _controller.loading.value
+          ? Center(child: showLoader())
+          : Container(
+              padding: EdgeInsets.only(top: 8, bottom: 8),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  itemCount: _controller.dataList.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: (){
+                        _controller.selectedVal(index);
+                        Get.to(()=> WebContent());
 
-                   ],),
-                 ),
-               ),
-              Divider(),
-
-              InkWell(
-                 onTap: (){},
-                 child: Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: setMediumLabel("About"),
-                 ),
-               ),
-              Divider(),    InkWell(
-                onTap: (){},
-                child: Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: setMediumLabel("Frequently Asked Questions"),
-                 ),
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: setMediumLabel(
+                                _controller.dataList[index].title ?? ""),
+                          ),
+                          Divider()
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-              Divider(),     InkWell(
-                onTap: (){},
-                child: Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: setMediumLabel("Terms & Conditions"),
-                 ),
-              ),
-              Divider(),    InkWell(
-                onTap: (){},
-                child: Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: setMediumLabel("Privacy Policy"),
-                 ),
-              ),
-              Divider(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Center(child: setSmallLabel("Version 1.0.0"),),
-              )
-            ],
-          ),
-        ),
-      ),
+            )),
     );
   }
 }

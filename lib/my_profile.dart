@@ -15,12 +15,6 @@ class MyProfile extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("My Profile"),
-     /*   actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.edit, color: Colors.white),
-          )
-        ],*/
       ),
       body: ListView(
         children: <Widget>[
@@ -40,15 +34,14 @@ class MyProfile extends StatelessWidget {
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
+                  children:   <Widget>[
                     CircleAvatar(
                       backgroundColor: Colors.white70,
                       minRadius: 80.0,
                       child: CircleAvatar(
-                        radius: 70.0,
+                        radius: 75.0,
                         backgroundColor: Colors.white,
-                        backgroundImage: NetworkImage(
-                            'https://tidasports.com/wp-content/uploads/2022/11/Tida-Logo-1.png'),
+                        child: Image.network('https://tidasports.com/wp-content/uploads/2022/11/Tida-Logo-1.png'),
                       ),
                     ),
                   ],
@@ -63,83 +56,108 @@ class MyProfile extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  title: Text(
-                    'Email',
-                    style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    Preferences.getEmail(),
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Divider(),
-                ListTile(
-                  title: Text(
-                    'Phone',
-                    style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    Preferences.getPhone(),
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+         Padding(
+           padding: const EdgeInsets.all(8.0),
+           child: Column(
+             mainAxisAlignment: MainAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               setHeadlineLarge("Email", color: PRIMARY_COLOR),
+               setHeadlineLarge(Preferences.getEmail()),
+             ],
+           ),
+         ),
+         Padding(
+           padding: const EdgeInsets.all(8.0),
+           child: Column(
+             mainAxisAlignment: MainAxisAlignment.start,
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               setHeadlineLarge("Phone", color: PRIMARY_COLOR),
+               setHeadlineLarge(Preferences.getPhone()),
+             ],
+           ),
+         ),
+         /* ListView(
+            children: <Widget>[
+              ListTile(
+                title: const Text(
+                  'Email',
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Divider(),
-                ListTile(
-                  title: Text(
-                    'Account Status',
-                    style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    Preferences.getStatus() == "1" ? "Active" : "Inactive",
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                subtitle: Text(
+                  Preferences.getEmail(),
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
                 ),
-                /*   Divider(),
-                ListTile(
-                  title: Text(
-                    'Linked Bank Account',
-                    style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+              ),
+              Divider(),
+              ListTile(
+                title: Text(
+                  'Phone',
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  subtitle: Text(
-                    'No Account linked ',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  trailing: CircleAvatar(
-                      backgroundColor: PRIMARY_COLOR,
-                      child: Icon(Icons.add,color: Colors.white)),
                 ),
-                Divider(),*/
-              ],
-            ),
-          ),
+                subtitle: Text(
+                  Preferences.getPhone(),
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              Divider(),
+              ListTile(
+                title: Text(
+                  'Account Status',
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  Preferences.getStatus() == "1" ? "Active" : "Inactive",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              *//*   Divider(),
+              ListTile(
+                title: Text(
+                  'Linked Bank Account',
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  'No Account linked ',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                trailing: CircleAvatar(
+                    backgroundColor: PRIMARY_COLOR,
+                    child: Icon(Icons.add,color: Colors.white)),
+              ),
+              Divider(),*//*
+            ],
+          ),*/
+
+
+
+
+
           Container(
             padding: EdgeInsets.all(20),
             child: Column(
