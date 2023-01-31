@@ -22,13 +22,18 @@ class SelectAcademyController extends GetxController{
   Future<void> fetch() async {
     loading(true);
     AcademyResponse? vlist = await ApiProvider().fetchAllAcademies();
+    if (vlist != null) {
+
+
     if (vlist!.status!) {
       if (vlist.data != null) {
         academyList.assignAll(vlist.data!);
       }
       update();
-      loading(false);
+
     }
+    }
+    loading(false);
   }
 
 

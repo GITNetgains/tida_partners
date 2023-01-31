@@ -144,16 +144,20 @@ class FacilityController extends GetxController {
 
   Future<void> fetchFacilities() async {
     isLoading(true);
+     dataResponse = <aa.Data>[].obs;
     aa.FacilityListResponse? response = await ApiProvider().fetchFacilities(_homeController.getSelectedVenue().id??"");
     if (response != null) {
       if (response.status!) {
         if (response.data != null) {
           dataResponse.value = response.data!;
+          update();
+
         }
-        update();
       }
     }
     print(response?.data?.length);
+    update();
+
     isLoading(false);
   }
 

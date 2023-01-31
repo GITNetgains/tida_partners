@@ -66,7 +66,10 @@ class AcademyController extends GetxController {
     loading(false);
   }
 
-  void setSelectedVenue(v.Data data) {
+  void setSelectedVenue(v.Data? data) {
+    if (data == null) {
+      return;
+    }
     vData = data.obs;
     selectedVenue(data.title);
     selectedVenueId(data.id);

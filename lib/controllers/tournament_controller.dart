@@ -102,7 +102,10 @@ class TournamentController extends GetxController {
     isOnline(value);
   }
 
-  void setSelectedAcademy(a.Data data) {
+  void setSelectedAcademy(a.Data? data) {
+    if (data == null) {
+      return;
+    }
     selectedAcademy(data.name);
     selectedAcademyID(data.id);
 

@@ -17,7 +17,7 @@ class SelectAcademy extends StatelessWidget {
         backgroundColor: PRIMARY_COLOR,
 
       ),
-      body:Obx(() =>  _controller.loading.value?showLoader():ListView.builder(
+      body:Obx(() =>  _controller.loading.value?showLoader():_controller.academyList.isNotEmpty?ListView.builder(
         itemBuilder: (builder, index) {
           Data data = _controller.academyList[index];
 
@@ -36,7 +36,7 @@ class SelectAcademy extends StatelessWidget {
           );
         },
         itemCount: _controller.academyList.length,
-      )),
+      ):Center(child: setSmallLabel("Please add academy to contnue adding tournament."),)),
     );
   }
 

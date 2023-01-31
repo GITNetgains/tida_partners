@@ -79,10 +79,8 @@ class OrderDetails extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          setHeadlineMedium("Amount Paid",
-                              color: Colors.black),
-                          setHeadlineMedium(
-                              _c.getSelectedOrder().amount??"-",
+                          setHeadlineMedium("Amount Paid", color: Colors.black),
+                          setHeadlineMedium(_c.getSelectedOrder().amount ?? "-",
                               color: PRIMARY_COLOR),
                         ],
                       ),
@@ -189,14 +187,23 @@ class OrderDetails extends StatelessWidget {
 
   _getBookingWidget() {
     String displayName = "";
-    if (_c.getSelectedOrder().facility != null) {
-      displayName = _c.getSelectedOrder().facility?.title ?? "-";
-    } else if (_c.getSelectedOrder().tournament != null) {
-      displayName = _c.getSelectedOrder().tournament?.title ?? "-";
-    } else if (_c.getSelectedOrder().academy != null) {
-      displayName = _c.getSelectedOrder().academy?.name ?? "-";
-    } else if (_c.getSelectedOrder().experience != null) {
-      displayName = _c.getSelectedOrder().experience?.title ?? "-";
+
+    //type: 1-venue/facility,2-academy/session,3-tournament,4-experience
+    switch (_c.getSelectedOrder().type) {
+      case "1":
+        displayName = _c.getSelectedOrder().facility?.title ?? "-";
+        break;
+      case "2":
+        displayName = _c.getSelectedOrder().tournament?.title ?? "-";
+        break;
+      case "3":
+        displayName = _c.getSelectedOrder().academy?.name ?? "-";
+        break;
+      case "4":
+        displayName = _c.getSelectedOrder().experience?.title ?? "-";
+        break;
+      default:
+        displayName = "-";
     }
 
     return Row(

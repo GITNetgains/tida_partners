@@ -1,6 +1,7 @@
 import 'package:booking_calendar/booking_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:tida_partners/network/ApiProvider.dart';
 import 'package:tida_partners/network/responses/SlotResponse.dart' as slot;
@@ -14,7 +15,8 @@ class FacilitySlotsVM extends GetxController {
 
   String? userId, userName, token;
   List<slot.Data>? slots = List.empty(growable: true);
-  bool? isLoading = true, hasCallSupport = false;
+  bool?  hasCallSupport = false;
+  RxBool isLoading = true.obs;
   String? facilityId;
   final now = DateTime.now();
   BookingService? bookingService;
@@ -34,8 +36,10 @@ print("called");
   }
 
   Future<void> init() async {
+    initializeDateFormatting();
+
     await getFacilitySlots();
-    isLoading = false;
+    isLoading( false);
     update();
   }
 
@@ -105,7 +109,7 @@ print("called");
               "${DateFormat("yyyy-MM-dd").format(selectedDateTime!)} ${slots![slots!.length - 1]!.slotEndTime}");
           bookingService = BookingService(
               serviceName: 'Slot Booking',
-              serviceDuration: 30,
+              serviceDuration: 60,
               bookingEnd: bookingEnd!,
               bookingStart: bookingStart!);
         }
@@ -120,6 +124,8 @@ print("called");
       debugPrint("IN hEEr4 ${error.toString()}");
       Get.snackbar("Server Msg", error.toString());
     });
+    update();
+    refresh();
   }
 
   Future<void> bookFacilitySlot(startTime, endTime) async {

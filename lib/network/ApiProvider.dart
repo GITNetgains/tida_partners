@@ -535,9 +535,9 @@ class ApiProvider {
       if (datares.status == true) {
         return datares;
       } else {
-        AppUtills.showSnackBar("Error",
+     /*   AppUtills.showSnackBar("Error",
             datares.message ?? "Something Went Wrong. Please try again.",
-            isError: true);
+            isError: true);*/
       }
     }
     return null;
@@ -563,9 +563,9 @@ class ApiProvider {
       if (datares.status == true) {
         return datares;
       } else {
-        AppUtills.showSnackBar("Error",
+       /* AppUtills.showSnackBar("Error",
             datares.message ?? "Something Went Wrong. Please try again.",
-            isError: true);
+            isError: true);*/
       }
     }
     return null;

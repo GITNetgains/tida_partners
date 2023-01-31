@@ -109,6 +109,7 @@ class HomeScreen extends StatelessWidget {
                                                     final _c = Get.put(FacilityController());
                                                     _c.onInit();
                                                   }
+                                                  _controller.index(index);
                                                 await   Get.to(() => FacilitiesList());
                                                 Get.delete<FacilityController>();
 
