@@ -22,6 +22,10 @@ class FacilitiesList extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: PRIMARY_COLOR,
         onPressed: () {
+          _controller.isEdit(false);
+          _controller.selectedIndex((-1));
+          _controller.reset();
+
           Get.to(() => AddFacility());
         },
         child: Icon(Icons.add),
@@ -33,6 +37,7 @@ class FacilitiesList extends StatelessWidget {
               itemBuilder: (context, index) {
                 aa.Data item = _controller.dataResponse[index];
                 return Column(
+
                   children: [
                     ListTile(
                       trailing: Wrap(
@@ -56,17 +61,15 @@ class FacilitiesList extends StatelessWidget {
                               child: Icon(Icons.edit)), // icon-2
                         ],
                       ),
-                      title: Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            setHeadlineMedium(item.title ?? "N/A",
-                                color: Colors.black),
-                          ],
-                        ),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          setHeadlineMedium(item.title ?? "N/A",
+                              color: Colors.black),
+                        ],
                       ),
                     ),
-                    Divider()
+
                   ],
                 );
               },

@@ -84,7 +84,7 @@ class FacilityController extends GetxController {
         "price_per_slot": priceCtrl.text,
         "opening_time": openingCtrl.text,
         "closing_time": closingCtrl.text,
-        "available_24_hours": is24hrs.value?"0":"1",
+        "available_24_hours": is24hrs.value?"1":"0",
         "slot_length_hrs": slotLHourCtrl.text,
         "slot_length_min": slotLMinCtrl.text,
         "slot_frequency": "1",
@@ -95,6 +95,7 @@ class FacilityController extends GetxController {
       if(isEdit.value){
         data["id"] = dataResponse[selectedIndex.value].id??"";
       }
+      debugPrint(data.toString());
       bool saved = await ApiProvider().addFacility(data, isEdit.value);
       isLoading(false);
       Get.back(result: true);
@@ -143,7 +144,7 @@ class FacilityController extends GetxController {
 
   Future<void> fetchFacilities() async {
     isLoading(true);
-    aa.FacilityListResponse? response = await ApiProvider().fetchFacilities();
+    aa.FacilityListResponse? response = await ApiProvider().fetchFacilities(_homeController.getSelectedVenue().id??"");
     if (response != null) {
       if (response.status!) {
         if (response.data != null) {
@@ -171,9 +172,6 @@ class FacilityController extends GetxController {
       freqCtrl.text = item.slotFrequency ?? "";
       if ((item.activity??"false").contains("true")) {
         status(true);
-      }  else{
-        status(false);
-
       }
       update();
     }

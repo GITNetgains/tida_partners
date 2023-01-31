@@ -29,7 +29,7 @@ class FacilitySlotsVM extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+print("called");
     init();
   }
 
@@ -86,7 +86,6 @@ class FacilitySlotsVM extends GetxController {
 
     Map<String, String> data = {
       "userid": user_id.toString(),
-      "user_id": user_id.toString(),
       "token": token,
       "facility_id": _controller.dataResponse[_controller.selectedIndex.value].id.toString(),
       "date": selectedDate.toString()
