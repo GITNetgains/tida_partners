@@ -12,7 +12,7 @@ import 'fetch_facility_slots_model.dart' as slot;
 import 'fetch_facility_slots_model.dart';
 
 class FacilitySlotsVM extends GetxController {
-
+  final _fC = Get.put(FacilityController());
   String? userId, userName, token;
   RxList<slot.Datum?>? slots = <slot.Datum?>[].obs;
   bool hasCallSupport = false;
@@ -28,7 +28,7 @@ class FacilitySlotsVM extends GetxController {
   String? amt = "0";
   String? slotId = "";
   RxInt selectedSlot = (-1).obs;
-  RxBool isBooking  = false.obs;
+  RxBool isBooking = false.obs;
 
   bool isSameDay(DateTime? a, DateTime? b) {
     if (a == null || b == null) {
@@ -123,13 +123,13 @@ class FacilitySlotsVM extends GetxController {
     Map<String, String> data = {
       "userid": user_id.toString(),
       "token": token,
-      "facility_id": "1",
+      "facility_id": _fC.dataResponse[_fC.selectedIndex.value].id??"0",
       "date": selectedDate.toString()
     };
     debugPrint("v data $data");
     isLoading(true);
     await ApiProvider().fetchSlots(data).then((response) {
-      FetchSlotsResponseModel? res =response;
+      FetchSlotsResponseModel? res = response;
       debugPrint("IN hEEre1");
       if (res?.status == true) {
         debugPrint("IN hEEre");
@@ -163,7 +163,7 @@ class FacilitySlotsVM extends GetxController {
   }
 
   Future<void> bookFacilitySlot(startTime, endTime) async {
-   /* var data = {
+    /* var data = {
       "userid": userId.toString(),
       "token": token,
       "booking_user_id": userId.toString(),
@@ -199,10 +199,8 @@ class FacilitySlotsVM extends GetxController {
     });*/
   }
 
-
   @override
   void dispose() {
     super.dispose();
-
   }
 }

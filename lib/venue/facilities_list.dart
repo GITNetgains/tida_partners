@@ -22,59 +22,57 @@ class FacilitiesList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: PRIMARY_COLOR,
-        onPressed: () {
+        onPressed: () async {
           _controller.isEdit(false);
           _controller.selectedIndex((-1));
           _controller.reset();
 
-          Get.to(() => AddFacility());
+          await Get.to(() => AddFacility());
+          _controller.fetchFacilities();
         },
         child: Icon(Icons.add),
       ),
       body: Obx(() => _controller.isLoading.value
           ? showLoader()
-          : ListView.builder(
-              itemCount: _controller.dataResponse.length,
-              itemBuilder: (context, index) {
-                aa.Data item = _controller.dataResponse[index];
-                return Column(
-
-                  children: [
-                    ListTile(
-                      trailing: Wrap(
-                        spacing: 20, // space between two icons
-                        children: <Widget>[
-                          InkWell(
-                              onTap: () {
-                                //_controller.selectedIndex(index);
-                                Get.to(() => FacilitySlotsView());
-
-                              },
-                              child: Icon(Icons.edit_note)), // icon-1
-                          InkWell(
-                              onTap: () async {
-                                _controller.selectedIndex(index);
-                                _controller.isEdit(true);
-                                _controller.prefillData();
-                                await Get.to(() => AddFacility());
-                                _controller.fetchFacilities();
-                              },
-                              child: Icon(Icons.edit)), // icon-2
-                        ],
-                      ),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          setHeadlineMedium(item.title ?? "N/A",
-                              color: Colors.black),
-                        ],
-                      ),
-                    ),
-
+          : _controller.dataResponse.isNotEmpty?ListView.builder(
+        itemCount: _controller.dataResponse.length,
+        itemBuilder: (context, index) {
+          aa.Data item = _controller.dataResponse[index];
+          return Column(
+            children: [
+              ListTile(
+                trailing: Wrap(
+                  spacing: 20, // space between two icons
+                  children: <Widget>[
+                    InkWell(
+                        onTap: () {
+                          _controller.selectedIndex(index);
+                          Get.to(() => FacilitySlotsView());
+                        },
+                        child: Icon(Icons.edit_note)), // icon-1
+                    InkWell(
+                        onTap: () async {
+                          _controller.selectedIndex(index);
+                          _controller.isEdit(true);
+                          _controller.prefillData();
+                          await Get.to(() => AddFacility());
+                          _controller.fetchFacilities();
+                        },
+                        child: Icon(Icons.edit)), // icon-2
                   ],
-                );
-              },
-            )),
+                ),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    setHeadlineMedium(item.title ?? "N/A",
+                        color: Colors.black),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ):Center(child: setMediumLabel("Click on + Icon to add Facility."))),
     );
   }
 }

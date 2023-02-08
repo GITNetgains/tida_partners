@@ -19,20 +19,20 @@ class AcademyController extends GetxController {
   RxString selectedVenueId = "".obs;
   final academyCtrl = TextEditingController();
   final descriptionCtrl = TextEditingController();
-  final locationCtrl = TextEditingController();
+  //final locationCtrl = TextEditingController();
   final headCoachCtrl = TextEditingController();
   final timeCtrl = TextEditingController();
   final contactCtrl = TextEditingController();
   final serviceCtrl = TextEditingController();
   final skillCtrl = TextEditingController();
-  final coachExpCtrl = TextEditingController();
-  final ageCtrl = TextEditingController();
-  final groundSizeCtrl = TextEditingController();
-  final floodLightCtrl = TextEditingController();
-  final noOfAssistantCtrl = TextEditingController();
+  final coachExpCtrl = "1".obs;
+  final ageCtrl = "13-16".obs;
+  //final groundSizeCtrl = TextEditingController();
+  final floodLightCtrl = "Yes".obs;
+  final noOfAssistantCtrl = "1".obs;
   final assistantCoachNameCtrl = TextEditingController();
-  final capacityNameCtrl = TextEditingController();
-  final equipmentCtrl = TextEditingController();
+//  final capacityNameCtrl = TextEditingController();
+  //final equipmentCtrl = TextEditingController();
 
   final packageTitleController = TextEditingController();
   final priceController = TextEditingController();
@@ -85,18 +85,15 @@ class AcademyController extends GetxController {
     } else if (descriptionCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid description",
           isError: true);
-    } else if (locationCtrl.text.isEmpty) {
+    }/* else if (locationCtrl.text.isEmpty) {
       AppUtills.showSnackBar(
           "Required", "Please enter a valid venue location (address)",
           isError: true);
-    } else if (headCoachCtrl.text.isEmpty) {
+    }*/ else if (headCoachCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid name",
           isError: true);
     } else if (timeCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid time",
-          isError: true);
-    } else if (contactCtrl.text.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please enter a valid contact number",
           isError: true);
     }
     /* else if (serviceCtrl.text.isEmpty) {
@@ -106,17 +103,17 @@ class AcademyController extends GetxController {
     else if (skillCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
-    } else if (ageCtrl.text.isEmpty) {
+    } else if (ageCtrl.value.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
-    } else if (groundSizeCtrl.text.isEmpty) {
+    }/* else if (groundSizeCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid number",
           isError: true);
     } else if (capacityNameCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid capacity",
           isError: true);
-    } else if (floodLightCtrl.text.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please enter a valid number",
+    }*/ else if (floodLightCtrl.value.isEmpty) {
+      AppUtills.showSnackBar("Required", "Please select flood lights availability",
           isError: true);
     }
     /*else if (equipmentCtrl.text.isEmpty) {
@@ -134,16 +131,16 @@ class AcademyController extends GetxController {
       loading(true);
       Map<String, String> data = {
         "name": academyCtrl.text,
-        "address": locationCtrl.text,
+        "address":"-",
         "description": descriptionCtrl.text,
-        "contact_no": contactCtrl.text,
+        "contact_no": "-",
         "head_coach": headCoachCtrl.text,
         "session_timings": timeCtrl.text,
         "skill_level": skillCtrl.text,
-        "age_group_of_students": ageCtrl.text,
+        "age_group_of_students": ageCtrl.value,
         "assistant_coach": assistantCoachNameCtrl.text,
-        "flood_lights": floodLightCtrl.text,
-        "ground_size": groundSizeCtrl.text,
+        "flood_lights": floodLightCtrl.value,
+        "ground_size": "-",
         "status": "1",
         "week_days": "5",
         "remarks_price": "0",
@@ -152,10 +149,10 @@ class AcademyController extends GetxController {
         "remarks_students": "",
         "remarks_on_equipment": "",
         "session_plan": "-",
-        "capacity": capacityNameCtrl.text,
-        "equipment": equipmentCtrl.text,
-        "no_of_assistent_coach": noOfAssistantCtrl.text,
-        "coach_experience": coachExpCtrl.text,
+        "capacity": "-",
+        "equipment": "-",
+        "no_of_assistent_coach": noOfAssistantCtrl.value,
+        "coach_experience": coachExpCtrl.value,
         "venue_id": selectedVenueId.value,
         "id": selectedVenueId.value,
         "assistent_coach_name": assistantCoachNameCtrl.text,
@@ -240,20 +237,20 @@ class AcademyController extends GetxController {
       Data d = dataList[selectedIndex.value];
       academyCtrl.text = d.name ?? "";
       descriptionCtrl.text = d.description ?? "";
-      locationCtrl.text = d.address ?? "";
+     // locationCtrl.text = d.address ?? "";
       headCoachCtrl.text = d.headCoach ?? "";
       timeCtrl.text = d.sessionTimings ?? "";
       contactCtrl.text = d.contactNo ?? "";
       // serviceCtrl.text = d.se ??"";
       skillCtrl.text = d.skillLevel ?? "";
-      coachExpCtrl.text = d.coachExperience ?? "";
-      ageCtrl.text = d.ageGroupOfStudents ?? "";
-      groundSizeCtrl.text = d.groundSize ?? "";
-      floodLightCtrl.text = d.floodLights ?? "";
-      noOfAssistantCtrl.text = d.noOfAssistentCoach ?? "";
+      coachExpCtrl.value = d.coachExperience ?? "1";
+      ageCtrl.value = d.ageGroupOfStudents ?? "13-16";
+    //  groundSizeCtrl.text = d.groundSize ?? "";
+      floodLightCtrl.value = d.floodLights =="Yes"?"Yes":"No";
+      noOfAssistantCtrl.value = d.noOfAssistentCoach ?? "1";
       assistantCoachNameCtrl.text = d.assistentCoachName ?? "";
-      capacityNameCtrl.text = d.capacity ?? "";
-      equipmentCtrl.text = d.equipment ?? "";
+   //   capacityNameCtrl.text = d.capacity ?? "";
+     // equipmentCtrl.text = d.equipment ?? "";
       academyId(d.id);
       if (d.venueDetails != null) {
 
@@ -272,19 +269,19 @@ class AcademyController extends GetxController {
   void resetData() {
     academyCtrl.text = "";
     descriptionCtrl.text = "";
-    locationCtrl.text = "";
+   // locationCtrl.text = "";
     headCoachCtrl.text = "";
     timeCtrl.text = "";
     contactCtrl.text = "";
     skillCtrl.text = "";
-    coachExpCtrl.text = "";
-    ageCtrl.text = "";
-    groundSizeCtrl.text = "";
-    floodLightCtrl.text = "";
-    noOfAssistantCtrl.text = "";
+    coachExpCtrl.value = "";
+    ageCtrl.value = "13-16";
+//    groundSizeCtrl.text = "";
+    floodLightCtrl.value = "Yes";
+    noOfAssistantCtrl.value = "1";
     assistantCoachNameCtrl.text = "";
-    capacityNameCtrl.text = "";
-    equipmentCtrl.text = "";
+   // capacityNameCtrl.text = "";
+  //  equipmentCtrl.text = "";
     academyId("");
     filePath("");
   }

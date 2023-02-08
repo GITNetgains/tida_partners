@@ -21,6 +21,7 @@ class NavBar extends StatelessWidget {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -88,8 +89,8 @@ class NavBar extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.support_agent_sharp),
-            title: Text('Contact Tida Sport'),
-            onTap: () => _launchUrl,
+            title: Text('Contact Us'),
+            onTap: () => _launchUrl(),
           ),
           Divider(),
           ListTile(

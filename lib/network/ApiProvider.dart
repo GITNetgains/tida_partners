@@ -18,6 +18,7 @@ import '../booking_slot/fetch_facility_slots_model.dart';
 import 'api_constants.dart';
 import 'responses/ExperienceList.dart';
 import 'responses/SingleVenueDetails.dart';
+import 'responses/SponserResponse.dart';
 import 'responses/VenueListResponse.dart';
 import 'responses/academy_res.dart';
 import 'responses/facilityListResponse.dart';
@@ -594,9 +595,9 @@ class ApiProvider {
       if (datares.status == true) {
         return datares;
       } else {
-        AppUtills.showSnackBar("Error",
+       /* AppUtills.showSnackBar("Error",
             datares.message ?? "Something Went Wrong. Please try again.",
-            isError: true);
+            isError: true);*/
       }
     }
     return null;
@@ -688,6 +689,32 @@ class ApiProvider {
     print(jsonEncode(res.body));
     if (res.statusCode == 200) {
       SportsResponse datares = SportsResponse.fromJson(jsonDecode(res.body));
+      if (datares.status == true) {
+        return datares;
+      } else {
+        AppUtills.showSnackBar("Error",
+            datares.message ?? "Something Went Wrong. Please try again.",
+            isError: true);
+      }
+    }
+    return null;
+  }
+
+  Future<SponsorListResponse?> fetchSponsors() async {
+    String token = Preferences.getToken();
+    String user_id = Preferences.getUserId();
+    Map<String, String> data = {};
+    data['userid'] = user_id;
+    data['token'] = token;
+
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+    };
+    http.Response res =
+        await http.post(Uri.parse(FETCH_SPONSOR), headers: headers, body: data);
+    print(jsonEncode(res.body));
+    if (res.statusCode == 200) {
+      SponsorListResponse datares = SponsorListResponse.fromJson(jsonDecode(res.body));
       if (datares.status == true) {
         return datares;
       } else {

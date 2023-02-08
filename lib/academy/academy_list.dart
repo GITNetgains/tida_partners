@@ -78,7 +78,7 @@ class AcademyList extends StatelessWidget {
                                                   item.name ?? "N/A",
                                                   color: Colors.black),
                                               setMediumLabel(
-                                                  item.address ?? "N/A",
+                                                  item.description ?? "N/A",
                                                   color: Colors.grey),
                                             ],
                                           ),
@@ -95,7 +95,10 @@ class AcademyList extends StatelessWidget {
                                           child: OutlinedButton(
                                             onPressed: () async {
                                               _controller.isEditPackage(false);
+                                              _controller.selectedIndex(index);
+                                              _controller.academyId(_controller.dataList[_controller.selectedIndex.value].id);
                                               _controller.fetchPackages();
+
                                               await Get.to(() =>   AcademyPackageList());
                                               _controller.getAllAcademies();
                                             },
@@ -117,12 +120,14 @@ class AcademyList extends StatelessWidget {
                                           ),
                                         ),
                                         InkWell(
-                                          onTap: () {
-                                            Get.to(() => AddAcademy());
+                                          onTap: () async {
+
                                             _controller.isEdit(true);
                                             _controller.selectedIndex(index);
                                             _controller.academyId(item.id);
                                             _controller.setAcademyData();
+                                            await  Get.to(() => AddAcademy());
+                                            _controller.getAllAcademies();
                                           },
                                           child: const CircleAvatar(
                                             child: Icon(Icons.edit),

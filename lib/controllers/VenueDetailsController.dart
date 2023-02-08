@@ -41,7 +41,7 @@ class VenueDetailsController extends GetxController {
   var mapCtrl = TextEditingController();
  /* var openingCtrl = TextEditingController();
   var closingCtrl = TextEditingController();*/
-  var taxCtrl = TextEditingController();
+  //var taxCtrl = TextEditingController();
   var videoCtrl = TextEditingController();
   var kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
   RxString lat = "".obs;
@@ -112,10 +112,10 @@ class VenueDetailsController extends GetxController {
     } else if (mapCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter location url",
           isError: true);
-    } else if (taxCtrl.text.isEmpty) {
+    }/* else if (taxCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid tax amount",
           isError: true);
-    } else if (tags.isEmpty) {
+    }*/ else if (tags.isEmpty) {
       AppUtills.showSnackBar("Required", "Please select Amenities",
           isError: true);
     } else {
@@ -273,7 +273,7 @@ class VenueDetailsController extends GetxController {
 /*
     openingCtrl.text = d.data!.first.tim ?? "N/A";
 */
-    taxCtrl.text = d.data!.first.id ?? "N/A";
+   // taxCtrl.text = d.data!.first.id ?? "N/A";
     videoCtrl.text = d.data!.first.videoUrl ?? "N/A";
     tags(getAmenitiesNames(d.data!.first.amenities!.split(",")));
     print(d.data!.first.sports);

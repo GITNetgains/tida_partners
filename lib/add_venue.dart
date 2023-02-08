@@ -200,7 +200,7 @@ class AddVenue extends StatelessWidget {
                           ),
                         ),
                         getVerticalSpace(),*/
-                        TextField(
+                     /*   TextField(
                           onChanged: (_) {
                             _controller.vTax(_);
                           },
@@ -220,7 +220,7 @@ class AddVenue extends StatelessWidget {
                             ),
                           ),
                         ),
-                        getVerticalSpace(),
+                        getVerticalSpace(),*/
                         TextField(
                           onChanged: (_) {
                             _controller.vTax(_);

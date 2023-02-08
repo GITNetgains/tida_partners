@@ -22,6 +22,9 @@ class TournamentList extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           _controller.isEdit(false);
+          _controller.selectedSponsor.clear();
+          _controller.selectedIndex(-1);
+          _controller.preFillData();
           await Get.to(() => AddTournament());
           _controller.fetchTournament();
         },
@@ -68,7 +71,9 @@ class TournamentList extends StatelessWidget {
                             onTap: () async {
                               _controller.isEdit(true);
                               _controller.selectedIndex(index);
+                              _controller.selectedSponsor.clear();
                               _controller.preFillData();
+
                               await Get.to(() => AddTournament());
                               _controller.isEdit(false);
                               _controller.fetchTournament();

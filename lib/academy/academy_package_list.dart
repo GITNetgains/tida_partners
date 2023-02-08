@@ -41,13 +41,11 @@ class AcademyPackageList extends StatelessWidget {
                     _controller.isEditPackage(true);
                     _controller.selectedPackage(index);
                     _controller.setAcademyData(reset: false);
-
                     openAddPack();
-
-
                   },
                   child: ListTile(
-                    leading: CircleAvatar(child: Icon(Icons.star, color: Colors.white,), backgroundColor: PRIMARY_COLOR,),
+                    trailing: Icon(Icons.edit),
+                    leading: const CircleAvatar(child: Icon(Icons.star, color: Colors.white,), backgroundColor: PRIMARY_COLOR,),
                     subtitle: setMediumLabel('₹${(_controller.packageList[index].price??"-").capitalizeFirst!}'),
                     title: setMediumLabel((_controller.packageList[index].title??"-").capitalizeFirst!),
 

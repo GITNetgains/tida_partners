@@ -10,12 +10,9 @@ class TournamentListResponse {
     message = json['message'];
     if (json['data'] != null) {
       data = <Data>[];
-    try{
-
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
-    }catch(e){}
     }
   }
 
@@ -45,6 +42,7 @@ class Data {
   String? image;
   String? url;
   String? approved;
+  List<Sponsors>? sponsors;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -66,6 +64,7 @@ class Data {
         this.image,
         this.url,
         this.approved,
+        this.sponsors,
         this.status,
         this.createdAt,
         this.updatedAt,
@@ -85,8 +84,14 @@ class Data {
     description = json['description'];
     type = json['type'];
     image = json['image'];
-    url = json['url']??"";
+    url = json['url'];
     approved = json['approved'];
+    if (json['sponsors'] != null) {
+      sponsors = <Sponsors>[];
+      json['sponsors'].forEach((v) {
+        sponsors!.add(new Sponsors.fromJson(v));
+      });
+    }
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -115,6 +120,9 @@ class Data {
     data['image'] = this.image;
     data['url'] = this.url;
     data['approved'] = this.approved;
+    if (this.sponsors != null) {
+      data['sponsors'] = this.sponsors!.map((v) => v.toJson()).toList();
+    }
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
@@ -127,6 +135,47 @@ class Data {
   }
 }
 
+class Sponsors {
+  String? id;
+  String? name;
+  String? website;
+  String? contact;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+
+  Sponsors(
+      {this.id,
+        this.name,
+        this.website,
+        this.contact,
+        this.status,
+        this.createdAt,
+        this.updatedAt});
+
+  Sponsors.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    website = json['website'];
+    contact = json['contact'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['website'] = this.website;
+    data['contact'] = this.contact;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
 class AcademyDetails {
   String? id;
   String? userId;
@@ -134,8 +183,8 @@ class AcademyDetails {
   String? name;
   String? address;
   String? logo;
-  Null? latitude;
-  Null? longitude;
+  String? latitude;
+  String? longitude;
   String? description;
   String? contactNo;
   String? headCoach;

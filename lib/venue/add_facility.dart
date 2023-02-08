@@ -200,7 +200,7 @@ class AddFacility extends StatelessWidget {
 
               ),
             ),),
-            TextField(
+            /*TextField(
               controller: _controller.slotLHourCtrl,
               onChanged: (_) {},
               textAlignVertical: TextAlignVertical.top,
@@ -219,7 +219,7 @@ class AddFacility extends StatelessWidget {
                 ),
               ),
             ),
-            getVerticalSpace(),
+            getVerticalSpace(),*/
             TextField(
               controller: _controller.slotLMinCtrl,
               onChanged: (_) {},

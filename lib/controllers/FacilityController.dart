@@ -60,11 +60,11 @@ class FacilityController extends GetxController {
       AppUtills.showSnackBar(
           "Required", "Please enter valid closing time",
           isError: true);
-    } else if (slotLHourCtrl.text.isEmpty) {
+    }/* else if (slotLHourCtrl.text.isEmpty) {
       AppUtills.showSnackBar(
           "Required", "Please enter valid number for slot hour",
           isError: true);
-    } else if (slotLMinCtrl.text.isEmpty) {
+    }*/ else if (slotLMinCtrl.text.isEmpty) {
       AppUtills.showSnackBar(
           "Required", "Please enter valid number for slot minutes",
           isError: true);
@@ -85,7 +85,7 @@ class FacilityController extends GetxController {
         "opening_time": openingCtrl.text,
         "closing_time": closingCtrl.text,
         "available_24_hours": is24hrs.value?"1":"0",
-        "slot_length_hrs": slotLHourCtrl.text,
+        "slot_length_hrs": "0",
         "slot_length_min": slotLMinCtrl.text,
         "slot_frequency": "1",
         "activity": status.value.toString(),

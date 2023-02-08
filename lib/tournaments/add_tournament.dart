@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tida_partners/controllers/tournament_controller.dart';
 import 'package:tida_partners/tournaments/select_academy.dart';
+import 'package:tida_partners/tournaments/sponsor_list.dart';
 
 import '../AppColors.dart';
 import '../utilss/size_config.dart';
@@ -104,6 +106,7 @@ class AddTournament extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -143,7 +146,7 @@ class AddTournament extends StatelessWidget {
                           ),
                         ),
                       ),
-                      InkWell(
+                      /* InkWell(
                         onTap: () {},
                         child: Padding(
                           padding: const EdgeInsets.all(2.0),
@@ -158,27 +161,22 @@ class AddTournament extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),
+                      ),*/
                       getVerticalSpace(),
-                      Obx(
-                        () => Visibility(
-                          visible: _controller.isOnline.value,
-                          child: TextField(
-                            controller: _controller.urlController,
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                              label: setMediumLabel(
-                                "URL",
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: PRIMARY_COLOR),
-                              ),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 3, color: Colors.greenAccent),
-                              ),
-                            ),
+                      TextField(
+                        controller: _controller.urlController,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          label: setMediumLabel(
+                            "URL",
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: PRIMARY_COLOR),
+                          ),
+                          border: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 3, color: Colors.greenAccent),
                           ),
                         ),
                       ),
@@ -207,7 +205,7 @@ class AddTournament extends StatelessWidget {
                         cursorColor: Colors.black,
                         decoration: InputDecoration(
                           label: setMediumLabel(
-                            "Price",
+                            "Registration & Entry charges",
                           ),
                           focusedBorder: const OutlineInputBorder(
                             borderSide:
@@ -220,7 +218,51 @@ class AddTournament extends StatelessWidget {
                         ),
                       ),
                       getVerticalSpace(),
-                      TextField(
+                      getVerticalSpace(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: setHeadlineMedium("Select Sponsors",
+                                color: PRIMARY_COLOR),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.to(() => SponsorList());
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: CircleAvatar(
+                                  backgroundColor: PRIMARY_COLOR,
+                                  child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      getVerticalSpace(),
+                    Obx(() => _controller.selectedSponsor.isEmpty
+                        ? Container()
+                        : SizedBox(
+                      width: double.infinity,
+                          child: ChipsChoice<String>.multiple(
+
+                      choiceCheckmark: false,
+
+                      value: _controller.selectedSponsor,
+                      onChanged: (val) => {},
+                      choiceItems: C2Choice.listFrom<String, String>(
+                          source: _controller.selectedSponsor,
+                          value: (i, v) => v,
+                          label: (i, v) => v.toUpperCase(),
+                      ),
+                    ),
+                        )),
+                      getVerticalSpace(),
+                      /* TextField(
                         keyboardType: TextInputType.number,
                         controller: _controller.noOfTicketController,
                         cursorColor: Colors.black,
@@ -238,11 +280,10 @@ class AddTournament extends StatelessWidget {
                           ),
                         ),
                       ),
-                      getVerticalSpace(),
+                      getVerticalSpace(),*/
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           _controller.selectStartDate(context);
-
                         },
                         child: TextField(
                           enabled: false,
@@ -257,17 +298,16 @@ class AddTournament extends StatelessWidget {
                                   BorderSide(width: 1, color: PRIMARY_COLOR),
                             ),
                             border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 3, color: Colors.greenAccent),
+                              borderSide: BorderSide(
+                                  width: 3, color: Colors.greenAccent),
                             ),
                           ),
                         ),
                       ),
                       getVerticalSpace(),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           _controller.selectEndTime(context);
-
                         },
                         child: TextField(
                           enabled: false,
@@ -282,8 +322,8 @@ class AddTournament extends StatelessWidget {
                                   BorderSide(width: 1, color: PRIMARY_COLOR),
                             ),
                             border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 3, color: Colors.greenAccent),
+                              borderSide: BorderSide(
+                                  width: 3, color: Colors.greenAccent),
                             ),
                           ),
                         ),

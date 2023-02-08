@@ -104,14 +104,13 @@ class HomeScreen extends StatelessWidget {
                                               SizeConfig.screenWidth / 1.3,
                                               child: OutlinedButton(
                                                 onPressed: () async {
+                                                  _controller.index(index);
                                                   bool test = Get.isRegistered<FacilityController>();
                                                   if (test) {
                                                     final _c = Get.put(FacilityController());
                                                     _c.onInit();
                                                   }
-                                                  _controller.index(index);
                                                 await   Get.to(() => FacilitiesList());
-                                                Get.delete<FacilityController>();
 
                                                 },
                                                 style: ButtonStyle(

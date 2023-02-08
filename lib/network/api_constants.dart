@@ -32,3 +32,4 @@ const DELETE_PACKAGE='${BASE_URL}/Academy_api/deletepackageData';
 const DELETE_ACADEMY='${BASE_URL}/Academy_api/deleteData';
 const FETCH_VENU_SLOTS='${BASE_URL}/Facility_api/getFacilitySlots';
 const FETCH_ORDERS='${BASE_URL}/Order_api/getAllData';
+const FETCH_SPONSOR='${BASE_URL}/Tournament_api/getsponsersData';
