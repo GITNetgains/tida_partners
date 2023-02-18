@@ -50,97 +50,102 @@ class AcademyList extends StatelessWidget {
                       itemCount: _controller.dataList.length,
                       itemBuilder: (context, index) {
                         Data item = _controller.dataList[index];
-                        return Card(
-                          elevation: 5,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(5),
-                                      topLeft: Radius.circular(5)),
-                                  child: getImageWidget(item.logo ?? "-")),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Flexible(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              setHeadlineMedium(
-                                                  item.name ?? "N/A",
-                                                  color: Colors.black),
-                                              setMediumLabel(
-                                                  item.description ?? "N/A",
-                                                  color: Colors.grey),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.all(8),
-                                          width: SizeConfig.screenWidth / 1.3,
-                                          child: OutlinedButton(
-                                            onPressed: () async {
-                                              _controller.isEditPackage(false);
-                                              _controller.selectedIndex(index);
-                                              _controller.academyId(_controller.dataList[_controller.selectedIndex.value].id);
-                                              _controller.fetchPackages();
+                        return Container(
+                          margin: EdgeInsets.only(
+                            bottom: (index ==_controller.dataList.length-1  &&_controller.dataList.length != 1)?100:0),
 
-                                              await Get.to(() =>   AcademyPackageList());
+                            child: Card(
+                            elevation: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(5),
+                                        topLeft: Radius.circular(5)),
+                                    child: getImageWidget(item.logo ?? "-")),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                setHeadlineMedium(
+                                                    item.name ?? "N/A",
+                                                    color: Colors.black),
+                                                setMediumLabel(
+                                                    item.description ?? "N/A",
+                                                    color: Colors.grey),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(8),
+                                            width: SizeConfig.screenWidth / 1.3,
+                                            child: OutlinedButton(
+                                              onPressed: () async {
+                                                _controller.isEditPackage(false);
+                                                _controller.selectedIndex(index);
+                                                _controller.academyId(_controller.dataList[_controller.selectedIndex.value].id);
+                                                _controller.fetchPackages();
+
+                                                await Get.to(() =>   AcademyPackageList());
+                                                _controller.getAllAcademies();
+                                              },
+                                              style: ButtonStyle(
+                                                side: MaterialStateProperty.all(
+                                                    const BorderSide(
+                                                        color: PRIMARY_COLOR)),
+                                                foregroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.red),
+                                                shape: MaterialStateProperty.all(
+                                                    RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                30.0))),
+                                              ),
+                                              child:
+                                                  const Text("Manage Packages"),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () async {
+
+                                              _controller.isEdit(true);
+                                              _controller.selectedIndex(index);
+                                              _controller.academyId(item.id);
+                                              _controller.setAcademyData();
+                                              await  Get.to(() => AddAcademy());
                                               _controller.getAllAcademies();
                                             },
-                                            style: ButtonStyle(
-                                              side: MaterialStateProperty.all(
-                                                  const BorderSide(
-                                                      color: PRIMARY_COLOR)),
-                                              foregroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.red),
-                                              shape: MaterialStateProperty.all(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.0))),
+                                            child: const CircleAvatar(
+                                              child: Icon(Icons.edit),
+                                              foregroundColor: Colors.white,
+                                              backgroundColor: Colors.grey,
                                             ),
-                                            child:
-                                                const Text("Manage Packages"),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () async {
-
-                                            _controller.isEdit(true);
-                                            _controller.selectedIndex(index);
-                                            _controller.academyId(item.id);
-                                            _controller.setAcademyData();
-                                            await  Get.to(() => AddAcademy());
-                                            _controller.getAllAcademies();
-                                          },
-                                          child: const CircleAvatar(
-                                            child: Icon(Icons.edit),
-                                            foregroundColor: Colors.white,
-                                            backgroundColor: Colors.grey,
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },

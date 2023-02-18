@@ -55,7 +55,7 @@ class TournamentController extends GetxController {
     Map<String, String> data = {
       "academy": selectedAcademyID.value,
       "title": titleController.text,
-      "no_of_tickets": "",
+      "no_of_tickets": "-",
       "price": priceController.text,
       "start_date": startDateController.text,
       "end_date": endDateController.text,
@@ -67,7 +67,7 @@ class TournamentController extends GetxController {
     };
     print(data);
     for (MapEntry<String, String> item in data.entries) {
-      if (item.value.isEmpty && item.key != "no_of_tickets") {
+      if (item.value.isEmpty ) {
         AppUtills.showSnackBar("Required", "All fields are required${item.key}",
             isError: true);
         return;
@@ -179,7 +179,11 @@ class TournamentController extends GetxController {
       endDateController.text = item.endDate ?? "";
       selectedAcademyID.value = item.academyId ?? "-";
       selectedId.value = item.id ?? "";
-      selectedAcademy.value = item.academyDetails?.first.name ?? "";
+      try{
+        selectedAcademy.value = item.academyDetails?.first.name ?? "";
+
+
+      }catch(e){}
       filePath(item.image);
       update();
       item.sponsors?.forEach((element) {

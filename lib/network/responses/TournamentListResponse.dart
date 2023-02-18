@@ -33,7 +33,7 @@ class Data {
   String? academyId;
   String? title;
   String? noOfTickets;
-  String? ticketsLeft;
+  Null? ticketsLeft;
   String? price;
   String? startDate;
   String? endDate;
@@ -95,12 +95,15 @@ class Data {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    rating = json['rating'];
+    rating = false;
     if (json['academy_details'] != null) {
       academyDetails = <AcademyDetails>[];
-      json['academy_details'].forEach((v) {
-        academyDetails!.add(new AcademyDetails.fromJson(v));
-      });
+      try{
+        json['academy_details'].forEach((v) {
+          academyDetails!.add(new AcademyDetails.fromJson(v));
+        });
+
+      }catch(w){}
     }
   }
 
@@ -142,7 +145,7 @@ class Sponsors {
   String? contact;
   String? status;
   String? createdAt;
-  String? updatedAt;
+  Null? updatedAt;
 
   Sponsors(
       {this.id,
@@ -183,8 +186,8 @@ class AcademyDetails {
   String? name;
   String? address;
   String? logo;
-  String? latitude;
-  String? longitude;
+  Null? latitude;
+  Null? longitude;
   String? description;
   String? contactNo;
   String? headCoach;
@@ -209,7 +212,7 @@ class AcademyDetails {
   String? noOfAssistentCoach;
   String? assistentCoachName;
   String? feedbacks;
-  String? amenitiesId;
+  Null? amenitiesId;
   String? status;
   String? createdAt;
   String? updatedAt;

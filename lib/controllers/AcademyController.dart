@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/ApiProvider.dart';
-import 'package:tida_partners/network/api_constants.dart';
-import 'package:tida_partners/network/responses/VenueListResponse.dart' as v;
-import 'package:tida_partners/network/responses/academy_res.dart';
 import 'package:tida_partners/network/responses/PackageListResponse.dart'
     as pac;
+import 'package:tida_partners/network/responses/VenueListResponse.dart' as v;
+import 'package:tida_partners/network/responses/academy_res.dart';
 
 import '../AppUtils.dart';
 
@@ -19,6 +18,7 @@ class AcademyController extends GetxController {
   RxString selectedVenueId = "".obs;
   final academyCtrl = TextEditingController();
   final descriptionCtrl = TextEditingController();
+
   //final locationCtrl = TextEditingController();
   final headCoachCtrl = TextEditingController();
   final timeCtrl = TextEditingController();
@@ -27,10 +27,12 @@ class AcademyController extends GetxController {
   final skillCtrl = TextEditingController();
   final coachExpCtrl = "1".obs;
   final ageCtrl = "13-16".obs;
+
   //final groundSizeCtrl = TextEditingController();
   final floodLightCtrl = "Yes".obs;
   final noOfAssistantCtrl = "1".obs;
   final assistantCoachNameCtrl = TextEditingController();
+
 //  final capacityNameCtrl = TextEditingController();
   //final equipmentCtrl = TextEditingController();
 
@@ -77,7 +79,7 @@ class AcademyController extends GetxController {
   }
 
   Future<void> saveAcademy() async {
-    if ( selectedVenueId.value.isEmpty) {
+    if (selectedVenueId.value.isEmpty) {
       AppUtills.showSnackBar("Required", "Please select venue", isError: true);
     } else if (academyCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid academy name",
@@ -85,11 +87,13 @@ class AcademyController extends GetxController {
     } else if (descriptionCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid description",
           isError: true);
-    }/* else if (locationCtrl.text.isEmpty) {
+    }
+    /* else if (locationCtrl.text.isEmpty) {
       AppUtills.showSnackBar(
           "Required", "Please enter a valid venue location (address)",
           isError: true);
-    }*/ else if (headCoachCtrl.text.isEmpty) {
+    }*/
+    else if (headCoachCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid name",
           isError: true);
     } else if (timeCtrl.text.isEmpty) {
@@ -106,14 +110,17 @@ class AcademyController extends GetxController {
     } else if (ageCtrl.value.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
-    }/* else if (groundSizeCtrl.text.isEmpty) {
+    }
+    /* else if (groundSizeCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid number",
           isError: true);
     } else if (capacityNameCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid capacity",
           isError: true);
-    }*/ else if (floodLightCtrl.value.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please select flood lights availability",
+    }*/
+    else if (floodLightCtrl.value.isEmpty) {
+      AppUtills.showSnackBar(
+          "Required", "Please select flood lights availability",
           isError: true);
     }
     /*else if (equipmentCtrl.text.isEmpty) {
@@ -131,7 +138,7 @@ class AcademyController extends GetxController {
       loading(true);
       Map<String, String> data = {
         "name": academyCtrl.text,
-        "address":"-",
+        "address": "-",
         "description": descriptionCtrl.text,
         "contact_no": "-",
         "head_coach": headCoachCtrl.text,
@@ -173,31 +180,33 @@ class AcademyController extends GetxController {
     }
   }
 
-  Future<void>savePackage()async {
+  Future<void> savePackage() async {
     if (packageTitleController.text.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please enter package name", isError: true);
+      AppUtills.showSnackBar("Required", "Please enter package name",
+          isError: true);
     } else if (descriptionCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid description",
           isError: true);
     } else if (priceController.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid price",
           isError: true);
-    }else{
+    } else {
       loading(true);
       Map<String, String> data = {
         "title": packageTitleController.text,
         "description": descriptionCtrl.text,
         "academy": academyId.value,
         "price": priceController.text,
-
       };
       print(data);
       bool saved = false;
       if (!isEditPackage.value) {
-        saved = await ApiProvider().addAcademy(data, filePath.value, isPackage: true);
+        saved = await ApiProvider()
+            .addAcademy(data, filePath.value, isPackage: true);
       } else {
         data["id"] = packageList[selectedPackage.value].id.toString();
-        saved = await ApiProvider().updateAcademy(data, filePath.value,isPackage: true);
+        saved = await ApiProvider()
+            .updateAcademy(data, filePath.value, isPackage: true);
       }
 
       loading(false);
@@ -205,9 +214,7 @@ class AcademyController extends GetxController {
         Get.back(result: true);
         //  Get.delete<AcademyController>();
       }
-
     }
-
   }
 
   Future<void> selectImage() async {
@@ -217,18 +224,19 @@ class AcademyController extends GetxController {
     }
   }
 
-  void setAcademyData({bool reset =false}) {
+  void setAcademyData({bool reset = false}) {
     if (reset) {
-      packageTitleController.text ="";
-      descriptionCtrl.text ="";
-      priceController.text ="";
+      packageTitleController.text = "";
+      descriptionCtrl.text = "";
+      priceController.text = "";
       return;
     }
     if (isEditPackage.value) {
-
-      packageTitleController.text = packageList[selectedPackage.value].title??"";
-      descriptionCtrl.text = packageList[selectedPackage.value].description??"";
-      priceController.text = packageList[selectedPackage.value].price??"";
+      packageTitleController.text =
+          packageList[selectedPackage.value].title ?? "";
+      descriptionCtrl.text =
+          packageList[selectedPackage.value].description ?? "";
+      priceController.text = packageList[selectedPackage.value].price ?? "";
       print("sssssss");
       return;
     }
@@ -237,7 +245,7 @@ class AcademyController extends GetxController {
       Data d = dataList[selectedIndex.value];
       academyCtrl.text = d.name ?? "";
       descriptionCtrl.text = d.description ?? "";
-     // locationCtrl.text = d.address ?? "";
+      // locationCtrl.text = d.address ?? "";
       headCoachCtrl.text = d.headCoach ?? "";
       timeCtrl.text = d.sessionTimings ?? "";
       contactCtrl.text = d.contactNo ?? "";
@@ -245,19 +253,23 @@ class AcademyController extends GetxController {
       skillCtrl.text = d.skillLevel ?? "";
       coachExpCtrl.value = d.coachExperience ?? "1";
       ageCtrl.value = d.ageGroupOfStudents ?? "13-16";
-    //  groundSizeCtrl.text = d.groundSize ?? "";
-      floodLightCtrl.value = d.floodLights =="Yes"?"Yes":"No";
+      //  groundSizeCtrl.text = d.groundSize ?? "";
+      floodLightCtrl.value = d.floodLights == "Yes" ? "Yes" : "No";
       noOfAssistantCtrl.value = d.noOfAssistentCoach ?? "1";
       assistantCoachNameCtrl.text = d.assistentCoachName ?? "";
-   //   capacityNameCtrl.text = d.capacity ?? "";
-     // equipmentCtrl.text = d.equipment ?? "";
+      //   capacityNameCtrl.text = d.capacity ?? "";
+      // equipmentCtrl.text = d.equipment ?? "";
       academyId(d.id);
       if (d.venueDetails != null) {
+        try{
+          selectedVenue(d.venueDetails!.first.title ?? "N/A");
+          selectedVenueId(d.venueDetails!.first.id ?? "N/A");
+          filePath(d.logo);
 
-        selectedVenue(d.venueDetails!.first.title ?? "N/A");
-        selectedVenueId(d.venueDetails!.first.id ?? "N/A");
-        filePath(d.logo);
+        }catch(w){
 
+
+        }
 
       } else {
         selectedVenue("");
@@ -269,7 +281,7 @@ class AcademyController extends GetxController {
   void resetData() {
     academyCtrl.text = "";
     descriptionCtrl.text = "";
-   // locationCtrl.text = "";
+    // locationCtrl.text = "";
     headCoachCtrl.text = "";
     timeCtrl.text = "";
     contactCtrl.text = "";
@@ -280,8 +292,8 @@ class AcademyController extends GetxController {
     floodLightCtrl.value = "Yes";
     noOfAssistantCtrl.value = "1";
     assistantCoachNameCtrl.text = "";
-   // capacityNameCtrl.text = "";
-  //  equipmentCtrl.text = "";
+    // capacityNameCtrl.text = "";
+    //  equipmentCtrl.text = "";
     academyId("");
     filePath("");
   }
@@ -299,9 +311,14 @@ class AcademyController extends GetxController {
     }
     loading(false);
   }
-  void deletePackage({bool isAcademy= false}) async {
+
+  void deletePackage({bool isAcademy = false}) async {
     loading(true);
-    bool response = await ApiProvider().deletePackage(isAcademy?academyId.value:packageList[selectedPackage.value].id??"", isAcademy: isAcademy);
+    bool response = await ApiProvider().deletePackage(
+        isAcademy
+            ? academyId.value
+            : packageList[selectedPackage.value].id ?? "",
+        isAcademy: isAcademy);
     if (response) {
       Get.back();
     }

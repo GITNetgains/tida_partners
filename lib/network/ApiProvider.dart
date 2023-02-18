@@ -357,7 +357,7 @@ class ApiProvider {
     request.fields.assignAll(data);
 
     if (path.isNotEmpty) {
-      request.files.add(await http.MultipartFile.fromPath("logo", path));
+      request.files.add(await http.MultipartFile.fromPath("image", path));
     }
 
     //for completeing the request
@@ -610,9 +610,11 @@ class ApiProvider {
     data['userid'] = user_id;
     data['token'] = token;
     data['post_id'] = id;
+    data['id'] = id;
     Map<String, String> headers = {
       'Accept': 'application/json',
     };
+    print(data);
     http.Response res =
         await http.post(Uri.parse(FETCH_MEDIA), headers: headers, body: data);
     print(jsonEncode(res.body));

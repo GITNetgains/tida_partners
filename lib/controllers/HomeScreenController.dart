@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/add_venue.dart';
@@ -83,7 +85,7 @@ class HomeScreenController extends GetxController {
     loading(true);
     Map<String, String> data = {
       "name": imagePath.value.split("/").last,
-      "image": imagePath.value.split("/").last,
+
       "post_id": getSelectedVenue().id!,
       "post_type": "venue",
       "status": "1",
@@ -113,13 +115,11 @@ class HomeScreenController extends GetxController {
     MediaData.MediaListResponse? datares =
         await ApiProvider().fetchMedia(getSelectedVenue().id!);
     if (datares?.status == true) {
-      imageList(datares!.data!);
+      print(jsonEncode(datares!.data));
+      imageList(datares!.data);
       update();
     }
-    if(imageList.isEmpty){
-      imageList.add(MediaData.Data(image: getSelectedVenue().image));
 
-    }
     loading(false);
   }
 

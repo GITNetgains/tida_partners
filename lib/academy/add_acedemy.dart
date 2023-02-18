@@ -20,18 +20,18 @@ class AddAcademy extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("Add Academy details"),
-        /*  actions: [
-          Obx(() => _controller.isEdit.value
+        actions: [
+        /*  Obx(() => _controller.isEdit.value
               ? InkWell(
-              onTap: () {
-                showAlertDialog(context);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.delete),
-              ))
-              : Container())
-        ],*/
+                  onTap: () {
+                    showAlertDialog(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.delete),
+                  ))
+              : Container())*/
+        ],
       ),
       body: Obx(() => _controller.loading.value
           ? showLoader()
@@ -41,59 +41,85 @@ class AddAcademy extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      child: InkWell(
-                        onTap: () {
-                          _controller.selectImage();
-                        },
-                        child: Obx(() => (_controller.filePath.value.isNotEmpty)
-                            ? (_controller.filePath.startsWith("https"))
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.all(Radius.circular(8))),
+                          child: InkWell(
+                            onTap: () {
+                              _controller.selectImage();
+                            },
+                            child: Obx(() => (_controller.filePath.value.isNotEmpty)
+                                ? (_controller.filePath.startsWith("https"))
                                 ? ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(5),
-                                        topLeft: Radius.circular(5)),
-                                    child: Container(
-                                      width: double.infinity,
-                                      child: FadeInImage(
-                                        image: NetworkImage(
-                                            _controller.filePath.value),
-                                        height: SizeConfig.screenWidth / 2,
-                                        fit: BoxFit.cover,
-                                        placeholderFit: BoxFit.fitWidth,
-                                        placeholder: const AssetImage(
-                                          "assets/no_image.png",
-                                        ),
-                                        imageErrorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Image.asset(
-                                              'assets/no_image.png',
-                                              fit: BoxFit.fitWidth);
-                                        },
-                                      ),
-                                    ))
-                                : Image.file(
-                                    File(_controller.filePath.value),
+                                borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(5),
+                                    topLeft: Radius.circular(5)),
+                                child: Container(
+                                  width: double.infinity,
+                                  child: FadeInImage(
+                                    image: NetworkImage(
+                                        _controller.filePath.value),
                                     height: SizeConfig.screenWidth / 2,
                                     fit: BoxFit.cover,
-                                  )
-                            : SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.add),
-                                      setMediumLabel(
-                                          "Click here to add Academy image")
-                                    ],
+                                    placeholderFit: BoxFit.fitWidth,
+                                    placeholder: const AssetImage(
+                                      "assets/no_image.png",
+                                    ),
+                                    imageErrorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Image.asset(
+                                          'assets/no_image.png',
+                                          fit: BoxFit.fitWidth);
+                                    },
+                                  ),
+                                ))
+                                : Image.file(
+                              File(_controller.filePath.value),
+                              height: SizeConfig.screenWidth / 2,
+                              fit: BoxFit.cover,
+                            )
+                                : SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.add),
+                                    setMediumLabel(
+                                        "Click here to add Academy image")
+                                  ],
+                                ),
+                              ),
+                            )),
+                          ),
+                        ),
+                       _controller.filePath.value.isEmpty?Container(): Positioned(
+                            bottom: 1,
+                            right: 1,
+                            child: InkWell(
+                              onTap: (){
+                                _controller.selectImage();
+
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.black.withOpacity(0.7),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(Icons.edit, color: Colors.white,),
                                   ),
                                 ),
-                              )),
-                      ),
+                              ),
+                            ))
+
+                      ],
+
                     ),
                   ),
                   Padding(
@@ -271,8 +297,6 @@ class AddAcademy extends StatelessWidget {
                           ),
                         ),
                         getVerticalSpace(),
-
-
                         TextField(
                           controller: _controller.assistantCoachNameCtrl,
                           cursorColor: Colors.black,
@@ -282,7 +306,7 @@ class AddAcademy extends StatelessWidget {
                             ),
                             focusedBorder: const OutlineInputBorder(
                               borderSide:
-                              BorderSide(width: 1, color: PRIMARY_COLOR),
+                                  BorderSide(width: 1, color: PRIMARY_COLOR),
                             ),
                             border: const OutlineInputBorder(
                               borderSide: BorderSide(
@@ -329,13 +353,14 @@ class AddAcademy extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 setMediumLabel("Flood Lights"),
-                               Obx(() =>  DropdownButton(
-                                 value: _controller.floodLightCtrl.value,
-                                 items: floodLightMenu,
-                                 onChanged: (String? value) {
-                                   _controller.floodLightCtrl(value ?? "No");
-                                 },
-                               )),
+                                Obx(() => DropdownButton(
+                                      value: _controller.floodLightCtrl.value,
+                                      items: floodLightMenu,
+                                      onChanged: (String? value) {
+                                        _controller
+                                            .floodLightCtrl(value ?? "No");
+                                      },
+                                    )),
                               ]),
                         ),
                         Padding(
@@ -344,14 +369,13 @@ class AddAcademy extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 setMediumLabel("Coach Experience"),
-                                Obx(() =>  DropdownButton(
-                                  value: _controller.coachExpCtrl.value,
-                                  items: counterMenu,
-                                  onChanged: (String? value) {
-                                    _controller.coachExpCtrl(value ?? "1");
-                                  },
-                                )),
-
+                                Obx(() => DropdownButton(
+                                      value: _getExperience(),
+                                      items: counterMenu,
+                                      onChanged: (String? value) {
+                                        _controller.coachExpCtrl(value ?? "1");
+                                      },
+                                    )),
                               ]),
                         ),
                         Padding(
@@ -360,14 +384,15 @@ class AddAcademy extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 setMediumLabel("No. of assistant coach"),
-                                Obx(() =>  DropdownButton(
-                                  value: _controller.noOfAssistantCtrl.value,
-                                  items: counterMenu,
-                                  onChanged: (String? value) {
-                                    _controller.noOfAssistantCtrl(value ?? "1");
-                                  },
-                                )),
-
+                                Obx(() => DropdownButton(
+                                      value:
+                                          _controller.noOfAssistantCtrl.value,
+                                      items: counterMenu,
+                                      onChanged: (String? value) {
+                                        _controller
+                                            .noOfAssistantCtrl(value ?? "1");
+                                      },
+                                    )),
                               ]),
                         ),
                         Padding(
@@ -376,17 +401,16 @@ class AddAcademy extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 setMediumLabel("Age Group"),
-                                Obx(() =>  DropdownButton(
-                                  value:_getAgeGroupValue(),
-                                  items: ageGroupMenu,
-                                  onChanged: (String? value) {
-                                    _controller.ageCtrl(value ?? "13-16");
-                                  },
-                                )),
-
+                                Obx(() => DropdownButton(
+                                      value: _getAgeGroupValue(),
+                                      items: ageGroupMenu,
+                                      onChanged: (String? value) {
+                                        _controller.ageCtrl(value ?? "13-16");
+                                      },
+                                    )),
                               ]),
                         ),
-                   /*     TextField(
+                        /*     TextField(
                           controller: _controller.floodLightCtrl,
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
@@ -421,8 +445,6 @@ class AddAcademy extends StatelessWidget {
                     ),
                   ),
                   getVerticalSpace(),*/
-
-
                       ],
                     ),
                   ),
@@ -454,6 +476,15 @@ class AddAcademy extends StatelessWidget {
         Get.back();
       },
     );
+    Widget cancelButton = TextButton(
+      child: const Text(
+        "Cancel",
+        style: TextStyle(color: PRIMARY_COLOR),
+      ),
+      onPressed: () {
+        Get.back();
+      },
+    );
 
     // Create AlertDialog
     AlertDialog alert = AlertDialog(
@@ -461,6 +492,7 @@ class AddAcademy extends StatelessWidget {
       content: const Text("Do you want to delete this academy?"),
       actions: [
         okButton,
+        cancelButton,
       ],
     );
 
@@ -483,27 +515,37 @@ class AddAcademy extends StatelessWidget {
     return menuItems;
   }
 
-  String _getAgeGroupValue(){
+  String _getAgeGroupValue() {
     List<String> temp = [];
-    temp.add( "13-16");
-    temp.add( "17-20");
-    temp.add("21-25");
-    temp.add("26+");
-
-
-    if(!temp.contains(_controller.ageCtrl.value)){
-      _controller.ageCtrl("13-16");
+    temp.add("5-10");
+    temp.add("11-15");
+    temp.add("16-20");
+    temp.add("20-25");
+    temp.add("25+");
+    if (!temp.contains(_controller.ageCtrl.value)) {
+      _controller.ageCtrl("5-10");
     }
     _controller.update();
-    return  _controller.ageCtrl.value;
+    return _controller.ageCtrl.value;
+  }
+
+  String _getExperience() {
+    List<String> temp = [];
+
+    if (!temp.contains(_controller.coachExpCtrl.value)) {
+      _controller.coachExpCtrl("1");
+    }
+    _controller.update();
+    return _controller.coachExpCtrl.value;
   }
 
   List<DropdownMenuItem<String>> get ageGroupMenu {
     List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: setMediumLabel("13-16"), value: "13-16"),
-      DropdownMenuItem(child: setMediumLabel("17-20"), value: "17-20"),
-      DropdownMenuItem(child: setMediumLabel("21-25"), value: "21-25"),
-      DropdownMenuItem(child: setMediumLabel("26+"), value: "26+"),
+      DropdownMenuItem(child: setMediumLabel("5-10"), value: "5-10"),
+      DropdownMenuItem(child: setMediumLabel("11-15"), value: "11-15"),
+      DropdownMenuItem(child: setMediumLabel("16-20"), value: "16-20"),
+      DropdownMenuItem(child: setMediumLabel("20-25"), value: "20-25"),
+      DropdownMenuItem(child: setMediumLabel("25+"), value: "25+"),
     ];
 
     List<String> temp = [];
@@ -516,9 +558,13 @@ class AddAcademy extends StatelessWidget {
 
   List<DropdownMenuItem<String>> get openingMenu {
     List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: setMediumLabel("Open 24 Hours"), value: "Open 24 Hours"),
-      DropdownMenuItem(child: setMediumLabel("Monday to Saturday"), value: "Monday to Saturday"),
-      DropdownMenuItem(child: setMediumLabel("Weekends Only"), value: "Weekends Only"),
+      DropdownMenuItem(
+          child: setMediumLabel("Open 24 Hours"), value: "Open 24 Hours"),
+      DropdownMenuItem(
+          child: setMediumLabel("Monday to Saturday"),
+          value: "Monday to Saturday"),
+      DropdownMenuItem(
+          child: setMediumLabel("Weekends Only"), value: "Weekends Only"),
     ];
 
     List<String> temp = [];
@@ -530,24 +576,24 @@ class AddAcademy extends StatelessWidget {
   }
 
   List<DropdownMenuItem<String>> get counterMenu {
-     List<DropdownMenuItem<String>> menuItems = [];
-    for(int i =0;i <15; i++){
-     menuItems.add( DropdownMenuItem(value: (i+1).toString(), child: setMediumLabel((i+1).toString())));
-  }
-     List<String> temp = [];
+    List<DropdownMenuItem<String>> menuItems = [];
+    for (int i = 0; i < 99; i++) {
+      menuItems.add(DropdownMenuItem(
+          value: (i + 1).toString(),
+          child: setMediumLabel((i + 1).toString())));
+    }
+    List<String> temp = [];
 
-
-     menuItems.forEach((element) {
-       temp.add(element.value!);
+    menuItems.forEach((element) {
+      temp.add(element.value!);
     });
-     if(!temp.contains(_controller.noOfAssistantCtrl.value)){
-       _controller.noOfAssistantCtrl("1");
-     }
-     if(!temp.contains(_controller.coachExpCtrl.value)){
-       _controller.coachExpCtrl("1");
-
-     }
-     _controller.update();
+    if (!temp.contains(_controller.noOfAssistantCtrl.value)) {
+      _controller.noOfAssistantCtrl("1");
+    }
+    if (!temp.contains(_controller.coachExpCtrl.value)) {
+      _controller.coachExpCtrl("1");
+    }
+    _controller.update();
     return menuItems;
   }
 }

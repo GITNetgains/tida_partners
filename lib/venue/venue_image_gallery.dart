@@ -11,15 +11,18 @@ class VenueImageGallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton:   FloatingActionButton(
-        onPressed: (){
-          _controller.selectImage();
+      floatingActionButton:  Obx(() =>  Visibility(
+        visible: !(_controller.imageList.length>=4),
+        child: FloatingActionButton(
+          onPressed: (){
+            _controller.selectImage();
 
-        },
-        backgroundColor: PRIMARY_COLOR,
-        child: Icon(Icons.add),
+          },
+          backgroundColor: PRIMARY_COLOR,
+          child: Icon(Icons.add),
 
-      ),
+        ),
+      )),
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("Gallery"),
