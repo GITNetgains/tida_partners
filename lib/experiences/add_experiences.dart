@@ -146,7 +146,8 @@ class AddExperiences extends StatelessWidget {
                           ),
                         ),
                       ),
-
+                  getVerticalSpace(),
+                      _controller.selectLocation(),
                       getVerticalSpace(),
                       TextField(
                         keyboardType: TextInputType.number,

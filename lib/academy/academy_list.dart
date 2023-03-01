@@ -83,7 +83,7 @@ class AcademyList extends StatelessWidget {
                                                     color: Colors.black),
                                                 setMediumLabel(
                                                     item.description ?? "N/A",
-                                                    color: Colors.grey),
+                                                    color: Colors.grey, maxLines: 3),
                                               ],
                                             ),
                                           ),

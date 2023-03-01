@@ -3,19 +3,22 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/responses/SponserResponse.dart' as sp;
 import 'package:tida_partners/network/responses/TournamentListResponse.dart';
 import 'package:tida_partners/network/responses/academy_res.dart' as a;
 
+import '../AppColors.dart';
 import '../AppUtils.dart';
 import '../network/ApiProvider.dart';
+import '../utilss/theme.dart';
 
 class TournamentController extends GetxController {
   final titleController = TextEditingController();
   final descController = TextEditingController();
   final urlController = TextEditingController();
-  final addressController = TextEditingController();
   final priceController = TextEditingController();
 
   //final noOfTicketController = TextEditingController();
@@ -36,6 +39,11 @@ class TournamentController extends GetxController {
   RxString selectedId = "".obs;
   RxList<String> selectedSponsor = <String>[].obs;
   RxList<String> selectedSponsorInList = <String>[].obs;
+  RxString lat = "".obs;
+  RxString lng = "".obs;
+  final addressController = TextEditingController();
+  var kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
+
   Future<void> selectImage() async {
     XFile? f = await _picker.pickImage(source: ImageSource.gallery);
     if (f != null) {
@@ -61,6 +69,9 @@ class TournamentController extends GetxController {
       "end_date": endDateController.text,
       "description": descController.text,
       "type": "1",
+      "latitude": lat.value,
+      "longitude": lng.value,
+      "address": addressController.text,
       "url": urlController.text,
       "sponsors": getSponsorIds().join(","),
       "status": "1",
@@ -243,5 +254,38 @@ class TournamentController extends GetxController {
       }
     }
     return names;
+  }
+
+  Widget selectLocation() {
+    return GooglePlaceAutoCompleteTextField(
+        textEditingController: addressController,
+        googleAPIKey: kGoogleApiKey,
+        inputDecoration: InputDecoration(
+          label: setMediumLabel(
+            "Enter Google address",
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: PRIMARY_COLOR),
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+          ),
+        ),
+        debounceTime: 800,
+        isLatLngRequired: true,
+        // if you required coordinates from place detail
+        getPlaceDetailWithLatLng: (Prediction prediction) {
+          // this method will return latlng with place detail
+          print("placeDetails>>> " + prediction.lng.toString());
+          print("placeDetails>> " + prediction.lat.toString());
+          addressController.text = prediction.description ?? "";
+          addressController.text = prediction.description ?? "";
+          lat(prediction.lat.toString());
+          lng(prediction.lng.toString());
+        },
+        // this callback is called when isLatLngRequired is true
+        itmClick: (Prediction prediction) {
+          addressController.text = prediction.description ?? "";
+        });
   }
 }

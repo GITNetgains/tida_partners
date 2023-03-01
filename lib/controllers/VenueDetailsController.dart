@@ -39,9 +39,7 @@ class VenueDetailsController extends GetxController {
   var desController = TextEditingController();
   var addressCtrl = TextEditingController();
   var mapCtrl = TextEditingController();
- /* var openingCtrl = TextEditingController();
-  var closingCtrl = TextEditingController();*/
-  //var taxCtrl = TextEditingController();
+
   var videoCtrl = TextEditingController();
   var kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
   RxString lat = "".obs;
@@ -127,8 +125,8 @@ class VenueDetailsController extends GetxController {
         "address": addressCtrl.text,
         "address_map": addressCtrl.text,
         "status": "1",
-        "latitude":lat.value ,
         "video_url":videoCtrl.text ,
+        "latitude":lat.value ,
         "longitude":lng.value ,
         "sports": getSelectedSport().join(","),
       };
@@ -270,10 +268,6 @@ class VenueDetailsController extends GetxController {
     desController.text = d.data!.first.description ?? "N/A";
     addressCtrl.text = d.data!.first.address ?? "N/A";
     mapCtrl.text = d.data!.first.addressMap ?? "N/A";
-/*
-    openingCtrl.text = d.data!.first.tim ?? "N/A";
-*/
-   // taxCtrl.text = d.data!.first.id ?? "N/A";
     videoCtrl.text = d.data!.first.videoUrl ?? "N/A";
     tags(getAmenitiesNames(d.data!.first.amenities!.split(",")));
     print(d.data!.first.sports);

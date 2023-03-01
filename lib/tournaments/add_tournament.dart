@@ -204,23 +204,7 @@ class AddTournament extends StatelessWidget {
                         ),
                       ),
                       getVerticalSpace(),
-                      TextField(
-                        controller: _controller.addressController,
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                          label: setMediumLabel(
-                            "Address",
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 1, color: PRIMARY_COLOR),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 3, color: Colors.greenAccent),
-                          ),
-                        ),
-                      ),
+                      _controller.selectLocation(),
                       getVerticalSpace(),
                       TextField(
                         keyboardType: TextInputType.number,
@@ -241,6 +225,7 @@ class AddTournament extends StatelessWidget {
                         ),
                       ),
                       getVerticalSpace(),
+
                       getVerticalSpace(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,7 +252,7 @@ class AddTournament extends StatelessWidget {
                         ],
                       ),
                       getVerticalSpace(),
-                    Obx(() => _controller.selectedSponsor.isEmpty
+                      Obx(() => _controller.selectedSponsor.isEmpty
                         ? Container()
                         : SizedBox(
                       width: double.infinity,

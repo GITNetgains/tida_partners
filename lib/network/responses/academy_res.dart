@@ -64,6 +64,7 @@ class Data {
   String? status;
   String? createdAt;
   String? updatedAt;
+  String? sports;
   List<AmenitiesDetails>? amenitiesDetails;
   List<VenueDetails>? venueDetails;
 
@@ -105,6 +106,7 @@ class Data {
         this.createdAt,
         this.updatedAt,
         this.amenitiesDetails,
+        this.sports,
         this.venueDetails});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -144,6 +146,7 @@ class Data {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    sports = json['sports'];
     if (json['amenities_details'] != null) {
       amenitiesDetails = <AmenitiesDetails>[];
       json['amenities_details'].forEach((v) {
@@ -201,6 +204,7 @@ class Data {
     data['amenities_id'] = this.amenitiesId;
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
+    data['sports'] = this.sports;
     data['updated_at'] = this.updatedAt;
     if (this.amenitiesDetails != null) {
       data['amenities_details'] =

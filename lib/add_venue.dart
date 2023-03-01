@@ -246,9 +246,7 @@ class AddVenue extends StatelessWidget {
                         ),
                         getVerticalSpace(),*/
                         TextField(
-                          onChanged: (_) {
-                            _controller.vTax(_);
-                          },
+
                           controller: _controller.videoCtrl,
                           cursorColor: Colors.black,
                           decoration: InputDecoration(

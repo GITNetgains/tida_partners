@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tida_partners/academy/select_sports_academy.dart';
 import 'package:tida_partners/academy/select_venue.dart';
 import 'package:tida_partners/controllers/AcademyController.dart';
+import 'package:tida_partners/network/responses/sports_res.dart';
 import 'package:tida_partners/utilss/theme.dart';
+import 'package:tida_partners/venue/selec_sports.dart';
 
 import '../AppColors.dart';
 import '../utilss/size_config.dart';
@@ -314,6 +318,8 @@ class AddAcademy extends StatelessWidget {
                             ),
                           ),
                         ),
+                        getVerticalSpace(),
+                        _controller.selectLocation(),
                         /*    TextField(
                     controller: _controller.groundSizeCtrl,
                     cursorColor: Colors.black,
@@ -346,7 +352,50 @@ class AddAcademy extends StatelessWidget {
                       ),
                     ),
                   ),getVerticalSpace(),*/
+                        getVerticalSpace(),
 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: setHeadlineMedium("Select Sports",
+                                  color: PRIMARY_COLOR),
+                            ),
+                            InkWell(
+                              onTap: () {
+                               Get.to(() => SelectSportsAcademy());
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: CircleAvatar(
+                                    backgroundColor: PRIMARY_COLOR,
+                                    child: Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                        getVerticalSpace(),
+                        Obx(() => _controller.selectedSport.isEmpty
+                            ? Container()
+                            : SizedBox(
+                          width: double.infinity,
+                          child: ChipsChoice<String>.multiple(
+
+                            choiceCheckmark: false,
+
+                            value: _controller.selectedSport,
+                            onChanged: (val) => {},
+                            choiceItems: C2Choice.listFrom<String, String>(
+                              source: _controller.selectedSport,
+                              value: (i, v) => v,
+                              label: (i, v) => v.toUpperCase(),
+                            ),
+                          ),
+                        )),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
@@ -374,6 +423,7 @@ class AddAcademy extends StatelessWidget {
                                       items: counterMenu,
                                       onChanged: (String? value) {
                                         _controller.coachExpCtrl(value ?? "1");
+
                                       },
                                     )),
                               ]),
@@ -387,7 +437,7 @@ class AddAcademy extends StatelessWidget {
                                 Obx(() => DropdownButton(
                                       value:
                                           _controller.noOfAssistantCtrl.value,
-                                      items: counterMenu,
+                                      items: noOfAssitMenu,
                                       onChanged: (String? value) {
                                         _controller
                                             .noOfAssistantCtrl(value ?? "1");
@@ -531,7 +581,9 @@ class AddAcademy extends StatelessWidget {
 
   String _getExperience() {
     List<String> temp = [];
-
+    for (int i = 0; i < 99; i++) {
+      temp.add(i.toString());
+    }
     if (!temp.contains(_controller.coachExpCtrl.value)) {
       _controller.coachExpCtrl("1");
     }
@@ -588,10 +640,25 @@ class AddAcademy extends StatelessWidget {
       temp.add(element.value!);
     });
     if (!temp.contains(_controller.noOfAssistantCtrl.value)) {
-      _controller.noOfAssistantCtrl("1");
+      _controller.noOfAssistantCtrl("0");
     }
-    if (!temp.contains(_controller.coachExpCtrl.value)) {
-      _controller.coachExpCtrl("1");
+    _controller.update();
+    return menuItems;
+  }
+  List<DropdownMenuItem<String>> get noOfAssitMenu {
+    List<DropdownMenuItem<String>> menuItems = [];
+    for (int i = 0; i < 101; i++) {
+      menuItems.add(DropdownMenuItem(
+          value: (i ).toString(),
+          child: setMediumLabel((i).toString())));
+    }
+    List<String> temp = [];
+
+    menuItems.forEach((element) {
+      temp.add(element.value!);
+    });
+    if (!temp.contains(_controller.noOfAssistantCtrl.value)) {
+      _controller.noOfAssistantCtrl("0");
     }
     _controller.update();
     return menuItems;

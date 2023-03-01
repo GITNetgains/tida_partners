@@ -134,9 +134,12 @@ Widget setMediumLabel(String text,
     Color color = Colors.black,
     TextAlign align = TextAlign.start,
     double fontSize = MEDIUM_FONT,
+    int maxLines = 100,
     TextDecoration decoration = TextDecoration.none}) {
   return Text(getTranslated(text, context: context),
       textAlign: align,
+      overflow: TextOverflow.ellipsis,
+      maxLines: maxLines,
       style: getAppFontA(
           textStyle: TextStyle(
         decoration: decoration,

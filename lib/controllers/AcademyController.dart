@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/ApiProvider.dart';
 import 'package:tida_partners/network/responses/PackageListResponse.dart'
@@ -7,7 +10,10 @@ import 'package:tida_partners/network/responses/PackageListResponse.dart'
 import 'package:tida_partners/network/responses/VenueListResponse.dart' as v;
 import 'package:tida_partners/network/responses/academy_res.dart';
 
+import '../AppColors.dart';
 import '../AppUtils.dart';
+import '../network/responses/sports_res.dart' as s;
+import '../utilss/theme.dart';
 
 class AcademyController extends GetxController {
   late RxList<Data> dataList = [Data()].obs;
@@ -27,6 +33,7 @@ class AcademyController extends GetxController {
   final skillCtrl = TextEditingController();
   final coachExpCtrl = "1".obs;
   final ageCtrl = "13-16".obs;
+  Rx<s.SportsResponse> sportsResponse = s.SportsResponse().obs;
 
   //final groundSizeCtrl = TextEditingController();
   final floodLightCtrl = "Yes".obs;
@@ -38,19 +45,26 @@ class AcademyController extends GetxController {
 
   final packageTitleController = TextEditingController();
   final priceController = TextEditingController();
+  final addressController = TextEditingController();
 
   RxString filePath = "".obs;
   final ImagePicker _picker = ImagePicker();
   RxBool isEdit = false.obs;
   RxBool isEditPackage = false.obs;
   RxString academyId = "".obs;
+  var kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
+  RxString lat = "".obs;
+  RxString lng = "".obs;
 
   RxInt selectedIndex = (-1).obs;
   RxInt selectedPackage = (-1).obs;
+  RxList<String> selectedSport = <String>[].obs;
+  RxList<String> sportsListInString = <String>[].obs;
 
   @override
   void onInit() {
     dataList.clear();
+    fetchSports();
     getAllAcademies();
     super.onInit();
   }
@@ -76,6 +90,39 @@ class AcademyController extends GetxController {
     selectedVenue(data.title);
     selectedVenueId(data.id);
     refresh();
+  }
+
+  Widget selectLocation() {
+    return GooglePlaceAutoCompleteTextField(
+        textEditingController: addressController,
+        googleAPIKey: kGoogleApiKey,
+        inputDecoration: InputDecoration(
+          label: setMediumLabel(
+            "Enter Google address",
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: PRIMARY_COLOR),
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+          ),
+        ),
+        debounceTime: 800,
+        isLatLngRequired: true,
+        // if you required coordinates from place detail
+        getPlaceDetailWithLatLng: (Prediction prediction) {
+          // this method will return latlng with place detail
+          print("placeDetails>>> " + prediction.lng.toString());
+          print("placeDetails>> " + prediction.lat.toString());
+          addressController.text = prediction.description ?? "";
+          addressController.text = prediction.description ?? "";
+          lat(prediction.lat.toString());
+          lng(prediction.lng.toString());
+        },
+        // this callback is called when isLatLngRequired is true
+        itmClick: (Prediction prediction) {
+          addressController.text = prediction.description ?? "";
+        });
   }
 
   Future<void> saveAcademy() async {
@@ -110,35 +157,17 @@ class AcademyController extends GetxController {
     } else if (ageCtrl.value.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
-    }
-    /* else if (groundSizeCtrl.text.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please enter a valid number",
+    } else if (lat.value.isEmpty) {
+      AppUtills.showSnackBar("Required", "Please enter a valid address.",
           isError: true);
-    } else if (capacityNameCtrl.text.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please enter valid capacity",
-          isError: true);
-    }*/
-    else if (floodLightCtrl.value.isEmpty) {
+    } else if (floodLightCtrl.value.isEmpty) {
       AppUtills.showSnackBar(
           "Required", "Please select flood lights availability",
           isError: true);
-    }
-    /*else if (equipmentCtrl.text.isEmpty) {
-      AppUtills.showSnackBar(
-          "Required", "Please enter a valid value for equipment",
-          isError: true);
-    } else if (noOfAssistantCtrl.text.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please enter a valid number",
-          isError: true);
-    } else if (assistantCoachNameCtrl.text.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please enter a valid name",
-          isError: true);
-    }*/
-    else {
+    } else {
       loading(true);
       Map<String, String> data = {
         "name": academyCtrl.text,
-        "address": "-",
         "description": descriptionCtrl.text,
         "contact_no": "-",
         "head_coach": headCoachCtrl.text,
@@ -158,12 +187,17 @@ class AcademyController extends GetxController {
         "session_plan": "-",
         "capacity": "-",
         "equipment": "-",
+        "latitude": lat.value,
+        "longitude": lng.value,
+        "address": addressController.text,
         "no_of_assistent_coach": noOfAssistantCtrl.value,
         "coach_experience": coachExpCtrl.value,
         "venue_id": selectedVenueId.value,
         "id": selectedVenueId.value,
         "assistent_coach_name": assistantCoachNameCtrl.text,
+        "sports": getSelectedSport().join(","),
       };
+      print(data['sports']);
       bool saved = false;
       if (!isEdit.value) {
         saved = await ApiProvider().addAcademy(data, filePath.value);
@@ -229,6 +263,7 @@ class AcademyController extends GetxController {
       packageTitleController.text = "";
       descriptionCtrl.text = "";
       priceController.text = "";
+      selectedSport.clear();
       return;
     }
     if (isEditPackage.value) {
@@ -237,11 +272,12 @@ class AcademyController extends GetxController {
       descriptionCtrl.text =
           packageList[selectedPackage.value].description ?? "";
       priceController.text = packageList[selectedPackage.value].price ?? "";
-      print("sssssss");
+
       return;
     }
     if (selectedIndex.value != -1) {
       filePath("");
+      selectedSport.clear();
       Data d = dataList[selectedIndex.value];
       academyCtrl.text = d.name ?? "";
       descriptionCtrl.text = d.description ?? "";
@@ -260,17 +296,16 @@ class AcademyController extends GetxController {
       //   capacityNameCtrl.text = d.capacity ?? "";
       // equipmentCtrl.text = d.equipment ?? "";
       academyId(d.id);
+      print(d.sports);
+      if (d.sports != null) {
+        selectedSport.value = getSelectedSportName(d.sports!.split(","));
+      }
       if (d.venueDetails != null) {
-        try{
+        try {
           selectedVenue(d.venueDetails!.first.title ?? "N/A");
           selectedVenueId(d.venueDetails!.first.id ?? "N/A");
           filePath(d.logo);
-
-        }catch(w){
-
-
-        }
-
+        } catch (w) {}
       } else {
         selectedVenue("");
         selectedVenueId("");
@@ -325,6 +360,56 @@ class AcademyController extends GetxController {
 
     if (isAcademy) {
       getAllAcademies();
+    }
+    loading(false);
+  }
+
+  selectSportItem(String last) {
+    if (selectedSport.contains(last)) {
+      selectedSport.remove(last);
+    } else {
+      selectedSport.add(last);
+    }
+
+    update();
+  }
+
+  List<String> getSelectedSport() {
+    List<String> ids = [];
+    selectedSport.forEach((element) {
+      for (s.Data value in sportsResponse.value.data!) {
+        if (value.sportName == element) {
+          ids.add(value.id!);
+        }
+      }
+    });
+    return ids;
+  }
+
+  List<String> getSelectedSportName(List<String> list) {
+    List<String> name = [];
+    list.forEach((element) {
+      if (sportsResponse.value.data != null) {
+        for (s.Data value in sportsResponse.value.data!) {
+          if (value.id == element) {
+            name.add(value.sportName!);
+          }
+        }
+      }
+    });
+    return name;
+  }
+
+  Future<void> fetchSports() async {
+    loading(true);
+    s.SportsResponse? sportsList = await ApiProvider().fetchSports();
+    if (sportsList != null) {
+      sportsResponse = sportsList.obs;
+      sportsListInString = [""].obs;
+      sportsListInString.remove("");
+      sportsResponse.value.data!.forEach((element) {
+        sportsListInString.add(element.sportName!);
+      });
     }
     loading(false);
   }

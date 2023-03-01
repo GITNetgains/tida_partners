@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/responses/ExperienceList.dart';
 import 'package:tida_partners/network/responses/VenueListResponse.dart' as a;
 
+import '../AppColors.dart';
 import '../AppUtils.dart';
 import '../network/ApiProvider.dart';
+import '../utilss/theme.dart';
 
 class ExperienceController extends GetxController {
   final titleController = TextEditingController();
@@ -21,6 +25,10 @@ class ExperienceController extends GetxController {
   RxBool isEdit = false.obs;
   RxInt selectedIndex = (-1).obs;
   RxString selectedId = "".obs;
+  RxString lat = "".obs;
+  RxString lng = "".obs;
+  final addressController = TextEditingController();
+  var kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
 
   Future<void> selectImage() async {
     XFile? f = await _picker.pickImage(source: ImageSource.gallery);
@@ -37,12 +45,14 @@ class ExperienceController extends GetxController {
   }
 
   void saveData() async {
-    print("called");
     Map<String, String> data = {
       "venue_id": selectedAcademyID.value,
       "id": selectedAcademyID.value,
       "title": titleController.text,
       "price": priceController.text,
+      "latitude": lat.value,
+      "longitude": lng.value,
+      "address": addressController.text,
       "description": descController.text,
       "status": "1",
     };
@@ -113,5 +123,38 @@ class ExperienceController extends GetxController {
       filePath(item.image);
       update();
     }
+  }
+
+  Widget selectLocation() {
+    return GooglePlaceAutoCompleteTextField(
+        textEditingController: addressController,
+        googleAPIKey: kGoogleApiKey,
+        inputDecoration: InputDecoration(
+          label: setMediumLabel(
+            "Enter Google address",
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: PRIMARY_COLOR),
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+          ),
+        ),
+        debounceTime: 800,
+        isLatLngRequired: true,
+        // if you required coordinates from place detail
+        getPlaceDetailWithLatLng: (Prediction prediction) {
+          // this method will return latlng with place detail
+          print("placeDetails>>> " + prediction.lng.toString());
+          print("placeDetails>> " + prediction.lat.toString());
+          addressController.text = prediction.description ?? "";
+          addressController.text = prediction.description ?? "";
+          lat(prediction.lat.toString());
+          lng(prediction.lng.toString());
+        },
+        // this callback is called when isLatLngRequired is true
+        itmClick: (Prediction prediction) {
+          addressController.text = prediction.description ?? "";
+        });
   }
 }
