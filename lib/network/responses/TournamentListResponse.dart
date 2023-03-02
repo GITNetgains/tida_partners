@@ -46,6 +46,9 @@ class Data {
   String? status;
   String? createdAt;
   String? updatedAt;
+  String? longitude;
+  String? latitude;
+  String? address;
   bool? rating;
   List<AcademyDetails>? academyDetails;
 
@@ -69,6 +72,9 @@ class Data {
         this.createdAt,
         this.updatedAt,
         this.rating,
+        this.latitude,
+        this.longitude,
+        this.address,
         this.academyDetails});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -84,6 +90,10 @@ class Data {
     description = json['description'];
     type = json['type'];
     image = json['image'];
+    address = json['address'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+
     url = json['url'];
     approved = json['approved'];
     if (json['sponsors'] != null) {
@@ -123,6 +133,9 @@ class Data {
     data['image'] = this.image;
     data['url'] = this.url;
     data['approved'] = this.approved;
+    data['longitude'] = this.longitude;
+    data['latitude'] = this.latitude;
+    data['address'] = this.address;
     if (this.sponsors != null) {
       data['sponsors'] = this.sponsors!.map((v) => v.toJson()).toList();
     }

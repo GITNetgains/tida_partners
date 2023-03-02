@@ -79,7 +79,7 @@ class TournamentController extends GetxController {
     print(data);
     for (MapEntry<String, String> item in data.entries) {
       if (item.value.isEmpty ) {
-        AppUtills.showSnackBar("Required", "All fields are required${item.key}",
+        AppUtills.showSnackBar("Required", "All fields are required ${(item.key).replaceAll("_", " ").toUpperCase()}",
             isError: true);
         return;
       }
@@ -183,6 +183,9 @@ class TournamentController extends GetxController {
       titleController.text = item.title ?? "";
       descController.text = item.description ?? "";
       urlController.text = item.url ?? "";
+     // addressController.text = item.address ?? "";
+      lat(item.latitude??"");
+      lng(item.longitude??"");
       //addressController.text = item.noOfTickets??"";
       priceController.text = item.price ?? "";
       //   noOfTicketController.text = item.noOfTickets ?? "";
@@ -208,7 +211,6 @@ class TournamentController extends GetxController {
       titleController.text =  "";
       descController.text =  "";
       urlController.text = "";
-      //addressController.text = item.noOfTickets??"";
       priceController.text = "";
       //   noOfTicketController.text = item.noOfTickets ?? "";
       startDateController.text = "";
@@ -218,6 +220,9 @@ class TournamentController extends GetxController {
       selectedAcademy.value =  "";
       filePath("");
       selectedSponsor.clear();
+      addressController.text ="";
+      lat("");
+      lng("");
       update();
 
 

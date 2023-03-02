@@ -281,7 +281,9 @@ class AcademyController extends GetxController {
       Data d = dataList[selectedIndex.value];
       academyCtrl.text = d.name ?? "";
       descriptionCtrl.text = d.description ?? "";
-      // locationCtrl.text = d.address ?? "";
+      addressController.text = d.address ?? "";
+      lat(d.latitude??"");
+      lng(d.longitude??"");
       headCoachCtrl.text = d.headCoach ?? "";
       timeCtrl.text = d.sessionTimings ?? "";
       contactCtrl.text = d.contactNo ?? "";
@@ -331,6 +333,8 @@ class AcademyController extends GetxController {
     //  equipmentCtrl.text = "";
     academyId("");
     filePath("");
+    lat("");
+    lng("");
   }
 
   void fetchPackages() async {

@@ -41,6 +41,8 @@ class Data {
   String? createdAt;
   String? venuName;
   String? updatedAt;
+  String? longitude;
+  String? latitude;
   bool? rating;
 
   Data(
@@ -57,6 +59,8 @@ class Data {
         this.createdAt,
         this.updatedAt,
         this.venuName,
+        this.longitude,
+        this.latitude,
         this.rating});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -73,6 +77,9 @@ class Data {
     venuName = json['venue_name'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+
     rating = json['rating'];
   }
 
@@ -91,6 +98,8 @@ class Data {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['venue_name'] = this.venuName;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
     data['rating'] = this.rating;
     return data;
   }

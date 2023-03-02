@@ -110,6 +110,7 @@ class ExperienceController extends GetxController {
     update();
   }
 
+
   void preFillData() {
     if (isEdit.value) {
       var item = data[selectedIndex.value];
@@ -120,6 +121,10 @@ class ExperienceController extends GetxController {
       selectedId.value = item.id ?? "";
       selectedAcademy.value = item.venuName ?? "";
       selectedAcademyID.value = item.venueId ?? "";
+      addressController.text = item.address ?? "";
+      print( item.address );
+      lat(item.latitude??"");
+      lng(item.longitude??"");
       filePath(item.image);
       update();
     }
