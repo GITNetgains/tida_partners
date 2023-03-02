@@ -147,8 +147,17 @@ class AddExperiences extends StatelessWidget {
                         ),
                       ),
                   getVerticalSpace(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0, left: 8),
+                        child: Container(
+                            width: double.infinity,
+                            child: setSmallLabel("Select address from the dropdown list only.")),
+                      ),
+                      getVerticalSpace(),
+
                       _controller.selectLocation(),
                       getVerticalSpace(),
+
                       TextField(
                         keyboardType: TextInputType.number,
                         controller: _controller.priceController,

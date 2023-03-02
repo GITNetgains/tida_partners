@@ -36,81 +36,89 @@ class AddVenue extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Stack(
-                      children: [Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
-                        child: InkWell(
-                          onTap: () {
-                            _controller.selectImage();
-                          },
-                          child: Obx(() => (_controller.filePath.value.isNotEmpty)
-                              ? (_controller.filePath.startsWith("http"))
-                              ? ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(5),
-                                  topLeft: Radius.circular(5)),
-                              child: Container(
-                                width: double.infinity,
-                                child: FadeInImage(
-                                  image: NetworkImage(
-                                      _controller.filePath.value),
-                                  height: SizeConfig.screenWidth / 2,
-                                  fit: BoxFit.cover,
-                                  placeholderFit: BoxFit.fitWidth,
-                                  placeholder: const AssetImage(
-                                    "assets/no_image.png",
-                                  ),
-                                  imageErrorBuilder:
-                                      (context, error, stackTrace) {
-                                    return Image.asset(
-                                        'assets/no_image.png',
-                                        fit: BoxFit.fitWidth);
-                                  },
-                                ),
-                              ))
-                              : Image.file(
-                            File(_controller.filePath.value),
-                            height: SizeConfig.screenWidth / 2,
-                            fit: BoxFit.cover,
-                          )
-                              : SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add),
-                                  setMediumLabel(
-                                      "Click here to add venue images")
-                                ],
-                              ),
-                            ),
-                          )),
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          child: InkWell(
+                            onTap: () {
+                              _controller.selectImage();
+                            },
+                            child: Obx(() => (_controller
+                                    .filePath.value.isNotEmpty)
+                                ? (_controller.filePath.startsWith("http"))
+                                    ? ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(5),
+                                            topLeft: Radius.circular(5)),
+                                        child: Container(
+                                          width: double.infinity,
+                                          child: FadeInImage(
+                                            image: NetworkImage(
+                                                _controller.filePath.value),
+                                            height: SizeConfig.screenWidth / 2,
+                                            fit: BoxFit.cover,
+                                            placeholderFit: BoxFit.fitWidth,
+                                            placeholder: const AssetImage(
+                                              "assets/no_image.png",
+                                            ),
+                                            imageErrorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                  'assets/no_image.png',
+                                                  fit: BoxFit.fitWidth);
+                                            },
+                                          ),
+                                        ))
+                                    : Image.file(
+                                        File(_controller.filePath.value),
+                                        height: SizeConfig.screenWidth / 2,
+                                        fit: BoxFit.cover,
+                                      )
+                                : SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.add),
+                                          setMediumLabel(
+                                              "Click here to add venue images")
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                          ),
                         ),
-                      ),
-                        _controller.filePath.value.isEmpty?Container(): Positioned(
-                            bottom: 1,
-                            right: 1,
-                            child: InkWell(
-                              onTap: (){
-                                _controller.selectImage();
-
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.black.withOpacity(0.7),
+                        _controller.filePath.value.isEmpty
+                            ? Container()
+                            : Positioned(
+                                bottom: 1,
+                                right: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    _controller.selectImage();
+                                  },
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Icon(Icons.edit, color: Colors.white,),
+                                    child: CircleAvatar(
+                                      backgroundColor:
+                                          Colors.black.withOpacity(0.7),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ))
-
+                                ))
                       ],
                     ),
                   ),
@@ -166,9 +174,18 @@ class AddVenue extends StatelessWidget {
                           ),
                         ),
                         getVerticalSpace(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5.0, left: 8),
+                          child: Container(
+                              width: double.infinity,
+                              child: setSmallLabel(
+                                  "Select location from the dropdown list only.")),
+                        ),
+                        getVerticalSpace(),
+                        getVerticalSpace(),
                         _controller.selectLocation(),
                         getVerticalSpace(),
-                     /*   InkWell(
+                        /*   InkWell(
                           onTap: (){
                             _controller.selectOpeningTime(context);
 
@@ -224,7 +241,7 @@ class AddVenue extends StatelessWidget {
                           ),
                         ),
                         getVerticalSpace(),*/
-                     /*   TextField(
+                        /*   TextField(
                           onChanged: (_) {
                             _controller.vTax(_);
                           },
@@ -246,7 +263,6 @@ class AddVenue extends StatelessWidget {
                         ),
                         getVerticalSpace(),*/
                         TextField(
-
                           controller: _controller.videoCtrl,
                           cursorColor: Colors.black,
                           decoration: InputDecoration(

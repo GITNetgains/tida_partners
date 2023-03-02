@@ -173,6 +173,13 @@ class AddAcademy extends StatelessWidget {
                           ),
                         ),
                         getVerticalSpace(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0, left: 8),
+                          child: Container(
+                              width: double.infinity,
+                              child: setSmallLabel("Please enter at least 4-5 lines for an optimum represenation.")),
+                        ),
+                        getVerticalSpace(),
                         TextField(
                           controller: _controller.descriptionCtrl,
                           textAlignVertical: TextAlignVertical.top,
@@ -237,6 +244,7 @@ class AddAcademy extends StatelessWidget {
                             label: setMediumLabel(
                               "Time Availability",
                             ),
+                            hintText: "Monday to Friday",
                             focusedBorder: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(width: 1, color: PRIMARY_COLOR),
@@ -290,6 +298,7 @@ class AddAcademy extends StatelessWidget {
                             label: setMediumLabel(
                               "Skill Level",
                             ),
+                            hintText: "Beginner, Intermediate, Professional",
                             focusedBorder: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(width: 1, color: PRIMARY_COLOR),
@@ -319,6 +328,15 @@ class AddAcademy extends StatelessWidget {
                           ),
                         ),
                         getVerticalSpace(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0, left: 8),
+                          child: Container(
+                              width: double.infinity,
+                              child: setSmallLabel("Select location from the dropdown list only.")),
+                        ),
+                        getVerticalSpace(),
+                        getVerticalSpace(),
+
                         _controller.selectLocation(),
                         /*    TextField(
                     controller: _controller.groundSizeCtrl,
@@ -444,6 +462,12 @@ class AddAcademy extends StatelessWidget {
                                       },
                                     )),
                               ]),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0, left: 8),
+                          child: Container(
+                              width: double.infinity,
+                              child: setSmallLabel("Select maximum age group which is entertained at this facility")),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),

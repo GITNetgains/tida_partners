@@ -204,6 +204,14 @@ class AddTournament extends StatelessWidget {
                         ),
                       ),
                       getVerticalSpace(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, left: 8),
+                        child: Container(
+                            width: double.infinity,
+                            child: setSmallLabel("Select address from the dropdown list only.")),
+                      ),
+                      getVerticalSpace(),
+                      getVerticalSpace(),
                       _controller.selectLocation(),
                       getVerticalSpace(),
                       TextField(
