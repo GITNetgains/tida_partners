@@ -158,7 +158,7 @@ class Sponsors {
   String? contact;
   String? status;
   String? createdAt;
-  Null? updatedAt;
+  String? updatedAt;
 
   Sponsors(
       {this.id,

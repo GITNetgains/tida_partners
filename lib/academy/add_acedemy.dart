@@ -64,22 +64,7 @@ class AddAcademy extends StatelessWidget {
                                     topLeft: Radius.circular(5)),
                                 child: Container(
                                   width: double.infinity,
-                                  child: FadeInImage(
-                                    image: NetworkImage(
-                                        _controller.filePath.value),
-                                    height: SizeConfig.screenWidth / 2,
-                                    fit: BoxFit.cover,
-                                    placeholderFit: BoxFit.fitWidth,
-                                    placeholder: const AssetImage(
-                                      "assets/no_image.png",
-                                    ),
-                                    imageErrorBuilder:
-                                        (context, error, stackTrace) {
-                                      return Image.asset(
-                                          'assets/no_image.png',
-                                          fit: BoxFit.fitWidth);
-                                    },
-                                  ),
+                                  child: getImageWidget(_controller.filePath.value,height:  SizeConfig.screenWidth / 2),
                                 ))
                                 : Image.file(
                               File(_controller.filePath.value),
@@ -135,7 +120,6 @@ class AddAcademy extends StatelessWidget {
                           child: InkWell(
                             onTap: () async {
                               var data = await Get.to(() => SelectVenue());
-
                               _controller.setSelectedVenue(data);
                             },
                             child: Row(
@@ -144,10 +128,12 @@ class AddAcademy extends StatelessWidget {
                                 Obx(
                                   () => (_controller.selectedVenue.value == "")
                                       ? setHeadlineLarge("Select Venue")
-                                      : setHeadlineLarge(_controller
-                                              .selectedVenue.value
-                                              .toUpperCase() ??
-                                          ""),
+                                      : Expanded(
+                                        child: setHeadlineLarge(_controller
+                                                .selectedVenue.value
+                                                .toUpperCase() ??
+                                            ""),
+                                      ),
                                 ),
                                 const Icon(Icons.arrow_forward_ios_rounded)
                               ],
@@ -457,19 +443,18 @@ class AddAcademy extends StatelessWidget {
                                           _controller.noOfAssistantCtrl.value,
                                       items: noOfAssitMenu,
                                       onChanged: (String? value) {
-                                        _controller
-                                            .noOfAssistantCtrl(value ?? "1");
+                                        _controller.noOfAssistantCtrl(value ?? "1");
                                       },
                                     )),
                               ]),
                         ),
-                        Padding(
+              /*          Padding(
                           padding: const EdgeInsets.only(top: 10.0, left: 8),
                           child: Container(
                               width: double.infinity,
                               child: setSmallLabel("Select maximum age group which is entertained at this facility")),
-                        ),
-                        Padding(
+                        ),*/
+                  /*      Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -479,11 +464,11 @@ class AddAcademy extends StatelessWidget {
                                       value: _getAgeGroupValue(),
                                       items: ageGroupMenu,
                                       onChanged: (String? value) {
-                                        _controller.ageCtrl(value ?? "13-16");
+                                        _controller.ageCtrl(value ?? "5-10");
                                       },
                                     )),
                               ]),
-                        ),
+                        ),*/
                         /*     TextField(
                           controller: _controller.floodLightCtrl,
                           cursorColor: Colors.black,
@@ -589,7 +574,7 @@ class AddAcademy extends StatelessWidget {
     return menuItems;
   }
 
-  String _getAgeGroupValue() {
+/*  String _getAgeGroupValue() {
     List<String> temp = [];
     temp.add("5-10");
     temp.add("11-15");
@@ -601,7 +586,7 @@ class AddAcademy extends StatelessWidget {
     }
     _controller.update();
     return _controller.ageCtrl.value;
-  }
+  }*/
 
   String _getExperience() {
     List<String> temp = [];

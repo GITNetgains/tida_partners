@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/responses/amenities_res.dart'
     as AmenitiesResponseObj;
@@ -10,6 +13,7 @@ import 'package:tida_partners/network/responses/sports_res.dart';
 
 import '../AppColors.dart';
 import '../AppUtils.dart';
+import '../apputils/image_utils.dart';
 import '../network/ApiProvider.dart';
 import '../network/responses/SingleVenueDetails.dart' as sVenue;
 import '../utilss/theme.dart';
@@ -20,9 +24,9 @@ class VenueDetailsController extends GetxController {
 
   RxList amenetiesList = [].obs;
   RxList<String> amenetiesListInString = [""].obs;
-  late RxList<String> sportsListInString;
-  late RxList<String> tags;
-  late RxList<String> selectedSport;
+    RxList<String> sportsListInString=<String>[].obs;
+    RxList<String> tags=<String>[].obs;
+    RxList<String> selectedSport=<String>[].obs;
     Rx<SportsResponse> sportsResponse = SportsResponse().obs;
   RxList paymentOptions = [].obs;
   RxString venueName = "".obs;
@@ -47,10 +51,7 @@ class VenueDetailsController extends GetxController {
 
   @override
   void onInit() {
-    tags = ["element"].obs;
-    selectedSport = ["element"].obs;
-    selectedSport.remove("element");
-    tags.remove("element");
+
     fetch();
     super.onInit();
   }
@@ -58,7 +59,6 @@ class VenueDetailsController extends GetxController {
   Widget selectLocation()  {
     return GooglePlaceAutoCompleteTextField(
         textEditingController: mapCtrl,
-
         googleAPIKey: kGoogleApiKey,
         inputDecoration: InputDecoration(
           label: setMediumLabel(
@@ -146,10 +146,35 @@ class VenueDetailsController extends GetxController {
   }
 
   Future<void> selectImage() async {
-    XFile? f = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? f = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 20);
     if (f != null) {
-      filePath(f.path);
-      print(f.path);
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: f.path,
+        aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9) ,
+         cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 20,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.red,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.ratio16x9,
+              lockAspectRatio: true),
+          IOSUiSettings(
+            title: 'Crop Image',
+            aspectRatioLockEnabled: true,
+
+          ),
+        ],
+      );
+      if (croppedFile != null) {
+        printFileSize(croppedFile.path);
+        filePath(croppedFile.path);
+      } else {
+        filePath(f.path);
+      }
+
     }
   }
 

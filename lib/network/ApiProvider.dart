@@ -8,7 +8,6 @@ import 'package:tida_partners/network/responses/AllOrdersResponse.dart';
 import 'package:tida_partners/network/responses/CMSresponse.dart';
 import 'package:tida_partners/network/responses/LoginResponse.dart';
 import 'package:tida_partners/network/responses/PackageListResponse.dart';
-import 'package:tida_partners/network/responses/SlotResponse.dart';
 import 'package:tida_partners/network/responses/TournamentListResponse.dart';
 import 'package:tida_partners/network/responses/amenities_res.dart';
 import 'package:tida_partners/network/responses/media_response.dart';
@@ -164,8 +163,11 @@ class ApiProvider {
 
     //for image and videos and files
     request.fields.assignAll(data);
-
-    if (path.isNotEmpty) {
+    print(path);
+    print(path);
+    print(path);
+    if (path.trim().isNotEmpty) {
+      print("---000000---");
       request.files.add(await http.MultipartFile.fromPath("image", path));
     } else {
       data['image'] = "null";
@@ -195,8 +197,11 @@ class ApiProvider {
     //for image and videos and files
     request.fields.assignAll(data);
 
-    if (path.isNotEmpty) {
-      request.files.add(await http.MultipartFile.fromPath("image", path));
+
+    if (path.trim().isNotEmpty) {
+       request.files.add(await http.MultipartFile.fromPath("image", path));
+    } else {
+      data['image'] = "null";
     }
     //for completeing the request
     var response = await request.send();
@@ -764,6 +769,34 @@ class ApiProvider {
 
     var request = http.MultipartRequest(
         'POST', Uri.parse(isUpdate ? UPDATE_FACILITY : ADD_FACILITY));
+    request.headers.addAll({
+      'Accept': 'application/json',
+    });
+
+    //for image and videos and files
+    request.fields.assignAll(data);
+
+    //for completeing the request
+    var response = await request.send();
+
+    //for getting and decoding the response into json format
+    var responsed = await http.Response.fromStream(response);
+    print(jsonEncode(responsed.body));
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  Future<bool> deleteProfile() async {
+    String token = Preferences.getToken();
+    String user_id = Preferences.getUserId();
+    Map<String,String>data={};
+    data['userid'] = user_id;
+    data['token'] = token;
+    data['type'] = "2";
+    var request = http.MultipartRequest(
+        'POST', Uri.parse( DELETE_PROFILE));
     request.headers.addAll({
       'Accept': 'application/json',
     });

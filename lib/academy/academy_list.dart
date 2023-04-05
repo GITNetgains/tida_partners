@@ -19,7 +19,8 @@ class AcademyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white.withOpacity(0.95), floatingActionButton: FloatingActionButton(
+      backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
         onPressed: () async {
           _controller.selectedVenue("");
           _controller.vData(null);
@@ -46,15 +47,15 @@ class AcademyList extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.only(
                         top: 8, bottom: 8, left: 8, right: 8),
-                    child: ListView.builder(
+                    child:Obx(() =>  ListView.builder(
                       itemCount: _controller.dataList.length,
                       itemBuilder: (context, index) {
                         Data item = _controller.dataList[index];
                         return Container(
                           margin: EdgeInsets.only(
-                            bottom: (index ==_controller.dataList.length-1  &&_controller.dataList.length != 1)?100:0),
+                              bottom: (index ==_controller.dataList.length-1  &&_controller.dataList.length != 1)?100:0),
 
-                            child: Card(
+                          child: Card(
                             elevation: 5,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -71,12 +72,12 @@ class AcademyList extends StatelessWidget {
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Flexible(
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 setHeadlineMedium(
                                                     item.name ?? "N/A",
@@ -91,7 +92,7 @@ class AcademyList extends StatelessWidget {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        MainAxisAlignment.start,
                                         children: [
                                           Container(
                                             padding: EdgeInsets.all(8),
@@ -111,16 +112,16 @@ class AcademyList extends StatelessWidget {
                                                     const BorderSide(
                                                         color: PRIMARY_COLOR)),
                                                 foregroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.red),
+                                                MaterialStateProperty.all(
+                                                    Colors.red),
                                                 shape: MaterialStateProperty.all(
                                                     RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                30.0))),
+                                                        BorderRadius.circular(
+                                                            30.0))),
                                               ),
                                               child:
-                                                  const Text("Manage Packages"),
+                                              const Text("Manage Packages"),
                                             ),
                                           ),
                                           InkWell(
@@ -149,7 +150,7 @@ class AcademyList extends StatelessWidget {
                           ),
                         );
                       },
-                    ),
+                    )),
                   )
                 : const Center(
                     child: Text("Please add academy by clicking on + icon"),

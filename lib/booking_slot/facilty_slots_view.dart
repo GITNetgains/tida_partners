@@ -17,7 +17,7 @@ class FacilitySlotsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
-        title: setHeadlineMedium("Select Slot", color: Colors.white),
+        title: setHeadlineMedium(Get.arguments['Title']??"Select Slot", color: Colors.white),
       ),
       body: Column(
         children: [

@@ -36,7 +36,7 @@ class FacilityController extends GetxController {
   saveFacility() async {
     if (titleController.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Title is required", isError: true);
-    } else if (inventoryCountController.text.isEmpty) {
+    } /*else if (inventoryCountController.text.isEmpty) {
       AppUtills.showSnackBar(
           "Required", "Please enter valid number for inventories",
           isError: true);
@@ -48,7 +48,7 @@ class FacilityController extends GetxController {
       AppUtills.showSnackBar(
           "Required", "Please enter valid number for maximum player",
           isError: true);
-    } else if (priceCtrl.text.isEmpty) {
+    }*/ else if (priceCtrl.text.isEmpty) {
       AppUtills.showSnackBar(
           "Required", "Please enter valid number for slot price",
           isError: true);
@@ -77,10 +77,10 @@ class FacilityController extends GetxController {
         "title": titleController.text,
         "venue_id": _homeController.getSelectedVenue().id!,
         "id": _homeController.getSelectedVenue().id!,
-        "no_of_inventories": inventoryCountController.text,
-        "min_players": minPlayerCtrl.text,
-        "max_players": maxPlayerCtrl.text,
-        "default_players":  minPlayerCtrl.text,
+        "no_of_inventories": /*inventoryCountController.text*/"100",
+        "min_players": /*minPlayerCtrl.text*/"12",
+        "max_players": /*maxPlayerCtrl.text*/"12",
+        "default_players": "12",
         "price_per_slot": priceCtrl.text,
         "opening_time": openingCtrl.text,
         "closing_time": closingCtrl.text,

@@ -1,8 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/ApiProvider.dart';
 import 'package:tida_partners/network/responses/PackageListResponse.dart'
@@ -12,11 +14,12 @@ import 'package:tida_partners/network/responses/academy_res.dart';
 
 import '../AppColors.dart';
 import '../AppUtils.dart';
+import '../apputils/image_utils.dart';
 import '../network/responses/sports_res.dart' as s;
 import '../utilss/theme.dart';
 
 class AcademyController extends GetxController {
-  late RxList<Data> dataList = [Data()].obs;
+  late RxList<Data> dataList = <Data>[].obs;
   late RxList<pac.Data> packageList = <pac.Data>[].obs;
   RxBool loading = false.obs;
   Rx<v.Data?> vData = null.obs;
@@ -32,7 +35,8 @@ class AcademyController extends GetxController {
   final serviceCtrl = TextEditingController();
   final skillCtrl = TextEditingController();
   final coachExpCtrl = "1".obs;
-  final ageCtrl = "13-16".obs;
+
+  // final ageCtrl = "13-16".obs;
   Rx<s.SportsResponse> sportsResponse = s.SportsResponse().obs;
 
   //final groundSizeCtrl = TextEditingController();
@@ -75,7 +79,7 @@ class AcademyController extends GetxController {
     AcademyResponse? response = await ApiProvider().fetchAllAcademies();
     if (response != null) {
       if (response.status == true) {
-        dataList = response.data!.obs;
+        dataList(response.data!.obs);
         update();
       }
     }
@@ -88,7 +92,9 @@ class AcademyController extends GetxController {
     }
     vData = data.obs;
     selectedVenue(data.title);
+    academyCtrl.text =data.title??"";
     selectedVenueId(data.id);
+
     refresh();
   }
 
@@ -154,9 +160,6 @@ class AcademyController extends GetxController {
     else if (skillCtrl.text.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter valid data",
           isError: true);
-    } else if (ageCtrl.value.isEmpty) {
-      AppUtills.showSnackBar("Required", "Please enter valid data",
-          isError: true);
     } else if (lat.value.isEmpty) {
       AppUtills.showSnackBar("Required", "Please enter a valid address.",
           isError: true);
@@ -173,7 +176,7 @@ class AcademyController extends GetxController {
         "head_coach": headCoachCtrl.text,
         "session_timings": timeCtrl.text,
         "skill_level": skillCtrl.text,
-        "age_group_of_students": ageCtrl.value,
+        "age_group_of_students": "25+",
         "assistant_coach": assistantCoachNameCtrl.text,
         "flood_lights": floodLightCtrl.value,
         "ground_size": "-",
@@ -197,7 +200,7 @@ class AcademyController extends GetxController {
         "assistent_coach_name": assistantCoachNameCtrl.text,
         "sports": getSelectedSport().join(","),
       };
-      print(data['sports']);
+
       bool saved = false;
       if (!isEdit.value) {
         saved = await ApiProvider().addAcademy(data, filePath.value);
@@ -252,9 +255,37 @@ class AcademyController extends GetxController {
   }
 
   Future<void> selectImage() async {
-    XFile? f = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? f = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 20);
     if (f != null) {
-      filePath(f.path);
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: f.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.ratio16x9
+        ],
+        cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 20,
+        aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9),
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.red,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.ratio16x9,
+              lockAspectRatio: true),
+          IOSUiSettings(
+            title: 'Crop Image',
+            aspectRatioLockEnabled: true,
+          ),
+        ],
+      );
+      if (croppedFile != null) {
+        printFileSize(croppedFile.path);
+
+        filePath(croppedFile.path);
+      } else {
+        filePath(f.path);
+      }
     }
   }
 
@@ -282,18 +313,19 @@ class AcademyController extends GetxController {
       academyCtrl.text = d.name ?? "";
       descriptionCtrl.text = d.description ?? "";
       addressController.text = d.address ?? "";
-      lat(d.latitude??"");
-      lng(d.longitude??"");
+      lat(d.latitude ?? "");
+      lng(d.longitude ?? "");
       headCoachCtrl.text = d.headCoach ?? "";
       timeCtrl.text = d.sessionTimings ?? "";
       contactCtrl.text = d.contactNo ?? "";
       // serviceCtrl.text = d.se ??"";
       skillCtrl.text = d.skillLevel ?? "";
       coachExpCtrl.value = d.coachExperience ?? "1";
-      ageCtrl.value = d.ageGroupOfStudents ?? "13-16";
+      // ageCtrl.value = d.ageGroupOfStudents ?? "13-16";
       //  groundSizeCtrl.text = d.groundSize ?? "";
       floodLightCtrl.value = d.floodLights == "Yes" ? "Yes" : "No";
-      noOfAssistantCtrl.value = d.noOfAssistentCoach ?? "1";
+      noOfAssistantCtrl.value = d.noOfAssistentCoach.toString() ?? "1";
+      print( "=>>>>>>>>>>"+d.noOfAssistentCoach.toString());
       assistantCoachNameCtrl.text = d.assistentCoachName ?? "";
       //   capacityNameCtrl.text = d.capacity ?? "";
       // equipmentCtrl.text = d.equipment ?? "";
@@ -324,7 +356,7 @@ class AcademyController extends GetxController {
     contactCtrl.text = "";
     skillCtrl.text = "";
     coachExpCtrl.value = "";
-    ageCtrl.value = "13-16";
+    // ageCtrl.value = "13-16";
 //    groundSizeCtrl.text = "";
     floodLightCtrl.value = "Yes";
     noOfAssistantCtrl.value = "1";

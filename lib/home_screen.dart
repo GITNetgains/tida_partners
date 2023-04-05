@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white.withOpacity(0.95),
+      backgroundColor: Colors.white,
       drawer: NavBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -63,8 +63,8 @@ class HomeScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InkWell(
-                                    onTap: () {
-                                      _controller.viewVenue(index);
+                                    onTap: () async {
+                                    _controller.viewVenue(index);
                                     },
                                     child: ClipRRect(
                                         borderRadius: const BorderRadius.only(

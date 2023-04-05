@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/add_venue.dart';
 import 'package:tida_partners/network/responses/amenities_res.dart'
     as AmenitiesResponseObj;
 
 import '../AppUtils.dart';
+import '../apputils/image_utils.dart';
 import '../network/ApiProvider.dart';
 import '../network/responses/VenueListResponse.dart';
 import '../network/responses/VenueListResponse.dart' as VL;
@@ -53,19 +56,51 @@ class HomeScreenController extends GetxController {
   }
 
   selectImage() async {
-    XFile? f = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? f = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
     if (f != null) {
-      imagePath(f.path);
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: f.path,
+        aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9) ,
+        cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 20,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.red,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.ratio16x9,
+              lockAspectRatio: true),
+          IOSUiSettings(
+            title: 'Crop Image',
+            aspectRatioLockEnabled: true,
+
+          ),
+        ],
+      );
+      if (croppedFile != null) {
+        printFileSize(croppedFile.path);
+        imagePath(croppedFile.path);
+      } else {
+        imagePath(f.path);
+      }
+
       uploadImage();
     }
   }
 
-  void viewVenue(int i) {
+  Future<void> viewVenue(int i) async {
     index(i);
     imageList.clear();
     fetchMedia();
     fetchSpostsAndAmenities();
-    Get.to(() => ViewVenu());
+    bool? edit =await   Get.to(() => ViewVenu());
+    /*if (edit!=null) {
+      if (edit) {
+        editVenue(i);
+      }
+
+    }*/
   }
 
   VL.Data getSelectedVenue() {
@@ -163,8 +198,9 @@ class HomeScreenController extends GetxController {
   }
 
   List<String> getSelectedSportName(List<String> list) {
-    List<String> name = [];
+    List<String> name = [" "];
     try{
+      name.clear();
       list.forEach((element) {
         for (sd.Data value in sportsResponse.value.data!) {
           if (value.id == element) {
@@ -173,7 +209,6 @@ class HomeScreenController extends GetxController {
         }
       });
     }catch(e){
-
 
     }
 

@@ -56,22 +56,7 @@ class AddVenue extends StatelessWidget {
                                             topLeft: Radius.circular(5)),
                                         child: Container(
                                           width: double.infinity,
-                                          child: FadeInImage(
-                                            image: NetworkImage(
-                                                _controller.filePath.value),
-                                            height: SizeConfig.screenWidth / 2,
-                                            fit: BoxFit.cover,
-                                            placeholderFit: BoxFit.fitWidth,
-                                            placeholder: const AssetImage(
-                                              "assets/no_image.png",
-                                            ),
-                                            imageErrorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Image.asset(
-                                                  'assets/no_image.png',
-                                                  fit: BoxFit.fitWidth);
-                                            },
-                                          ),
+                                          child:getImageWidget( _controller.filePath.value, height:  SizeConfig.screenWidth / 2),
                                         ))
                                     : Image.file(
                                         File(_controller.filePath.value),

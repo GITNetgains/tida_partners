@@ -9,6 +9,7 @@ import 'package:tida_partners/home_screen.dart';
 import 'package:tida_partners/login_screen.dart';
 import 'package:tida_partners/my_profile.dart';
 import 'package:tida_partners/utilss/SharedPref.dart';
+import 'package:tida_partners/utilss/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Bookings.dart';
@@ -16,11 +17,10 @@ import 'tournaments/tournament_list.dart';
 
 class NavBar extends StatelessWidget {
   Future<void> _launchUrl() async {
-    if (!await launchUrl(Uri.parse("https://tidasports.com/contact-us/"))) {
+    if (!await launchUrl(Uri.parse("https://tidasports.com/contact-us/"), mode: LaunchMode.externalApplication)) {
       throw 'Could not launch';
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,24 +81,29 @@ class NavBar extends StatelessWidget {
             title: Text('Experiences'),
             onTap: () => Get.to(() => ExperienceList()),
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.help),
-            title: Text('Help'),
-            onTap: () => Get.to(() => AppSetting()),
-          ),
-          ListTile(
-            leading: Icon(Icons.support_agent_sharp),
-            title: Text('Contact Us'),
-            onTap: () => _launchUrl(),
-          ),
-          Divider(),
           ListTile(
               title: Text('Logout'),
               leading: Icon(Icons.exit_to_app),
               onTap: () {
                 showAlertDialog(context);
               }),
+          ExpansionTile(
+            title: setMediumLabel("Help & Settings"),
+            children: [
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.help),
+                title: Text('Help'),
+                onTap: () => Get.to(() => AppSetting()),
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.support_agent_sharp),
+                title: Text('Contact Us'),
+                onTap: () => _launchUrl(),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -115,6 +120,15 @@ class NavBar extends StatelessWidget {
         Preferences.clearAll();
         Get.offAll(() => LoginScreen());
       },
+    ); // Create button
+    Widget cancelButton = TextButton(
+      child: Text(
+        "Back",
+        style: TextStyle(color: PRIMARY_COLOR),
+      ),
+      onPressed: () {
+        Get.back();
+      },
     );
 
     // Create AlertDialog
@@ -123,6 +137,7 @@ class NavBar extends StatelessWidget {
       content: Text("Do you want to logout?"),
       actions: [
         okButton,
+        cancelButton,
       ],
     );
 

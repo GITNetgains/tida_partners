@@ -47,7 +47,7 @@ class SignUpController extends GetxController {
       bool loggedIn = await ApiProvider().signUp(data);
       loading(false);
       if (loggedIn) {
-        Get.offAll(() =>   LoginScreen());
+        Get.offAll(() => LoginScreen());
       }
     }
   }

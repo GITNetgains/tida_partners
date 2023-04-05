@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/responses/ExperienceList.dart';
 import 'package:tida_partners/network/responses/VenueListResponse.dart' as a;
@@ -31,10 +33,34 @@ class ExperienceController extends GetxController {
   var kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
 
   Future<void> selectImage() async {
-    XFile? f = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? f = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 20);
     if (f != null) {
-      filePath(f.path);
-      print(f.path);
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: f.path,
+        compressQuality: 20,
+        cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9),
+        aspectRatioPresets: [
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.red,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Crop Image',
+          ),
+        ],
+      );
+      if (croppedFile != null) {
+        filePath(croppedFile.path);
+      } else {
+        filePath(f.path);
+      }
     }
   }
 

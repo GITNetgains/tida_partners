@@ -189,7 +189,7 @@ class SignupScreen extends StatelessWidget {
               getVerticalSpace(),
               Container(
                   width: double.infinity,
-                  child: getSecondaryButton("Sign Up", () {
+                  child: getSecondaryButton("REGISTER", () {
                     _controller.signUpUser();
 
                   })),
@@ -205,13 +205,13 @@ class SignupScreen extends StatelessWidget {
                       onTap: (){
                         Get.back();
                       },
-                      child: setMediumLabel("Login here", color: Colors.red,decoration: TextDecoration.underline)),
+                      child: setMediumLabel("LOGIN", color: Colors.red,decoration: TextDecoration.underline)),
                 ],
               ),
               getVerticalSpace(),
               getVerticalSpace(),
               getVerticalSpace(),
-              getVerticalSpace(),
+          /*    getVerticalSpace(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -254,7 +254,7 @@ class SignupScreen extends StatelessWidget {
                     height: 30,
                   )
                 ],
-              )
+              )*/
             ],
           ),
         ),

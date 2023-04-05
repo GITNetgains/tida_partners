@@ -20,6 +20,7 @@ class AddFacility extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
+            getVerticalSpace(),
             TextField(
               controller: _controller.titleController,
               onChanged: (_) {},
@@ -39,7 +40,7 @@ class AddFacility extends StatelessWidget {
               ),
             ),
             getVerticalSpace(),
-            TextField(
+           /* TextField(
               controller: _controller.inventoryCountController,
               onChanged: (_) {},
               textAlignVertical: TextAlignVertical.top,
@@ -57,9 +58,9 @@ class AddFacility extends StatelessWidget {
                   borderSide: BorderSide(width: 3, color: Colors.greenAccent),
                 ),
               ),
-            ),
-            getVerticalSpace(),
-            TextField(
+            ),*/
+          //  getVerticalSpace(),
+         /*   TextField(
               controller: _controller.minPlayerCtrl,
               onChanged: (_) {},
               textAlignVertical: TextAlignVertical.top,
@@ -97,7 +98,7 @@ class AddFacility extends StatelessWidget {
                   borderSide: BorderSide(width: 3, color: Colors.greenAccent),
                 ),
               ),
-            ),
+            ),*/
             getVerticalSpace(),
             TextField(
               controller: _controller.priceCtrl,

@@ -23,7 +23,8 @@ class ViewVenu extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: PRIMARY_COLOR,
         onPressed: () {
-          Get.to(() => AddVenue());
+          //Get.back(result: true);
+          _controller.editVenue(_controller.index.value);
         },
         child: const Icon(
           Icons.edit,
@@ -151,11 +152,12 @@ class ViewVenu extends StatelessWidget {
                             color: Colors.deepOrange,
                             fontSize: 20,
                           ),
-                          subtitle: Container(
-                            child: ChipsChoice<String>.multiple(
+                          subtitle:   Container(
+                            child:  (_controller.getSelectedSportName(
+                            selectedVenue.sports.toString().split(",")).isNotEmpty)?  ChipsChoice<String>.multiple(
                               wrapped: true,
                               value: _controller.getSelectedSportName(
-                                  selectedVenue.sports!.split(",")),
+                                  selectedVenue.sports.toString().split(",")),
                               onChanged: (val) => print("vvv"),
                               choiceItems: C2Choice.listFrom<String, String>(
                                 source: _controller.getSelectedSportName(
@@ -163,7 +165,7 @@ class ViewVenu extends StatelessWidget {
                                 value: (i, v) => v,
                                 label: (i, v) => v,
                               ),
-                            ),
+                            ):Container(),
                           ))
                       : Container(),
                 ],
@@ -178,8 +180,7 @@ class ViewVenu extends StatelessWidget {
       for (int i = 0; i < _controller.imageList.length; i++) {
         if (_controller.imageList[i]!.image!.split(".").length > 2) {
           items.add(
-            Image.network(
-                fit: BoxFit.fitWidth, '${_controller.imageList[i]?.image}'),
+            getImageWidget('${_controller.imageList[i]?.image}'),
           );
         }
       }

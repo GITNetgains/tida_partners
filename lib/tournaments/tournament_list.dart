@@ -14,7 +14,7 @@ class TournamentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white.withOpacity(0.95),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("Tournaments"),
@@ -99,7 +99,7 @@ class TournamentList extends StatelessWidget {
             ),
           );
         },
-      ):Center(child: setSmallLabel("Click on + icon to add Tournament. "),)),
+      ):Center(child: setMediumLabel("Click on + icon to add Tournament. "),)),
     );
   }
 }

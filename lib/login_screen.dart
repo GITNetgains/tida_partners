@@ -111,7 +111,7 @@ class LoginScreen extends StatelessWidget {
                   child: Center(child: setMediumLabel("Forgot Password?"))),
               getVerticalSpace(),
               getVerticalSpace(),
-              getVerticalSpace(),
+         /*     getVerticalSpace(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -158,7 +158,7 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               getVerticalSpace(),
-              getVerticalSpace(),
+              getVerticalSpace(),*/
               getVerticalSpace(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -169,7 +169,7 @@ class LoginScreen extends StatelessWidget {
                       onTap: (){
                         Get.to(()=>SignupScreen());
                       },
-                      child: setMediumLabel("Register here", color: Colors.red,decoration: TextDecoration.underline)),
+                      child: setMediumLabel("REGISTER", color: Colors.red,decoration: TextDecoration.underline)),
                 ],
               ),
 

@@ -13,9 +13,7 @@ import '../utilss/theme.dart';
 
 class AddTournament extends StatelessWidget {
   AddTournament({Key? key}) : super(key: key);
-
   final _controller = Get.put(TournamentController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

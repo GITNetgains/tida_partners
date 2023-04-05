@@ -1,10 +1,8 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/network/responses/SponserResponse.dart' as sp;
 import 'package:tida_partners/network/responses/TournamentListResponse.dart';
@@ -12,6 +10,7 @@ import 'package:tida_partners/network/responses/academy_res.dart' as a;
 
 import '../AppColors.dart';
 import '../AppUtils.dart';
+import '../apputils/image_utils.dart';
 import '../network/ApiProvider.dart';
 import '../utilss/theme.dart';
 
@@ -45,10 +44,35 @@ class TournamentController extends GetxController {
   var kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
 
   Future<void> selectImage() async {
-    XFile? f = await _picker.pickImage(source: ImageSource.gallery);
+    XFile? f =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 20);
     if (f != null) {
-      filePath(f.path);
-      print(f.path);
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: f.path,
+        compressQuality: 20,
+        aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9),
+        aspectRatioPresets: [CropAspectRatioPreset.ratio16x9],
+        cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.red,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: true),
+          IOSUiSettings(
+            title: 'Crop Image',
+            aspectRatioLockEnabled: true,
+          ),
+        ],
+      );
+      if (croppedFile != null) {
+        printFileSize(croppedFile.path);
+        filePath(croppedFile.path);
+      } else {
+        filePath(f.path);
+      }
     }
   }
 
@@ -78,8 +102,9 @@ class TournamentController extends GetxController {
     };
     print(data);
     for (MapEntry<String, String> item in data.entries) {
-      if (item.value.isEmpty ) {
-        AppUtills.showSnackBar("Required", "All fields are required ${(item.key).replaceAll("_", " ").toUpperCase()}",
+      if (item.value.isEmpty) {
+        AppUtills.showSnackBar("Required",
+            "All fields are required ${(item.key).replaceAll("_", " ").toUpperCase()}",
             isError: true);
         return;
       }
@@ -183,9 +208,9 @@ class TournamentController extends GetxController {
       titleController.text = item.title ?? "";
       descController.text = item.description ?? "";
       urlController.text = item.url ?? "";
-     // addressController.text = item.address ?? "";
-      lat(item.latitude??"");
-      lng(item.longitude??"");
+      addressController.text = item.address ?? "";
+      lat(item.latitude ?? "");
+      lng(item.longitude ?? "");
       //addressController.text = item.noOfTickets??"";
       priceController.text = item.price ?? "";
       //   noOfTicketController.text = item.noOfTickets ?? "";
@@ -193,41 +218,36 @@ class TournamentController extends GetxController {
       endDateController.text = item.endDate ?? "";
       selectedAcademyID.value = item.academyId ?? "-";
       selectedId.value = item.id ?? "";
-      try{
+      try {
         selectedAcademy.value = item.academyDetails?.first.name ?? "";
-
-
-      }catch(e){}
+      } catch (e) {}
       filePath(item.image);
       update();
       item.sponsors?.forEach((element) {
-        selectedSponsor.add(element.name??"");
-
+        selectedSponsor.add(element.name ?? "");
       });
 
       print(selectedAcademyID.value);
-
-    }else{
-      titleController.text =  "";
-      descController.text =  "";
+    } else {
+      titleController.text = "";
+      descController.text = "";
       urlController.text = "";
       priceController.text = "";
       //   noOfTicketController.text = item.noOfTickets ?? "";
       startDateController.text = "";
       endDateController.text = "";
-      selectedAcademyID.value =  "";
+      selectedAcademyID.value = "";
       selectedId.value = "";
-      selectedAcademy.value =  "";
+      selectedAcademy.value = "";
       filePath("");
       selectedSponsor.clear();
-      addressController.text ="";
+      addressController.text = "";
       lat("");
       lng("");
       update();
-
-
     }
   }
+
   selectSportItem(String last) {
     if (selectedSponsor.contains(last)) {
       selectedSponsor.remove(last);
@@ -237,6 +257,7 @@ class TournamentController extends GetxController {
 
     update();
   }
+
   List<String> getSponsorIds() {
     List<String> ids = [];
     selectedSponsor.forEach((element) {

@@ -1,9 +1,8 @@
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-
-import '../AppColors.dart';
 
 const double XSMALL_PADDING = 3;
 const double SMALL_PADDING = 5;
@@ -12,13 +11,13 @@ const double MEDIUM_PADDING = 12;
 const double LARGE_PADDING = 20;
 const double EXTRA_LARGE_PADDING = 30;
 
-const double XXSMALL_FONT = 10;
-const double XSMALL_FONT = 12;
-const double SMALL_FONT = 14;
-const double MEDIUM_FONT = 16;
-const double LARGE_TITLE_FONT = 18;
-const double LARGE_FONT = 20;
-const double EXTRA_LARGE_FONT = 22;
+const double XXSMALL_FONT = 8;
+const double XSMALL_FONT = 10;
+const double SMALL_FONT = 12;
+const double MEDIUM_FONT = 14;
+const double LARGE_TITLE_FONT = 16;
+const double LARGE_FONT = 18;
+const double EXTRA_LARGE_FONT = 20;
 
 /*App base theme */
 ThemeData getAppTheme() {
@@ -385,37 +384,22 @@ Widget getImageWidget(String url, {double height = 130}) {
     child: SizedBox(
       width: double.infinity,
       height: height,
-      child: Image.network(
-        url,
-        height: height,
-        fit: BoxFit.cover,
-        key: ValueKey(url),
-        errorBuilder:
-            (BuildContext context, Object exception, StackTrace? stackTrace) {
-          return Image.asset(
-            'assets/no_image.png',
-          );
-        },
-        loadingBuilder: (BuildContext context, Widget child,
-            ImageChunkEvent? loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
+      child: FastCachedImage(
+          url: url,
+          height: height,
+          fit: BoxFit.cover,
+          key: ValueKey(url),
+          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+            return Image.asset(
+              'assets/no_image.png',
+            );
+          },
+          loadingBuilder: (context, progress) {
+            return Center(
               child: CircularProgressIndicator(
-                color: PRIMARY_COLOR,
-                strokeWidth: 2,
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            ),
-          );
-        },
-      ),
+                  color: Colors.red, value: progress.progressPercentage.value),
+            );
+          }),
     ),
   );
 }

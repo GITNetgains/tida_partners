@@ -45,7 +45,7 @@ class VenueImageGallery extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child:Image.network('${_controller.imageList[i]?.image}'),
+              child:getImageWidget('${_controller.imageList[i]?.image}'),
             ),
               Positioned(
               right: 1,

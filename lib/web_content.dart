@@ -18,8 +18,11 @@ class WebContent extends StatelessWidget {
         backgroundColor: PRIMARY_COLOR,
         title: setHeadlineMedium("Settings"),
       ),
-      body: Obx(() => Html(
-        data: _controller.dataList[_controller.selectedVal.value].description??"",
+      body: Obx(() => ListView(
+        children: [Html(
+          data: _controller.dataList[_controller.selectedVal.value].description??"",
+        )],
+
       )),
 
     );

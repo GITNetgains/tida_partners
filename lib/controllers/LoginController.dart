@@ -29,7 +29,7 @@ class LoginController extends GetxController {
       bool loggedIn = await ApiProvider().loginUser(data);
       loading(false);
       if (loggedIn) {
-        Get.to(() => HomeScreen());
+        Get.offAll(() => HomeScreen());
       }
     }
   }

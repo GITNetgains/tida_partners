@@ -14,7 +14,7 @@ class Bookings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white.withOpacity(0.9),
+      backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: PRIMARY_COLOR,
           title: setHeadlineLarge("Bookings", color: Colors.white),
