@@ -33,7 +33,7 @@ class Data {
   String? academyId;
   String? title;
   String? noOfTickets;
-  Null? ticketsLeft;
+  String? ticketsLeft;
   String? price;
   String? startDate;
   String? endDate;
@@ -83,7 +83,7 @@ class Data {
     academyId = json['academy_id'];
     title = json['title'];
     noOfTickets = json['no_of_tickets'];
-    ticketsLeft = json['tickets_left'];
+    ticketsLeft = json['tickets_left']??"";
     price = json['price'];
     startDate = json['start_date'];
     endDate = json['end_date'];
@@ -98,9 +98,12 @@ class Data {
     approved = json['approved'];
     if (json['sponsors'] != null) {
       sponsors = <Sponsors>[];
-      json['sponsors'].forEach((v) {
-        sponsors!.add(new Sponsors.fromJson(v));
-      });
+     try{
+       json['sponsors'].forEach((v) {
+         sponsors!.add(new Sponsors.fromJson(v));
+       });
+
+     }catch(e){}
     }
     status = json['status'];
     createdAt = json['created_at'];
@@ -199,8 +202,8 @@ class AcademyDetails {
   String? name;
   String? address;
   String? logo;
-  Null? latitude;
-  Null? longitude;
+  String? latitude;
+  String? longitude;
   String? description;
   String? contactNo;
   String? headCoach;
@@ -225,7 +228,7 @@ class AcademyDetails {
   String? noOfAssistentCoach;
   String? assistentCoachName;
   String? feedbacks;
-  Null? amenitiesId;
+  String? amenitiesId;
   String? status;
   String? createdAt;
   String? updatedAt;

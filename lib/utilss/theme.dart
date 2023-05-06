@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,11 +12,11 @@ const double MEDIUM_PADDING = 12;
 const double LARGE_PADDING = 20;
 const double EXTRA_LARGE_PADDING = 30;
 
-const double XXSMALL_FONT = 8;
-const double XSMALL_FONT = 10;
-const double SMALL_FONT = 12;
-const double MEDIUM_FONT = 14;
-const double LARGE_TITLE_FONT = 16;
+const double XXSMALL_FONT = 10;
+const double XSMALL_FONT = 12;
+const double SMALL_FONT = 14;
+const double MEDIUM_FONT = 16;
+const double LARGE_TITLE_FONT = 17;
 const double LARGE_FONT = 18;
 const double EXTRA_LARGE_FONT = 20;
 
@@ -43,7 +44,7 @@ Widget setHeadlineLarge(String text,
     bool upperCase = false,
     Color color = Colors.black,
     TextAlign? align}) {
-  return Text(
+  return AutoSizeText(
       textAlign: align,
       upperCase
           ? getTranslated(text, context: context).toUpperCase()
@@ -62,7 +63,7 @@ Widget setHeadlineMedium(String text,
     bool upperCase = false,
     Color color = Colors.white,
     double fontSize = LARGE_TITLE_FONT}) {
-  return Text(
+  return AutoSizeText(
       upperCase
           ? getTranslated(text, context: context).toUpperCase()
           : getTranslated(text, context: context),
@@ -73,7 +74,7 @@ Widget setHeadlineMedium(String text,
 
 Widget setPrimaryTextLarge(String text,
     {Color color = Colors.black, double fontSize = LARGE_FONT}) {
-  return Text(text,
+  return AutoSizeText(text,
       style: getAppFontA(
           textStyle: TextStyle(
               fontSize: fontSize, color: color, fontWeight: FontWeight.w400)));
@@ -81,7 +82,7 @@ Widget setPrimaryTextLarge(String text,
 
 Widget setPrimaryTextMed(String text,
     {Color color = Colors.black, double fontSize = MEDIUM_FONT}) {
-  return Text(text,
+  return AutoSizeText(text,
       style: getAppFontA(
           textStyle: TextStyle(
               fontSize: fontSize,
@@ -91,7 +92,7 @@ Widget setPrimaryTextMed(String text,
 }
 
 Widget setCardHeading(String text) {
-  return Text(text,
+  return AutoSizeText(text,
       maxLines: 2,
       style: getAppFontA(
           textStyle: const TextStyle(
@@ -105,7 +106,7 @@ Widget setSmallLabel(String text,
     {Color color = Colors.black,
     bool opacity = false,
     TextAlign align = TextAlign.start}) {
-  return Text(text,
+  return AutoSizeText(text,
       textAlign: align,
       style: getAppFontA(
           textStyle: TextStyle(
@@ -120,7 +121,7 @@ Widget setXSmallLabel(String text,
     bool opacity = false,
     FontWeight fw = FontWeight.w400,
     double fontSize = XSMALL_FONT}) {
-  return Text(text,
+  return AutoSizeText(text,
       style: getAppFontA(
           textStyle: TextStyle(
               fontSize: fontSize,
@@ -135,7 +136,7 @@ Widget setMediumLabel(String text,
     double fontSize = MEDIUM_FONT,
     int maxLines = 100,
     TextDecoration decoration = TextDecoration.none}) {
-  return Text(getTranslated(text, context: context),
+  return AutoSizeText(getTranslated(text, context: context),
       textAlign: align,
       overflow: TextOverflow.ellipsis,
       maxLines: maxLines,
@@ -394,12 +395,12 @@ Widget getImageWidget(String url, {double height = 130}) {
               'assets/no_image.png',
             );
           },
-          loadingBuilder: (context, progress) {
+          /*loadingBuilder: (context, progress) {
             return Center(
               child: CircularProgressIndicator(
                   color: Colors.red, value: progress.progressPercentage.value),
             );
-          }),
+          }*/),
     ),
   );
 }
@@ -409,7 +410,18 @@ String getFormattedDateTime(String date) {
   try {
     DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
 
-    DateFormat dateFormat = DateFormat("EEE, dd MMM yyyy HH:mm a");
+    DateFormat dateFormat = DateFormat("EEE, dd MMM yyyy hh:mm a");
+    dd = dateFormat.format(tempDate).toString();
+  } catch (e) {}
+
+  return dd;
+}
+
+String getFormattedDateTimeForTournament(String date) {
+  String dd = date;
+  try {
+    DateTime tempDate = new  DateFormat("EEE, dd MMM yyyy hh:mm a").parse(date);
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     dd = dateFormat.format(tempDate).toString();
   } catch (e) {}
 

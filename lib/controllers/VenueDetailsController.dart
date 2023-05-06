@@ -192,7 +192,6 @@ class VenueDetailsController extends GetxController {
         });
       }
     }
-
       SportsResponse? sportsList = await ApiProvider().fetchSports();
       if (sportsList != null) {
         sportsResponse = sportsList.obs;
@@ -208,6 +207,7 @@ class VenueDetailsController extends GetxController {
     if (_homeController.isEdit.value) {
       fetchVenue();
     }
+
     loading(false);
   }
 

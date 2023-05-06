@@ -4,6 +4,8 @@ import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:tida_partners/network/responses/SponserResponse.dart' as sp;
 import 'package:tida_partners/network/responses/TournamentListResponse.dart';
 import 'package:tida_partners/network/responses/academy_res.dart' as a;
@@ -84,50 +86,60 @@ class TournamentController extends GetxController {
   }
 
   void saveData() async {
-    Map<String, String> data = {
-      "academy": selectedAcademyID.value,
-      "title": titleController.text,
-      "no_of_tickets": "-",
-      "price": priceController.text,
-      "start_date": startDateController.text,
-      "end_date": endDateController.text,
-      "description": descController.text,
-      "type": "1",
-      "latitude": lat.value,
-      "longitude": lng.value,
-      "address": addressController.text,
-      "url": urlController.text,
-      "sponsors": getSponsorIds().join(","),
-      "status": "1",
-    };
-    print(data);
-    for (MapEntry<String, String> item in data.entries) {
-      if (item.value.isEmpty) {
-        AppUtills.showSnackBar("Required",
-            "All fields are required ${(item.key).replaceAll("_", " ").toUpperCase()}",
-            isError: true);
-        return;
-      }
-    }
-    isLoading(true);
-    bool saved = false;
-
-    if (!isEdit.value) {
-      saved = await ApiProvider().addTournament(data, filePath.value);
+    if (selectedAcademyID.isEmpty) {
+      AppUtills.showSnackBar("Error", "Please select academy", isError: true);
+    } else if (titleController.text.isEmpty) {
+      AppUtills.showSnackBar("Error", "Please enter valid title",
+          isError: true);
+    } else if (descController.text.isEmpty) {
+      AppUtills.showSnackBar("Error", "Please enter valid description",
+          isError: true);
+    } else if (urlController.text.isEmpty) {
+      AppUtills.showSnackBar("Error", "Please enter valid url", isError: true);
+    } else if (lat.isEmpty) {
+      AppUtills.showSnackBar("Error", "Please enter valid address",
+          isError: true);
+    } else if (startDateController.text.isEmpty) {
+      AppUtills.showSnackBar("Error", "Please select data and time",
+          isError: true);
     } else {
-      data["id"] = selectedId.value;
+      Map<String, String> data = {
+        "academy": selectedAcademyID.value,
+        "title": titleController.text,
+        "no_of_tickets": "-",
+        "price": priceController.text,
+        "start_date": getFormattedDateTimeForTournament(startDateController.text),
+        "end_date": getFormattedDateTimeForTournament(startDateController.text),
+        "description": descController.text,
+        "type": "1",
+        "latitude": lat.value,
+        "longitude": lng.value,
+        "address": addressController.text,
+        "url": urlController.text,
+        "sponsors": getSponsorIds().join(","),
+        "status": "1",
+      };
+      print(data);
+      isLoading(true);
+      bool saved = false;
+      if (!isEdit.value) {
+        saved = await ApiProvider().addTournament(data, filePath.value);
+      } else {
+        data["id"] = selectedId.value;
 
-      saved = await ApiProvider().updateTournament(
-          data, filePath.value.startsWith("http") ? "" : filePath.value);
-    }
+        saved = await ApiProvider().updateTournament(
+            data, filePath.value.startsWith("http") ? "" : filePath.value);
+      }
 
-    print(saved);
-    isLoading(false);
+      print(saved);
+      isLoading(false);
 
-    if (saved) {
-      AppUtills.showSnackBar("Success", "Tournament Saved");
-      Navigator.pop(Get.context!);
-      fetchTournament();
+      if (saved) {
+        AppUtills.showSnackBar("Success", "Tournament Saved");
+        Navigator.pop(Get.context!);
+        //Get.back(result: true);
+        fetchTournament();
+      }
     }
   }
 
@@ -178,14 +190,15 @@ class TournamentController extends GetxController {
 
   Future<Null> selectStartDate(BuildContext context) async {
     DateTime selectedDate = DateTime.now();
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+
+    DateTime? picked = await showOmniDateTimePicker(context: context);
+    // DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").format(picked.t);
+
+     DateFormat dateFormat = DateFormat("EEE, dd MMM yyyy hh:mm a");
+   // DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     if (picked != null) {
-      startDateController.text =
-          "${picked.year}-${picked.month}-${picked.day} 00:00:00";
+      startDateController.text = dateFormat.format(picked);
+      /* "${picked.year}-${picked.month}-${picked.day} ${picked.hour}:${picked.minute}:${picked.second}";*/
     }
   }
 
@@ -214,8 +227,8 @@ class TournamentController extends GetxController {
       //addressController.text = item.noOfTickets??"";
       priceController.text = item.price ?? "";
       //   noOfTicketController.text = item.noOfTickets ?? "";
-      startDateController.text = item.startDate ?? "";
-      endDateController.text = item.endDate ?? "";
+      startDateController.text =getFormattedDateTime( item.startDate ?? "");
+      endDateController.text = getFormattedDateTime( item.startDate ?? "");
       selectedAcademyID.value = item.academyId ?? "-";
       selectedId.value = item.id ?? "";
       try {

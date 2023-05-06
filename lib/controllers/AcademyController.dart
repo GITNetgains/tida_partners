@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
@@ -28,7 +26,6 @@ class AcademyController extends GetxController {
   final academyCtrl = TextEditingController();
   final descriptionCtrl = TextEditingController();
 
-  //final locationCtrl = TextEditingController();
   final headCoachCtrl = TextEditingController();
   final timeCtrl = TextEditingController();
   final contactCtrl = TextEditingController();
@@ -36,17 +33,11 @@ class AcademyController extends GetxController {
   final skillCtrl = TextEditingController();
   final coachExpCtrl = "1".obs;
 
-  // final ageCtrl = "13-16".obs;
   Rx<s.SportsResponse> sportsResponse = s.SportsResponse().obs;
 
-  //final groundSizeCtrl = TextEditingController();
   final floodLightCtrl = "Yes".obs;
   final noOfAssistantCtrl = "1".obs;
   final assistantCoachNameCtrl = TextEditingController();
-
-//  final capacityNameCtrl = TextEditingController();
-  //final equipmentCtrl = TextEditingController();
-
   final packageTitleController = TextEditingController();
   final priceController = TextEditingController();
   final addressController = TextEditingController();
@@ -92,7 +83,7 @@ class AcademyController extends GetxController {
     }
     vData = data.obs;
     selectedVenue(data.title);
-    academyCtrl.text =data.title??"";
+    academyCtrl.text = data.title ?? "";
     selectedVenueId(data.id);
 
     refresh();
@@ -249,22 +240,20 @@ class AcademyController extends GetxController {
       loading(false);
       if (saved) {
         Get.back(result: true);
-        //  Get.delete<AcademyController>();
       }
     }
   }
 
   Future<void> selectImage() async {
-    XFile? f = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 20);
+    XFile? f =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
     if (f != null) {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: f.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.ratio16x9
-        ],
+        aspectRatioPresets: [CropAspectRatioPreset.ratio16x9],
         cropStyle: CropStyle.rectangle,
         compressFormat: ImageCompressFormat.jpg,
-        compressQuality: 20,
+        compressQuality: 10,
         aspectRatio: CropAspectRatio(ratioX: 16, ratioY: 9),
         uiSettings: [
           AndroidUiSettings(
@@ -318,17 +307,11 @@ class AcademyController extends GetxController {
       headCoachCtrl.text = d.headCoach ?? "";
       timeCtrl.text = d.sessionTimings ?? "";
       contactCtrl.text = d.contactNo ?? "";
-      // serviceCtrl.text = d.se ??"";
       skillCtrl.text = d.skillLevel ?? "";
       coachExpCtrl.value = d.coachExperience ?? "1";
-      // ageCtrl.value = d.ageGroupOfStudents ?? "13-16";
-      //  groundSizeCtrl.text = d.groundSize ?? "";
       floodLightCtrl.value = d.floodLights == "Yes" ? "Yes" : "No";
       noOfAssistantCtrl.value = d.noOfAssistentCoach.toString() ?? "1";
-      print( "=>>>>>>>>>>"+d.noOfAssistentCoach.toString());
       assistantCoachNameCtrl.text = d.assistentCoachName ?? "";
-      //   capacityNameCtrl.text = d.capacity ?? "";
-      // equipmentCtrl.text = d.equipment ?? "";
       academyId(d.id);
       print(d.sports);
       if (d.sports != null) {
@@ -353,6 +336,7 @@ class AcademyController extends GetxController {
     // locationCtrl.text = "";
     headCoachCtrl.text = "";
     timeCtrl.text = "";
+    selectedSport.clear();
     contactCtrl.text = "";
     skillCtrl.text = "";
     coachExpCtrl.value = "";
@@ -361,6 +345,7 @@ class AcademyController extends GetxController {
     floodLightCtrl.value = "Yes";
     noOfAssistantCtrl.value = "1";
     assistantCoachNameCtrl.text = "";
+    addressController.text = "";
     // capacityNameCtrl.text = "";
     //  equipmentCtrl.text = "";
     academyId("");

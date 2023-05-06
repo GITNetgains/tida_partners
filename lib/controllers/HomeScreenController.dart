@@ -56,7 +56,7 @@ class HomeScreenController extends GetxController {
   }
 
   selectImage() async {
-    XFile? f = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
+    XFile? f = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 20);
     if (f != null) {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: f.path,
@@ -94,7 +94,7 @@ class HomeScreenController extends GetxController {
     imageList.clear();
     fetchMedia();
     fetchSpostsAndAmenities();
-    bool? edit =await   Get.to(() => ViewVenu());
+   // bool? edit =await   Get.to(() => ViewVenu());
     /*if (edit!=null) {
       if (edit) {
         editVenue(i);
@@ -110,10 +110,10 @@ class HomeScreenController extends GetxController {
   void editVenue(int i) async {
     index(i);
     isEdit(true);
-    await Get.to(() => AddVenue());
-    //if (data) {
+   var data= await Get.to(() => AddVenue());
+    if (data!=null) {
       fetch();
-    //}
+    }
   }
 
   Future<void> uploadImage() async {

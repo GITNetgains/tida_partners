@@ -284,7 +284,6 @@ class ApiProvider {
       'Accept': 'application/json',
     });
     debugPrint(isPackage ? ADD_PACKAGE : ADD_ACADEMY);
-    debugPrint(data.toString());
     //for image and videos and files
     request.fields.assignAll(data);
 
@@ -299,7 +298,6 @@ class ApiProvider {
 
     //for getting and decoding the response into json format
     var responsed = await http.Response.fromStream(response);
-
     if (response.statusCode == 200) {
       return true;
     } else {
@@ -725,9 +723,9 @@ class ApiProvider {
       if (datares.status == true) {
         return datares;
       } else {
-        AppUtills.showSnackBar("Error",
+       /* AppUtills.showSnackBar("Error",
             datares.message ?? "Something Went Wrong. Please try again.",
-            isError: true);
+            isError: true);*/
       }
     }
     return null;

@@ -88,6 +88,7 @@ class NavBar extends StatelessWidget {
                 showAlertDialog(context);
               }),
           ExpansionTile(
+            initiallyExpanded: true,
             title: setMediumLabel("Help & Settings"),
             children: [
               Divider(),

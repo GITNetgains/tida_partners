@@ -64,7 +64,9 @@ class HomeScreen extends StatelessWidget {
                                 children: [
                                   InkWell(
                                     onTap: () async {
-                                    _controller.viewVenue(index);
+                                  //  _controller.viewVenue(index);
+                                      _controller.editVenue(index);
+
                                     },
                                     child: ClipRRect(
                                         borderRadius: const BorderRadius.only(

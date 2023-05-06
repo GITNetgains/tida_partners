@@ -112,20 +112,29 @@ class AddTournament extends StatelessWidget {
                       var data = await Get.to(() => SelectAcademy());
                       _controller.setSelectedAcademy(data);
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(
-                              () => (_controller.selectedAcademy.value == "")
-                              ? setHeadlineLarge("Select Academy")
-                              : setHeadlineLarge(_controller
-                              .selectedAcademy.value
-                              .toUpperCase() ??
-                              ""),
+                    child: Column(
+
+                      children: [Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(
+                                  () => (_controller.selectedAcademy.value == "")
+                                  ? setHeadlineLarge("Select Academy")
+                                  : Expanded(
+                                    child: setMediumLabel(_controller
+                                    .selectedAcademy.value
+                                    .toUpperCase() ??
+                                    ""),
+                                  ),
+                            ),
+                            const Icon(Icons.arrow_forward_ios_rounded)
+                          ],
                         ),
-                        const Icon(Icons.arrow_forward_ios_rounded)
-                      ],
-                    ),
+                      ),Divider()],
+
+                    )
                   ),
                 ),
                 Padding(
@@ -305,7 +314,7 @@ class AddTournament extends StatelessWidget {
                           cursorColor: Colors.black,
                           decoration: InputDecoration(
                             label: setMediumLabel(
-                              "Start Date",
+                              "Date",
                             ),
                             focusedBorder: const OutlineInputBorder(
                               borderSide:
@@ -319,7 +328,7 @@ class AddTournament extends StatelessWidget {
                         ),
                       ),
                       getVerticalSpace(),
-                      InkWell(
+                    /*  InkWell(
                         onTap: () {
                           _controller.selectEndTime(context);
                         },
@@ -341,7 +350,7 @@ class AddTournament extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),

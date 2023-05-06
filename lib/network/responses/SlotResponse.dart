@@ -138,9 +138,9 @@ class User {
   String? password;
   String? phone;
   String? type;
-  Null? image;
+  String? image;
   String? status;
-  Null? encryptPassword;
+  String? encryptPassword;
   String? createdAt;
   String? updatedAt;
 

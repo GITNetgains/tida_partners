@@ -29,13 +29,13 @@ class SingleAcademy {
 
 class Data {
   String? id;
-  Null? userId;
+  String? userId;
   String? venueId;
   String? name;
   String? address;
   String? logo;
-  Null? latitude;
-  Null? longitude;
+  String? latitude;
+  String? longitude;
   String? description;
   String? contactNo;
   String? headCoach;
@@ -60,11 +60,11 @@ class Data {
   String? noOfAssistentCoach;
   String? assistentCoachName;
   String? feedbacks;
-  Null? amenitiesId;
+  String? amenitiesId;
   String? status;
   String? createdAt;
   String? updatedAt;
-  Null? amenitiesDetails;
+  dynamic? amenitiesDetails;
   List<VenueDetails>? venueDetails;
 
   Data(
