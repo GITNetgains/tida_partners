@@ -5,7 +5,6 @@ import 'package:tida_partners/add_venue.dart';
 import 'package:tida_partners/controllers/FacilityController.dart';
 import 'package:tida_partners/nab_bar.dart';
 import 'package:tida_partners/network/responses/VenueListResponse.dart';
-import 'package:tida_partners/slot_booking_screen.dart';
 import 'package:tida_partners/utilss/size_config.dart';
 import 'package:tida_partners/utilss/theme.dart';
 import 'package:tida_partners/venue/facilities_list.dart';

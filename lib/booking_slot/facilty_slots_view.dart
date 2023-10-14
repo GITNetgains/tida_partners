@@ -156,7 +156,7 @@ class FacilitySlotsView extends StatelessWidget {
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                 children: [
                                                                                   setHeadlineMedium("Name", color: PRIMARY_COLOR),
-                                                                                  setMediumLabel(c.slots![index]!.slotBookingDetail!.user!.name.toString(), color: PRIMARY_COLOR)
+                                                                                  setMediumLabel(c.slots![index]!.user!.name.toString(), color: PRIMARY_COLOR)
                                                                                 ],
                                                                               ),
                                                                             ),
@@ -168,7 +168,7 @@ class FacilitySlotsView extends StatelessWidget {
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                 children: [
                                                                                   setHeadlineMedium("Phone",color: PRIMARY_COLOR),
-                                                                                  setMediumLabel(c.slots![index]!.slotBookingDetail!.user!.phone.toString(), color: PRIMARY_COLOR)
+                                                                                  setMediumLabel(c.slots![index]!.user!.phone.toString(), color: PRIMARY_COLOR)
                                                                                 ],
                                                                               ),
                                                                             ),
@@ -180,7 +180,7 @@ class FacilitySlotsView extends StatelessWidget {
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                 children: [
                                                                                   setHeadlineMedium("email", color: PRIMARY_COLOR),
-                                                                                  setMediumLabel(c.slots![index]!.slotBookingDetail!.user!.email.toString(), color: PRIMARY_COLOR)
+                                                                                  setMediumLabel(c.slots![index]!.user!.email.toString(), color: PRIMARY_COLOR)
                                                                                 ],
                                                                               ),
                                                                             ),

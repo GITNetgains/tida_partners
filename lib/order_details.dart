@@ -98,9 +98,9 @@ class OrderDetails extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Divider(),
+                    // const Divider(),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(0),
                       child: _getBookingWidget(),
                     ),
                     const Divider(),
@@ -187,31 +187,79 @@ class OrderDetails extends StatelessWidget {
 
   _getBookingWidget() {
     String displayName = "";
-
+    String displaytiming = "";
+    String displayaddress = " ";
     //type: 1-venue/facility,2-academy/session,3-tournament,4-experience
     switch (_c.getSelectedOrder().type) {
       case "1":
-        displayName = _c.getSelectedOrder().facility?.title ?? "-";
-        break;
-      case "2":
-        displayName = _c.getSelectedOrder().tournament?.title ?? "-";
+        displaytiming =
+            "${_c.getSelectedOrder().facilityBooking?.date}  ${_c.getSelectedOrder().facilityBooking!.slotStartTime ?? ""} - ${_c.getSelectedOrder().facilityBooking!.slotEndTime ?? ""} ";
+        displayName = _c.getSelectedOrder().venu_name ?? "Facility";
+        displayaddress = _c.getSelectedOrder().facilityaddress.toString() ?? " ";
         break;
       case "3":
-        displayName = _c.getSelectedOrder().academy?.name ?? "-";
+        displayName = _c.getSelectedOrder().tournament?.title ?? "Tournament";
+        // displayaddress = _c.getSelectedOrder().facilityaddress.toString() ?? " ";
+        break;
+      case "2":
+        displayName = _c.getSelectedOrder().academy?.name ?? "Academy";
+        displayaddress = _c.getSelectedOrder().academy!.address.toString() ?? " ";
         break;
       case "4":
-        displayName = _c.getSelectedOrder().experience?.title ?? "-";
+        displayName = _c.getSelectedOrder().experience?.title ?? "Experience";
+        displayaddress = _c.getSelectedOrder().experience!.address.toString() ?? " ";
         break;
       default:
         displayName = "-";
     }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        setHeadlineMedium("Service Name", color: Colors.black),
-        setHeadlineMedium('${(displayName)}', color: PRIMARY_COLOR),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+           const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              setHeadlineMedium("Service Name", color: Colors.black),
+              Container(
+                  width: 150,
+                  child: setHeadlineMedium('${(displayName)}',
+                      color: PRIMARY_COLOR, textAlign: TextAlign.right)),
+            ],
+          ),
+          displaytiming == "" ? Container() : const Divider(),
+          displaytiming == ""
+              ? Container()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    setHeadlineMedium("Slot Timing", color: Colors.black),
+                    Container(
+                        width: 180,
+                        child: setHeadlineMedium(
+                          '${(displaytiming)}',
+                          color: PRIMARY_COLOR,
+                          textAlign: TextAlign.right
+                        )),
+                  ],
+                ),
+          Divider(),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical:8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              setHeadlineMedium("Service Address", color: Colors.black),
+              Container(
+                  width: 150,
+                  child: setHeadlineMedium('${(displayaddress)}',
+                      color: PRIMARY_COLOR,textAlign: TextAlign.right )),
+            ],
+          ),
+        ),
+        ],
+      ),
     );
   }
 }

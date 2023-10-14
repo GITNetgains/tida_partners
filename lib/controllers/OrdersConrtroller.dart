@@ -21,6 +21,7 @@ class OrdersController extends GetxController {
     if (response!=null) {
       if (response.data!=null) {
         orderList.assignAll(response.data!);
+        orderList = orderList.reversed.toList().obs;
       }
 
     }

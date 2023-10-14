@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tida_partners/AppUtils.dart';
+import 'package:tida_partners/change_password_vm.dart';
 import 'package:tida_partners/home_screen.dart';
 import 'package:tida_partners/login_screen.dart';
 import 'package:tida_partners/network/ApiProvider.dart';
@@ -33,7 +35,16 @@ class SignUpController extends GetxController {
     }else if (userConfirmPass.value != userPassword.value) {
       AppUtills.showSnackBar("Required", "Please re-enter correct password",
           isError: true);
-    } else {
+    } else if(isPasswordCompliant(userPassword.value.trim().toString()) ==
+        false)
+    {
+       Get.snackbar("Please provide valid Password",
+          "Password should have minimum of 1 special Character, 1 Uppercase letter, 1 lowercase letter, 1 digit and minimum length of 8 characters.",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM);
+    }
+     else {
       loading(true);
       Map<String, String> data = {
         "name": userName.value,
@@ -45,9 +56,10 @@ class SignUpController extends GetxController {
         "device_token": "TO-BE-IMPLEMENTED",
       };
       bool loggedIn = await ApiProvider().signUp(data);
+      
       loading(false);
       if (loggedIn) {
-        Get.offAll(() => LoginScreen());
+        Get.offAll(() => HomeScreen());
       }
     }
   }

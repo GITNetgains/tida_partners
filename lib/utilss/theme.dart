@@ -62,14 +62,19 @@ Widget setHeadlineMedium(String text,
     {BuildContext? context,
     bool upperCase = false,
     Color color = Colors.white,
-    double fontSize = LARGE_TITLE_FONT}) {
+    double fontSize = LARGE_TITLE_FONT,
+    TextAlign textAlign = TextAlign.center}) {
   return AutoSizeText(
       upperCase
           ? getTranslated(text, context: context).toUpperCase()
           : getTranslated(text, context: context),
+      textAlign: textAlign,
       style: getAppFontB(
           textStyle: TextStyle(
-              fontSize: fontSize, color: color, fontWeight: FontWeight.w500)));
+        fontSize: fontSize,
+        color: color,
+        fontWeight: FontWeight.w500,
+      )));
 }
 
 Widget setPrimaryTextLarge(String text,
@@ -386,21 +391,23 @@ Widget getImageWidget(String url, {double height = 130}) {
       width: double.infinity,
       height: height,
       child: FastCachedImage(
-          url: url,
-          height: height,
-          fit: BoxFit.cover,
-          key: ValueKey(url),
-          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return Image.asset(
-              'assets/no_image.png',
-            );
-          },
-          /*loadingBuilder: (context, progress) {
+        url: url,
+        height: height,
+        fit: BoxFit.cover,
+        key: ValueKey(url),
+        errorBuilder:
+            (BuildContext context, Object exception, StackTrace? stackTrace) {
+          return Image.asset(
+            'assets/no_image.png',
+          );
+        },
+        /*loadingBuilder: (context, progress) {
             return Center(
               child: CircularProgressIndicator(
                   color: Colors.red, value: progress.progressPercentage.value),
             );
-          }*/),
+          }*/
+      ),
     ),
   );
 }
@@ -420,7 +427,7 @@ String getFormattedDateTime(String date) {
 String getFormattedDateTimeForTournament(String date) {
   String dd = date;
   try {
-    DateTime tempDate = new  DateFormat("EEE, dd MMM yyyy hh:mm a").parse(date);
+    DateTime tempDate = new DateFormat("EEE, dd MMM yyyy hh:mm a").parse(date);
     DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
     dd = dateFormat.format(tempDate).toString();
   } catch (e) {}

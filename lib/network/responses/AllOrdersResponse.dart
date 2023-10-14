@@ -43,31 +43,37 @@ class Data {
   String? createdAt;
   String? updatedAt;
   Facility? facility;
+  String? facilityaddress;
+  FacilityBooking? facilityBooking;
   Tournament? tournament;
+  String? venu_name;
   Experience? experience;
   User? user;
   Academy? academy;
 
   Data(
       {this.id,
-        this.userId,
-        this.partnerId,
-        this.type,
-        this.orderDate,
-        this.facilityBookingId,
-        this.sessionId,
-        this.tournamentId,
-        this.amount,
-        this.transactionId,
-        this.experienceId,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.facility,
-        this.tournament,
-        this.experience,
-        this.user,
-        this.academy});
+      this.userId,
+      this.partnerId,
+      this.type,
+      this.orderDate,
+      this.facilityBookingId,
+      this.sessionId,
+      this.tournamentId,
+      this.amount,
+      this.facilityBooking,
+      this.transactionId,
+      this.experienceId,
+      this.status,
+      this.venu_name,
+      this.facilityaddress,
+      this.createdAt,
+      this.updatedAt,
+      this.facility,
+      this.tournament,
+      this.experience,
+      this.user,
+      this.academy});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,9 +87,14 @@ class Data {
     amount = json['amount'];
     transactionId = json['transaction_id'];
     experienceId = json['experience_id'];
+    facilityaddress = json['facility_address'];
+    venu_name = json['venu_name'];
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    facilityBooking = json['facility_booking'] != null
+        ? new FacilityBooking.fromJson(json['facility_booking'])
+        : null;
     facility = json['facility'] != null
         ? new Facility.fromJson(json['facility'])
         : null;
@@ -95,7 +106,7 @@ class Data {
         : null;
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
     academy =
-    json['academy'] != null ? new Academy.fromJson(json['academy']) : null;
+        json['academy'] != null ? new Academy.fromJson(json['academy']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -109,11 +120,15 @@ class Data {
     data['session_id'] = this.sessionId;
     data['tournament_id'] = this.tournamentId;
     data['amount'] = this.amount;
+    data['facility_address'] = this.facilityaddress;
     data['transaction_id'] = this.transactionId;
     data['experience_id'] = this.experienceId;
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    if (this.facilityBooking != null) {
+      data['facility_booking'] = this.facilityBooking!.toJson();
+    }
     if (this.facility != null) {
       data['facility'] = this.facility!.toJson();
     }
@@ -155,23 +170,23 @@ class Facility {
 
   Facility(
       {this.id,
-        this.title,
-        this.venueId,
-        this.noOfInventories,
-        this.minPlayers,
-        this.maxPlayers,
-        this.defaultPlayers,
-        this.pricePerSlot,
-        this.openingTime,
-        this.closingTime,
-        this.available24Hours,
-        this.slotLengthHrs,
-        this.slotLengthMin,
-        this.slotFrequency,
-        this.activity,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
+      this.title,
+      this.venueId,
+      this.noOfInventories,
+      this.minPlayers,
+      this.maxPlayers,
+      this.defaultPlayers,
+      this.pricePerSlot,
+      this.openingTime,
+      this.closingTime,
+      this.available24Hours,
+      this.slotLengthHrs,
+      this.slotLengthMin,
+      this.slotFrequency,
+      this.activity,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
 
   Facility.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -218,6 +233,67 @@ class Facility {
   }
 }
 
+class FacilityBooking {
+  String? id;
+  String? facilityId;
+  String? userId;
+  String? bookBy;
+  String? date;
+  String? slotStartTime;
+  String? slotEndTime;
+  String? transactionId;
+  String? bookingStatus;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+
+  FacilityBooking(
+      {this.id,
+      this.facilityId,
+      this.userId,
+      this.bookBy,
+      this.date,
+      this.slotStartTime,
+      this.slotEndTime,
+      this.transactionId,
+      this.bookingStatus,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
+
+  FacilityBooking.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    facilityId = json['facility_id'];
+    userId = json['user_id'];
+    bookBy = json['book_by'];
+    date = json['date'];
+    slotStartTime = json['slot_start_time'];
+    slotEndTime = json['slot_end_time'];
+    transactionId = json['transaction_id'];
+    bookingStatus = json['booking_status'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['facility_id'] = this.facilityId;
+    data['user_id'] = this.userId;
+    data['book_by'] = this.bookBy;
+    data['date'] = this.date;
+    data['slot_start_time'] = this.slotStartTime;
+    data['slot_end_time'] = this.slotEndTime;
+    data['transaction_id'] = this.transactionId;
+    data['booking_status'] = this.bookingStatus;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
 class Tournament {
   String? id;
   String? userId;
@@ -239,22 +315,22 @@ class Tournament {
 
   Tournament(
       {this.id,
-        this.userId,
-        this.academyId,
-        this.title,
-        this.noOfTickets,
-        this.ticketsLeft,
-        this.price,
-        this.startDate,
-        this.endDate,
-        this.description,
-        this.type,
-        this.image,
-        this.url,
-        this.approved,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
+      this.userId,
+      this.academyId,
+      this.title,
+      this.noOfTickets,
+      this.ticketsLeft,
+      this.price,
+      this.startDate,
+      this.endDate,
+      this.description,
+      this.type,
+      this.image,
+      this.url,
+      this.approved,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
 
   Tournament.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -315,17 +391,17 @@ class Experience {
 
   Experience(
       {this.id,
-        this.title,
-        this.description,
-        this.price,
-        this.venueId,
-        this.userId,
-        this.address,
-        this.startTime,
-        this.image,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
+      this.title,
+      this.description,
+      this.price,
+      this.venueId,
+      this.userId,
+      this.address,
+      this.startTime,
+      this.image,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
 
   Experience.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -375,16 +451,16 @@ class User {
 
   User(
       {this.id,
-        this.name,
-        this.email,
-        this.password,
-        this.phone,
-        this.type,
-        this.image,
-        this.status,
-        this.encryptPassword,
-        this.createdAt,
-        this.updatedAt});
+      this.name,
+      this.email,
+      this.password,
+      this.phone,
+      this.type,
+      this.image,
+      this.status,
+      this.encryptPassword,
+      this.createdAt,
+      this.updatedAt});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -457,41 +533,41 @@ class Academy {
 
   Academy(
       {this.id,
-        this.userId,
-        this.venueId,
-        this.name,
-        this.address,
-        this.logo,
-        this.latitude,
-        this.longitude,
-        this.description,
-        this.contactNo,
-        this.headCoach,
-        this.sessionTimings,
-        this.weekDays,
-        this.price,
-        this.remarksPrice,
-        this.skillLevel,
-        this.academyJersey,
-        this.capacity,
-        this.remarksCurrentCapacity,
-        this.sessionPlan,
-        this.remarksSessionPlan,
-        this.ageGroupOfStudents,
-        this.remarksStudents,
-        this.equipment,
-        this.remarksOnEquipment,
-        this.floodLights,
-        this.groundSize,
-        this.person,
-        this.coachExperience,
-        this.noOfAssistentCoach,
-        this.assistentCoachName,
-        this.feedbacks,
-        this.amenitiesId,
-        this.status,
-        this.createdAt,
-        this.updatedAt});
+      this.userId,
+      this.venueId,
+      this.name,
+      this.address,
+      this.logo,
+      this.latitude,
+      this.longitude,
+      this.description,
+      this.contactNo,
+      this.headCoach,
+      this.sessionTimings,
+      this.weekDays,
+      this.price,
+      this.remarksPrice,
+      this.skillLevel,
+      this.academyJersey,
+      this.capacity,
+      this.remarksCurrentCapacity,
+      this.sessionPlan,
+      this.remarksSessionPlan,
+      this.ageGroupOfStudents,
+      this.remarksStudents,
+      this.equipment,
+      this.remarksOnEquipment,
+      this.floodLights,
+      this.groundSize,
+      this.person,
+      this.coachExperience,
+      this.noOfAssistentCoach,
+      this.assistentCoachName,
+      this.feedbacks,
+      this.amenitiesId,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
 
   Academy.fromJson(Map<String, dynamic> json) {
     id = json['id'];

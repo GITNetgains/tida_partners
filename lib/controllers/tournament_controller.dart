@@ -150,6 +150,7 @@ class TournamentController extends GetxController {
       if (response.status!) {
         data(response.data);
         update();
+    print(data[1].image);
       }
     }
     isLoading(false);
@@ -323,7 +324,7 @@ class TournamentController extends GetxController {
           lng(prediction.lng.toString());
         },
         // this callback is called when isLatLngRequired is true
-        itmClick: (Prediction prediction) {
+        itemClick: (Prediction prediction) {
           addressController.text = prediction.description ?? "";
         });
   }

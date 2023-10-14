@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1006891112671",
+    "project_id": "tida-partners",
+    "storage_bucket": "tida-partners.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006891112671:android:21633498453b59d574716a",
+        "android_client_info": {
+          "package_name": "com.tidasports.partner.tida_partners"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006891112671-hgnh0i0knerf6ruapir54mq362081ijm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0lTbqm178rujjspQlhTrkWSEi7sbngBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006891112671-hgnh0i0knerf6ruapir54mq362081ijm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

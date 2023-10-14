@@ -281,7 +281,8 @@ class AddFacility extends StatelessWidget {
                 padding: EdgeInsets.all(8),
                 width: double.infinity,
                 child: getSecondaryButton("Save", () {
-                  _controller.saveFacility();
+                  Map<String,String> data = {};
+                  _controller.saveFacility(data, false);
                 })),
           ],
         ),

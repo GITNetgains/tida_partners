@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tida_partners/add_venue.dart';
 import 'package:tida_partners/network/responses/amenities_res.dart'
     as AmenitiesResponseObj;
+import 'package:tida_partners/utilss/SharedPref.dart';
 
 import '../AppUtils.dart';
 import '../apputils/image_utils.dart';
@@ -36,6 +37,7 @@ class HomeScreenController extends GetxController {
   void onInit() {
     imageList.clear();
     fetch();
+    print(Preferences.getUserId());
     super.onInit();
   }
 

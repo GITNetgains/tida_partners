@@ -123,13 +123,15 @@ class FacilitySlotsVM extends GetxController {
     Map<String, String> data = {
       "userid": user_id.toString(),
       "token": token,
-      "facility_id": _fC.dataResponse[_fC.selectedIndex.value].id??"0",
+      "facility_id": _fC.dataResponse[_fC.selectedIndex.value].id ?? "0",
+      "facility_name": Get.arguments["Title"],
       "date": selectedDate.toString()
     };
     debugPrint("v data $data");
     isLoading(true);
     await ApiProvider().fetchSlots(data).then((response) {
       FetchSlotsResponseModel? res = response;
+      print(response);
       debugPrint("IN hEEre1");
       if (res?.status == true) {
         debugPrint("IN hEEre");

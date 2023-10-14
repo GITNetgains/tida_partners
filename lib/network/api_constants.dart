@@ -34,3 +34,5 @@ const FETCH_VENU_SLOTS='${BASE_URL}/Facility_api/getFacilitySlots';
 const FETCH_ORDERS='${BASE_URL}/Order_api/getAllData';
 const FETCH_SPONSOR='${BASE_URL}/Tournament_api/getsponsersData';
 const DELETE_PROFILE='${BASE_URL}/Userapi/disableProfile';
+const CHANGE_PASSWORD = '${BASE_URL}/partner_user/changepassword';
+const UPDATE_PROFILE = '${BASE_URL}/partner_user/editprofile';

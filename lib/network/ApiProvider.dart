@@ -78,6 +78,14 @@ class ApiProvider {
     if (res.statusCode == 200) {
       LoginResponse datares = LoginResponse.fromJson(jsonDecode(res.body));
       if (datares.status == true) {
+         Preferences.setLoggedIn(true);
+        Preferences.setToken(datares.data?.token ?? "");
+        Preferences.setUserId(datares.data?.id ?? "");
+        Preferences.setUserId(datares.data?.id ?? "");
+        Preferences.setName(datares.data?.name ?? "");
+        Preferences.setEmail(datares.data?.email ?? "");
+        Preferences.setPhone(datares.data?.phone ?? "N/A");
+        Preferences.setStatus(datares.data?.status ?? "1");
         AppUtills.showSnackBar(
             "Success", "User registered. Please login to continue.",
             isError: false);
@@ -112,6 +120,40 @@ class ApiProvider {
       }
     }
     return false;
+  }
+
+  static dynamic returnResponse(http.Response response) {
+    try {
+      dynamic responseJson = /*jsonDecode(*/ response.body /*)*/;
+      debugPrint("RESPONSE $responseJson");
+      return responseJson;
+    } catch (e) {
+      return {};
+    }
+  }
+
+  static Future changepass(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(Uri.parse(CHANGE_PASSWORD),
+        // headers: <String, String>{
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        // },
+        body: /*jsonEncode(*/ data /*)*/);
+    responseJson = returnResponse(response);
+    return responseJson;
+  }
+
+  static Future updateprofile(Map data) async {
+    var client = http.Client();
+    dynamic responseJson;
+    final response = await client.post(Uri.parse(UPDATE_PROFILE),
+        // headers: <String, String>{
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        // },
+        body: /*jsonEncode(*/ data /*)*/);
+    responseJson = returnResponse(response);
+    return responseJson;
   }
 
   Future<bool> addVenueMultipart(Map<String, String> data, String path) async {
@@ -197,9 +239,8 @@ class ApiProvider {
     //for image and videos and files
     request.fields.assignAll(data);
 
-
     if (path.trim().isNotEmpty) {
-       request.files.add(await http.MultipartFile.fromPath("image", path));
+      request.files.add(await http.MultipartFile.fromPath("image", path));
     } else {
       data['image'] = "null";
     }
@@ -540,7 +581,7 @@ class ApiProvider {
       if (datares.status == true) {
         return datares;
       } else {
-     /*   AppUtills.showSnackBar("Error",
+        /*   AppUtills.showSnackBar("Error",
             datares.message ?? "Something Went Wrong. Please try again.",
             isError: true);*/
       }
@@ -568,7 +609,7 @@ class ApiProvider {
       if (datares.status == true) {
         return datares;
       } else {
-       /* AppUtills.showSnackBar("Error",
+        /* AppUtills.showSnackBar("Error",
             datares.message ?? "Something Went Wrong. Please try again.",
             isError: true);*/
       }
@@ -598,7 +639,7 @@ class ApiProvider {
       if (datares.status == true) {
         return datares;
       } else {
-       /* AppUtills.showSnackBar("Error",
+        /* AppUtills.showSnackBar("Error",
             datares.message ?? "Something Went Wrong. Please try again.",
             isError: true);*/
       }
@@ -719,11 +760,12 @@ class ApiProvider {
         await http.post(Uri.parse(FETCH_SPONSOR), headers: headers, body: data);
     print(jsonEncode(res.body));
     if (res.statusCode == 200) {
-      SponsorListResponse datares = SponsorListResponse.fromJson(jsonDecode(res.body));
+      SponsorListResponse datares =
+          SponsorListResponse.fromJson(jsonDecode(res.body));
       if (datares.status == true) {
         return datares;
       } else {
-       /* AppUtills.showSnackBar("Error",
+        /* AppUtills.showSnackBar("Error",
             datares.message ?? "Something Went Wrong. Please try again.",
             isError: true);*/
       }
@@ -786,15 +828,15 @@ class ApiProvider {
       return false;
     }
   }
+
   Future<bool> deleteProfile() async {
     String token = Preferences.getToken();
     String user_id = Preferences.getUserId();
-    Map<String,String>data={};
+    Map<String, String> data = {};
     data['userid'] = user_id;
     data['token'] = token;
     data['type'] = "2";
-    var request = http.MultipartRequest(
-        'POST', Uri.parse( DELETE_PROFILE));
+    var request = http.MultipartRequest('POST', Uri.parse(DELETE_PROFILE));
     request.headers.addAll({
       'Accept': 'application/json',
     });
@@ -850,7 +892,7 @@ class ApiProvider {
         headers: headers, body: data);
     if (res.statusCode == 200) {
       FetchSlotsResponseModel datares =
-      FetchSlotsResponseModel.fromJson(jsonDecode(res.body));
+          FetchSlotsResponseModel.fromJson(jsonDecode(res.body));
       if (datares.status == true) {
         return datares;
       }
@@ -861,13 +903,13 @@ class ApiProvider {
     return null;
   }
 
-
   Future<AllOrdersResponse?> fetchOrders() async {
     String token = Preferences.getToken();
     String user_id = Preferences.getUserId();
     Map<String, String> data = {};
     data['userid'] = user_id;
     data['token'] = token;
+    data["partner_id"] = user_id;
 
     print(data);
 

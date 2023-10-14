@@ -12,6 +12,7 @@ class Preferences {
   static const STATUS = "STATUSS";
   static const USER_DATA = "USER_DATA";
   static const IS_LOGGEDIN = "IS_LOGGEDIN";
+  static const PROFILE_IMAGE = "PROFILE_IMAGE";
 
   // call this method from iniState() function of mainApp().
   static Future<SharedPreferences> init() async {
@@ -47,6 +48,10 @@ static Future<bool> setPhone(String email) async {
     return await _prefs.setString(USER_DATA, time);
   }
 
+static Future<bool> setProfileimage(String time) async {
+    return await _prefs.setString(PROFILE_IMAGE, time);
+  }
+
   static String getToken() => _prefs.getString(TOKEN_KEY) ?? "";
 
   static String getUserId() => _prefs.getString(USER_ID) ?? "";
@@ -57,6 +62,7 @@ static Future<bool> setPhone(String email) async {
   static String getUserData() => _prefs.getString(USER_DATA) ?? "";
   static String getStatus() => _prefs.getString(STATUS) ?? "1";
   static bool getLoggedIn() => _prefs.getBool(IS_LOGGEDIN)??false;
+  static String getProfileimage() => _prefs.getString(PROFILE_IMAGE) ?? "";
   static void clearAll(){
     _prefs.clear();
 
