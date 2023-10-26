@@ -50,20 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC0lTbqm178rujjspQlhTrkWSEi7sbngBs',
-    appId: '1:1006891112671:android:21633498453b59d574716a',
-    messagingSenderId: '1006891112671',
-    projectId: 'tida-partners',
-    storageBucket: 'tida-partners.appspot.com',
+    apiKey: 'AIzaSyChuxG-G1tO9fgmO1FOORaqW9zFry1fTXk',
+    appId: '1:629158784824:android:ecacabc9e3ad081f48dbcd',
+    messagingSenderId: '629158784824',
+    projectId: 'tidasports-6bb99',
+    storageBucket: 'tidasports-6bb99.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC-p5b4xWYkPgGyBzfUVulh_QUHoD_rLlY',
-    appId: '1:1006891112671:ios:c479bc32112b0d9874716a',
-    messagingSenderId: '1006891112671',
-    projectId: 'tida-partners',
-    storageBucket: 'tida-partners.appspot.com',
-    iosClientId: '1006891112671-e4k9drgunuj0t8bcv3636k32k5vjj1iu.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDEGbfoxsbIhsL5PjChUvD8deWF8VTZIsE',
+    appId: '1:629158784824:ios:1de4ac6e537f813a48dbcd',
+    messagingSenderId: '629158784824',
+    projectId: 'tidasports-6bb99',
+    storageBucket: 'tidasports-6bb99.appspot.com',
     iosBundleId: 'com.tidasports.partner',
   );
 }

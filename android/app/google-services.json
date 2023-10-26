@@ -1,34 +1,77 @@
 {
   "project_info": {
-    "project_number": "1006891112671",
-    "project_id": "tida-partners",
-    "storage_bucket": "tida-partners.appspot.com"
+    "project_number": "629158784824",
+    "project_id": "tidasports-6bb99",
+    "storage_bucket": "tidasports-6bb99.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1006891112671:android:21633498453b59d574716a",
+        "mobilesdk_app_id": "1:629158784824:android:ecacabc9e3ad081f48dbcd",
         "android_client_info": {
           "package_name": "com.tidasports.partner.tida_partners"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1006891112671-hgnh0i0knerf6ruapir54mq362081ijm.apps.googleusercontent.com",
+          "client_id": "629158784824-n52r55p9vgeb80nsl3hno6i7sh541usj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC0lTbqm178rujjspQlhTrkWSEi7sbngBs"
+          "current_key": "AIzaSyChuxG-G1tO9fgmO1FOORaqW9zFry1fTXk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1006891112671-hgnh0i0knerf6ruapir54mq362081ijm.apps.googleusercontent.com",
+              "client_id": "629158784824-n52r55p9vgeb80nsl3hno6i7sh541usj.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "629158784824-03qrmlq0auemg99tkc32frh7kibe01l5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tidasports.customer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629158784824:android:c343118e7e57bc8148dbcd",
+        "android_client_info": {
+          "package_name": "org.netgains.tidasports"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629158784824-n52r55p9vgeb80nsl3hno6i7sh541usj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChuxG-G1tO9fgmO1FOORaqW9zFry1fTXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629158784824-n52r55p9vgeb80nsl3hno6i7sh541usj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "629158784824-03qrmlq0auemg99tkc32frh7kibe01l5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tidasports.customer"
+              }
             }
           ]
         }
