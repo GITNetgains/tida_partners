@@ -2,22 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>1006891112671-e4k9drgunuj0t8bcv3636k32k5vjj1iu.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1006891112671-e4k9drgunuj0t8bcv3636k32k5vjj1iu</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC-p5b4xWYkPgGyBzfUVulh_QUHoD_rLlY</string>
+	<string>AIzaSyDEGbfoxsbIhsL5PjChUvD8deWF8VTZIsE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1006891112671</string>
+	<string>629158784824</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.tidasports.partner</string>
 	<key>PROJECT_ID</key>
-	<string>tida-partners</string>
+	<string>tidasports-6bb99</string>
 	<key>STORAGE_BUCKET</key>
-	<string>tida-partners.appspot.com</string>
+	<string>tidasports-6bb99.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1006891112671:ios:c479bc32112b0d9874716a</string>
+	<string>1:629158784824:ios:1de4ac6e537f813a48dbcd</string>
 </dict>
 </plist>
