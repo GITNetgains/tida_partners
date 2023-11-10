@@ -438,7 +438,7 @@ String getFormattedDateTimeForTournament(String date) {
 String getFormattedDate(String date) {
   String dd = date;
   try {
-    DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+    DateTime tempDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
 
     DateFormat dateFormat = DateFormat("dd/MM/yyyy");
     dd = dateFormat.format(tempDate).toString();
@@ -450,9 +450,9 @@ String getFormattedDate(String date) {
 String getFormattedTime(String date) {
   String dd = date;
   try {
-    DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
+    DateTime tempDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
 
-    DateFormat dateFormat = DateFormat("HH:mm a");
+    DateFormat dateFormat = DateFormat("hh:mm a");
     dd = dateFormat.format(tempDate).toString();
   } catch (e) {}
 
