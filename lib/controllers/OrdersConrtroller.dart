@@ -7,14 +7,22 @@ class OrdersController extends GetxController {
   RxBool loading = false.obs;
   RxList<Data> orderList = <Data>[].obs;
   RxInt index = (-1).obs;
+  RxString selectedBookingId = "".obs;
 
   @override
-  void onInit() {
-    fetchOrders();
+  Future<void> onInit() async {
+    await fetchOrders();
+    if (selectedBookingId.value != "") {
+      for (int i = 0; i < orderList.length; i++) {
+        if (orderList[i].id == selectedBookingId.value) {
+          index(i);
+        }
+      }
+    }
     super.onInit();
   }
 
-  void fetchOrders() async {
+  Future<void> fetchOrders() async {
     loading(true);
     orderList.clear();
     AllOrdersResponse? response = await ApiProvider().fetchOrders();

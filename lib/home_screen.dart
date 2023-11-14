@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tida_partners/add_venue.dart';
 import 'package:tida_partners/controllers/FacilityController.dart';
+import 'package:tida_partners/main.dart';
 import 'package:tida_partners/nab_bar.dart';
 import 'package:tida_partners/network/responses/VenueListResponse.dart';
 import 'package:tida_partners/utilss/size_config.dart';
@@ -12,8 +13,22 @@ import 'package:tida_partners/venue/facilities_list.dart';
 import 'AppColors.dart';
 import 'controllers/HomeScreenController.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await setupInteractedMessage();
+    });
+  }
+
   final _controller = Get.put(HomeScreenController());
 
   @override
@@ -53,8 +68,11 @@ class HomeScreen extends StatelessWidget {
                           Data item = _controller.venueList[index];
                           return Container(
                             margin: EdgeInsets.only(
-                                bottom: (index ==_controller.venueList.length-1  &&_controller.venueList.length != 1)?100:0),
-
+                                bottom: (index ==
+                                            _controller.venueList.length - 1 &&
+                                        _controller.venueList.length != 1)
+                                    ? 100
+                                    : 0),
                             child: Card(
                               elevation: 5,
                               child: Column(
@@ -63,15 +81,15 @@ class HomeScreen extends StatelessWidget {
                                 children: [
                                   InkWell(
                                     onTap: () async {
-                                  //  _controller.viewVenue(index);
+                                      //  _controller.viewVenue(index);
                                       _controller.editVenue(index);
-
                                     },
                                     child: ClipRRect(
                                         borderRadius: const BorderRadius.only(
                                             topRight: Radius.circular(5),
                                             topLeft: Radius.circular(5)),
-                                        child: getImageWidget(item.image??"-")),
+                                        child:
+                                            getImageWidget(item.image ?? "-")),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -105,33 +123,35 @@ class HomeScreen extends StatelessWidget {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width:
-                                                SizeConfig.screenWidth / 1.3,
+                                                width: SizeConfig.screenWidth /
+                                                    1.3,
                                                 child: OutlinedButton(
                                                   onPressed: () async {
                                                     _controller.index(index);
-                                                    bool test = Get.isRegistered<FacilityController>();
+                                                    bool test = Get.isRegistered<
+                                                        FacilityController>();
                                                     if (test) {
-                                                      final _c = Get.put(FacilityController());
+                                                      final _c = Get.put(
+                                                          FacilityController());
                                                       _c.onInit();
                                                     }
-                                                  await   Get.to(() => FacilitiesList());
-
+                                                    await Get.to(
+                                                        () => FacilitiesList());
                                                   },
                                                   style: ButtonStyle(
                                                     side: MaterialStateProperty
                                                         .all(const BorderSide(
-                                                        color:
-                                                        PRIMARY_COLOR)),
+                                                            color:
+                                                                PRIMARY_COLOR)),
                                                     foregroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.red),
+                                                        MaterialStateProperty
+                                                            .all(Colors.red),
                                                     shape: MaterialStateProperty
                                                         .all(RoundedRectangleBorder(
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            30.0))),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        30.0))),
                                                   ),
                                                   child: const Text(
                                                       "Manage Facilities"),
@@ -147,8 +167,6 @@ class HomeScreen extends StatelessWidget {
                                                   child: Icon(Icons.edit),
                                                 ),
                                               )
-
-
                                             ],
                                           ),
                                         )

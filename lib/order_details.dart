@@ -14,156 +14,167 @@ class OrderDetails extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: PRIMARY_COLOR,
-          title: setHeadlineLarge(
-              "Booking Details #${_c.getSelectedOrder().id}",
-              color: Colors.white),
+          title: Obx(
+            () => _c.selectedBookingId.value == "" || _c.index.value == -1
+                ? setHeadlineLarge("Loading Booking Details",
+                    color: Colors.white)
+                : setHeadlineLarge(
+                    "Booking Details #${_c.getSelectedOrder().id}",
+                    color: Colors.white),
+          ),
         ),
         body: Obx(
-          () => _c.loading.value
+          () => _c.selectedBookingId.value == "" || _c.index.value == -1
               ? showLoader()
-              : ListView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Name", color: Colors.black),
-                          setHeadlineMedium(
-                              '${_c.getSelectedOrder().user?.name ?? ""}',
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
+              : _c.loading.value
+                  ? showLoader()
+                  : ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Name", color: Colors.black),
+                              setHeadlineMedium(
+                                  '${_c.getSelectedOrder().user?.name ?? ""}',
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Phone", color: Colors.black),
+                              setHeadlineMedium(
+                                  '${_c.getSelectedOrder().user?.phone ?? ""}',
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Order Id",
+                                  color: Colors.black),
+                              setHeadlineMedium('#${_c.getSelectedOrder().id}',
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Order Status",
+                                  color: Colors.black),
+                              setHeadlineMedium(
+                                  '${(_c.getSelectedOrder().status == "1" ? "Completed" : "Pending")}',
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Amount Paid",
+                                  color: Colors.black),
+                              setHeadlineMedium(
+                                  _c.getSelectedOrder().amount ?? "-",
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Order Type",
+                                  color: Colors.black),
+                              setHeadlineMedium(
+                                  '${(_getOrderType(_c.getSelectedOrder().type ?? ""))}',
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        // const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: _getBookingWidget(),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Transaction Id",
+                                  color: Colors.black),
+                              setHeadlineMedium(
+                                  '#${_c.getSelectedOrder().transactionId.toString()}',
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Transaction Type",
+                                  color: Colors.black),
+                              setHeadlineMedium(
+                                  '${(_c.getSelectedOrder().type == "2") ? "Online" : "Offline"}',
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Booking date",
+                                  color: Colors.black),
+                              setHeadlineMedium(
+                                  getFormattedDateTime(
+                                      _c.getSelectedOrder().orderDate ?? ""),
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              setHeadlineMedium("Order placed",
+                                  color: Colors.black),
+                              setHeadlineMedium(
+                                  getFormattedDateTime(
+                                      _c.getSelectedOrder().createdAt ?? ""),
+                                  color: PRIMARY_COLOR),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Phone", color: Colors.black),
-                          setHeadlineMedium(
-                              '${_c.getSelectedOrder().user?.phone ?? ""}',
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Order Id", color: Colors.black),
-                          setHeadlineMedium('#${_c.getSelectedOrder().id}',
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Order Status",
-                              color: Colors.black),
-                          setHeadlineMedium(
-                              '${(_c.getSelectedOrder().status == "1" ? "Completed" : "Pending")}',
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Amount Paid", color: Colors.black),
-                          setHeadlineMedium(_c.getSelectedOrder().amount ?? "-",
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Order Type", color: Colors.black),
-                          setHeadlineMedium(
-                              '${(_getOrderType(_c.getSelectedOrder().type ?? ""))}',
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    // const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: _getBookingWidget(),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Transaction Id",
-                              color: Colors.black),
-                          setHeadlineMedium(
-                              '#${_c.getSelectedOrder().transactionId.toString()}',
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Transaction Type",
-                              color: Colors.black),
-                          setHeadlineMedium(
-                              '${(_c.getSelectedOrder().type == "2") ? "Online" : "Offline"}',
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Booking date",
-                              color: Colors.black),
-                          setHeadlineMedium(
-                              getFormattedDateTime(
-                                  _c.getSelectedOrder().orderDate ?? ""),
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          setHeadlineMedium("Order placed",
-                              color: Colors.black),
-                          setHeadlineMedium(
-                              getFormattedDateTime(
-                                  _c.getSelectedOrder().createdAt ?? ""),
-                              color: PRIMARY_COLOR),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                  ],
-                ),
         ));
   }
 
@@ -195,7 +206,8 @@ class OrderDetails extends StatelessWidget {
         displaytiming =
             "${_c.getSelectedOrder().facilityBooking?.date}  ${_c.getSelectedOrder().facilityBooking!.slotStartTime ?? ""} - ${_c.getSelectedOrder().facilityBooking!.slotEndTime ?? ""} ";
         displayName = _c.getSelectedOrder().venu_name ?? "Facility";
-        displayaddress = _c.getSelectedOrder().facilityaddress.toString() ?? " ";
+        displayaddress =
+            _c.getSelectedOrder().facilityaddress.toString() ?? " ";
         break;
       case "3":
         displayName = _c.getSelectedOrder().tournament?.title ?? "Tournament";
@@ -203,11 +215,13 @@ class OrderDetails extends StatelessWidget {
         break;
       case "2":
         displayName = _c.getSelectedOrder().academy?.name ?? "Academy";
-        displayaddress = _c.getSelectedOrder().academy!.address.toString() ?? " ";
+        displayaddress =
+            _c.getSelectedOrder().academy!.address.toString() ?? " ";
         break;
       case "4":
         displayName = _c.getSelectedOrder().experience?.title ?? "Experience";
-        displayaddress = _c.getSelectedOrder().experience!.address.toString() ?? " ";
+        displayaddress =
+            _c.getSelectedOrder().experience!.address.toString() ?? " ";
         break;
       default:
         displayName = "-";
@@ -217,7 +231,7 @@ class OrderDetails extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-           const Divider(),
+          const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -237,27 +251,24 @@ class OrderDetails extends StatelessWidget {
                     setHeadlineMedium("Slot Timing", color: Colors.black),
                     Container(
                         width: 180,
-                        child: setHeadlineMedium(
-                          '${(displaytiming)}',
-                          color: PRIMARY_COLOR,
-                          textAlign: TextAlign.right
-                        )),
+                        child: setHeadlineMedium('${(displaytiming)}',
+                            color: PRIMARY_COLOR, textAlign: TextAlign.right)),
                   ],
                 ),
           Divider(),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical:8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              setHeadlineMedium("Service Address", color: Colors.black),
-              Container(
-                  width: 150,
-                  child: setHeadlineMedium('${(displayaddress)}',
-                      color: PRIMARY_COLOR,textAlign: TextAlign.right )),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                setHeadlineMedium("Service Address", color: Colors.black),
+                Container(
+                    width: 150,
+                    child: setHeadlineMedium('${(displayaddress)}',
+                        color: PRIMARY_COLOR, textAlign: TextAlign.right)),
+              ],
+            ),
           ),
-        ),
         ],
       ),
     );
