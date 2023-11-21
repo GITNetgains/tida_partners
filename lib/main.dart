@@ -40,7 +40,7 @@ void main() async {
   if (!kIsWeb) {
     await setupFlutterNotifications();
   }
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // requestAndRegisterNotification();
   // _messaging = FirebaseMessaging.instance;
@@ -66,13 +66,7 @@ void main() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
-    if (notification != null && android != null) {
-      // final http.Response response =
-      //     await http.get(Uri.parse(android.imageUrl ?? ""));
-      // BigPictureStyleInformation bigPictureStyleInformation =
-      //     BigPictureStyleInformation(ByteArrayAndroidBitmap.fromBase64String(
-      //         base64Encode(response.bodyBytes)));
-
+    if (notification != null) {
       flutterLocalNotificationsPlugin.show(
           notification.hashCode,
           notification.title,
@@ -92,17 +86,17 @@ void main() async {
     }
   });
 
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    debugPrint("onmessageopenedapp");
-    if (notification != null) {
-      OrdersController _c = Get.put(OrdersController());
-      _c.selectedBookingId(message.data["order_id"]);
-      debugPrint(message.data.toString());
-      Get.to(() => OrderDetails());
-    }
-  });
+  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+  //   RemoteNotification? notification = message.notification;
+  //   AndroidNotification? android = message.notification?.android;
+  //   debugPrint("onmessageopenedapp");
+  //   if (notification != null) {
+  //     OrdersController _c = Get.put(OrdersController());
+  //     _c.selectedBookingId(message.data["order_id"]);
+  //     debugPrint(message.data.toString());
+  //     Get.to(() => OrderDetails());
+  //   }
+  // });
 
   await Preferences.init();
   runApp(MyApp());
@@ -220,20 +214,18 @@ void onDidReceiveBackgroundNotificationResponse(
 }
 
 Future<void> setupInteractedMessage() async {
-  final NotificationAppLaunchDetails? notificationAppLaunchDetails = !kIsWeb &&
-          Platform.isLinux
-      ? null
-      : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
-    // selectedNotificationPayload =
-    //     notificationAppLaunchDetails!.notificationResponse?.payload;
-    // initialRoute = SecondPage.routeName;
-    // print(notificationAppLaunchDetails!.notificationResponse?.payload);
-    Map<String, dynamic> data = json.decode(
-        notificationAppLaunchDetails!.notificationResponse?.payload ?? "");
+  RemoteMessage? initialMessage =
+      await FirebaseMessaging.instance.getInitialMessage();
+  if (initialMessage != null) {
+    _handleMessage(initialMessage);
+  }
+  FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+}
+
+void _handleMessage(RemoteMessage message) {
+  if (message.data.containsKey("order_id")) {
     OrdersController _c = Get.put(OrdersController());
-    _c.selectedBookingId(data["order_id"]);
-    print(data);
+    _c.selectedBookingId(message.data["order_id"]);
     Get.to(() => OrderDetails());
   }
 }
@@ -243,7 +235,7 @@ Future<void> setupFlutterNotifications() async {
     return;
   }
 
-  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+  FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -256,15 +248,15 @@ Future<void> setupFlutterNotifications() async {
         sound: true,
       );
 
-  // NotificationSettings settings = await messaging.requestPermission(
-  //   alert: true,
-  //   announcement: false,
-  //   badge: true,
-  //   carPlay: false,
-  //   criticalAlert: false,
-  //   provisional: false,
-  //   sound: true,
-  // );
+  NotificationSettings settings = await _messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: true,
+    sound: true,
+  );
 
   channel = const AndroidNotificationChannel(
     'high_importance_channel', // id
@@ -285,10 +277,10 @@ Future<void> setupFlutterNotifications() async {
 
   /// Update the iOS foreground notification presentation options to allow
   /// heads up notifications.
-  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-  //   alert: true,
-  //   badge: true,
-  //   sound: true,
-  // );
+  await _messaging.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
   isFlutterLocalNotificationsInitialized = true;
 }
