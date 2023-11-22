@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,11 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
-import 'package:tida_partners/Bookings.dart';
 import 'package:tida_partners/Push_notification_model.dart';
 import 'package:tida_partners/controllers/OrdersConrtroller.dart';
 import 'package:tida_partners/firebase_options.dart';
+import 'package:tida_partners/network/ApiProvider.dart';
 import 'package:tida_partners/order_details.dart';
 import 'package:tida_partners/utilss/SharedPref.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -97,7 +95,6 @@ void main() async {
   //     Get.to(() => OrderDetails());
   //   }
   // });
-
   await Preferences.init();
   runApp(MyApp());
 }
@@ -214,6 +211,12 @@ void onDidReceiveBackgroundNotificationResponse(
 }
 
 Future<void> setupInteractedMessage() async {
+  try {
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) await ApiProvider().updateFcmToken(token);
+  } catch (e) {
+    print(e);
+  }
   RemoteMessage? initialMessage =
       await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {

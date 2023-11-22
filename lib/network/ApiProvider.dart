@@ -803,6 +803,42 @@ class ApiProvider {
     return null;
   }
 
+  Future<String> getFcmToken() async {
+    String user_id = Preferences.getUserId();
+
+    var request = http.MultipartRequest('POST', Uri.parse(GET_FCM_TOKEN));
+    request.fields['userid'] = user_id;
+
+    var response = await request.send();
+
+    var responsed = await http.Response.fromStream(response);
+    print(jsonDecode(responsed.body));
+    var res = jsonDecode(responsed.body);
+    if (response.statusCode == 200) {
+      return res["fcm_token"] ?? "";
+    } else {
+      return "";
+    }
+  }
+
+  Future<String> updateFcmToken(String fcmToken) async {
+    String user_id = Preferences.getUserId();
+
+    var request = http.MultipartRequest('POST', Uri.parse(UPDATE_FCM_TOKEN));
+    request.fields['userid'] = user_id;
+    request.fields['fcm_token'] = fcmToken;
+
+    var response = await request.send();
+
+    var responsed = await http.Response.fromStream(response);
+    var res = jsonDecode(responsed.body);
+    if (response.statusCode == 200) {
+      return res["fcm_token"] ?? "";
+    } else {
+      return "";
+    }
+  }
+
   Future<bool> addFacility(Map<String, String> data, bool isUpdate) async {
     String token = Preferences.getToken();
     String user_id = Preferences.getUserId();
