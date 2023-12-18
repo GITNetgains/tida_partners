@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:tida_partners/AppColors.dart';
 import 'package:tida_partners/controllers/tournament_controller.dart';
 
-import '../controllers/VenueDetailsController.dart';
 import '../utilss/theme.dart';
 
 class SponsorList extends StatefulWidget {

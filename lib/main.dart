@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -35,6 +36,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(hours: 2));
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Crashlytics
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   if (!kIsWeb) {
     await setupFlutterNotifications();
   }
@@ -217,12 +229,17 @@ Future<void> setupInteractedMessage() async {
   } catch (e) {
     print(e);
   }
+
   RemoteMessage? initialMessage =
       await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
     _handleMessage(initialMessage);
   }
   FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+
+  FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
+    await ApiProvider().updateFcmToken(token);
+  });
 }
 
 void _handleMessage(RemoteMessage message) {

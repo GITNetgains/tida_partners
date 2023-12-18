@@ -2,14 +2,11 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
-import 'package:tida_partners/add_venue.dart';
 import 'package:tida_partners/controllers/HomeScreenController.dart';
 import 'package:tida_partners/network/responses/VenueListResponse.dart';
 import 'package:tida_partners/utilss/theme.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'AppColors.dart';
-import 'controllers/VenueDetailsController.dart';
 
 class ViewVenu extends StatelessWidget {
   ViewVenu({Key? key}) : super(key: key);

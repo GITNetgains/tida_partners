@@ -14,6 +14,7 @@ import 'package:tida_partners/network/responses/TournamentListResponse.dart';
 import 'package:tida_partners/network/responses/amenities_res.dart';
 import 'package:tida_partners/network/responses/media_response.dart';
 import 'package:tida_partners/utilss/SharedPref.dart';
+import 'package:tida_partners/utilss/common_utils.dart';
 
 import '../booking_slot/fetch_facility_slots_model.dart';
 import 'api_constants.dart';
@@ -822,15 +823,20 @@ class ApiProvider {
   }
 
   Future<String> updateFcmToken(String fcmToken) async {
+    String token = Preferences.getToken();
     String user_id = Preferences.getUserId();
+    String deviceId = await getId() ?? "0";
 
     var request = http.MultipartRequest('POST', Uri.parse(UPDATE_FCM_TOKEN));
     request.fields['userid'] = user_id;
     request.fields['fcm_token'] = fcmToken;
+    request.fields['gcm_token'] = deviceId;
+    request.fields['token'] = token;
 
     var response = await request.send();
 
     var responsed = await http.Response.fromStream(response);
+    print(responsed.body);
     var res = jsonDecode(responsed.body);
     if (response.statusCode == 200) {
       return res["fcm_token"] ?? "";

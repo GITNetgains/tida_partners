@@ -4,7 +4,6 @@ import 'package:tida_partners/controllers/FacilityController.dart';
 import 'package:tida_partners/controllers/HomeScreenController.dart';
 
 import '../AppColors.dart';
-import '../booking_slot/facilty_slots_view.dart';
 import '../network/responses/facilityListResponse.dart' as aa;
 import '../utilss/theme.dart';
 import 'add_facility.dart';

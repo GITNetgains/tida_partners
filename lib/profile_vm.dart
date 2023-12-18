@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tida_partners/controllers/HomeScreenController.dart';
 import 'package:tida_partners/login_screen.dart';
 import 'package:tida_partners/my_profile_response.dart';
 import 'package:tida_partners/network/ApiProvider.dart';
