@@ -15,7 +15,7 @@ class OrderDetails extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: PRIMARY_COLOR,
           title: Obx(
-            () => _c.selectedBookingId.value == "" || _c.index.value == -1
+            () => _c.index.value == -1
                 ? setHeadlineLarge("Loading Booking Details",
                     color: Colors.white)
                 : setHeadlineLarge(
@@ -24,7 +24,7 @@ class OrderDetails extends StatelessWidget {
           ),
         ),
         body: Obx(
-          () => _c.selectedBookingId.value == "" || _c.index.value == -1
+          () => _c.index.value == -1
               ? showLoader()
               : _c.loading.value
                   ? showLoader()
